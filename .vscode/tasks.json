@@ -37,7 +37,7 @@
                 "-I./build/_deps/moteus-src/lib/cpp/mjbots/moteus",
                 "-I./include",
                 "-o",
-                "mc_tester"
+                "./built/mc_tester"
             ],
             "options": {
                 "cwd": "${workspaceFolder}/dds_bridge/cpp_plugins"
