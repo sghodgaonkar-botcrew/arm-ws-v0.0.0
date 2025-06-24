@@ -5,30 +5,40 @@
 
 namespace
 {
+    /// Mathematical constant π.
     constexpr double PI = 3.141592653589793;
+    /**
+     * @brief Converts radians to revolutions.
+     * @param r Angle in radians.
+     * @return Equivalent revolutions.
+     */
     static inline double rad2rev(double r) { return r / (2 * PI); }
+
+    /**
+     * @brief Checks if two values are within a given tolerance.
+     * @param a First value.
+     * @param b Second value.
+     * @param tol Allowed tolerance.
+     * @return True if |a - b| ≤ tol.
+     */
     static inline bool close_enough(double a, double b, double tol = 0.005)
     {
         return std::fabs(a - b) <= tol;
     }
 }
 
-using namespace mjbots;
+using namespace mjbots; ///< Bring moteus Controller types into scope.
 
-// MotorController::MotorController()
-// {
+////////////////////////////////////////////////////////////////////////////////
+// Constructors / Destructor
+////////////////////////////////////////////////////////////////////////////////
 
-//     controllers_.reserve(MOTORS);
-//     for (int i = 0; i < MOTORS; ++i)
-//     {
-//         moteus::Controller::Options options;
-//         options.id = i;
-//         options.position_format.accel_limit = moteus::kFloat;
-//         controllers_.emplace_back(options);
-//         controllers_[i].SetStop();
-//         controllers_[i].SetQuery();
-//     }
-// }
+/**
+ * @brief Default constructs MotorController with NaN torque limits.
+ *
+ * Initializes each Moteus controller with default options, then stops
+ * and queries each to ensure clean state.
+ */
 MotorController::MotorController()
     : MAX_TORQUE(init_MAX_TORQUE())
 {
@@ -44,6 +54,11 @@ MotorController::MotorController()
         controllers_[i].SetQuery();
     }
 }
+
+/**
+ * @brief Constructs MotorController with explicit torque limits.
+ * @param max_torque Array specifying maximum torque per motor.
+ */
 MotorController::MotorController(const std::array<double, MOTORS> &max_torque)
     : MAX_TORQUE{max_torque}
 {
@@ -60,12 +75,23 @@ MotorController::MotorController(const std::array<double, MOTORS> &max_torque)
     }
 }
 
+/**
+ * @brief Destructor stops any running hold threads and cleans up.
+ */
 MotorController::~MotorController()
 {
     stopHoldThreads();
 }
 
+////////////////////////////////////////////////////////////////////////////////
+// Private Helpers
+////////////////////////////////////////////////////////////////////////////////
 
+/**
+ * @brief Stops and joins all active hold threads if running.
+ *
+ * Uses a lock_guard to protect against concurrent modifications.
+ */
 void MotorController::stopHoldThreads()
 {
     std::lock_guard<std::mutex> lk(hold_mutex_);
@@ -81,10 +107,19 @@ void MotorController::stopHoldThreads()
     }
 }
 
-/// @brief This function is responsible to set a certain motor position for the motor and hold it at that position, provided that `servo.timeout_mode = 10` in the motor configuration. If it was not so, then the motor will release torque once the position is reached.
-/// @param pos The angular position of the motor in radians.
-/// @param accel_limit The acceleration limit of the motor in revs/s^2.
-/// @param id [0,...,5] The `id.id` of the motor that needs to perform this movement.
+////////////////////////////////////////////////////////////////////////////////
+// Public APIs
+////////////////////////////////////////////////////////////////////////////////
+
+/**
+ * @brief Moves a single motor to a specified position, retrying on communication
+ *        failures, and waits until the target is reached or timeout expires.
+ * @param pos Desired angular position in radians.
+ * @param accel_limit Maximum acceleration (revs/sec²).
+ * @param id Motor index [0…MOTORS-1].
+ * @throws std::out_of_range if id is invalid.
+ * @throws std::runtime_error on timeout or repeated no-response.
+ */
 void MotorController::SetPosition(double pos,
                                   double accel_limit,
                                   unsigned id)
@@ -148,7 +183,7 @@ void MotorController::SetPosition(double pos,
 
         // 5d) Unpack results
         const auto &r = maybe->values;
-        std::cout << "Motor " << id << " has position " << r.position << " revs" << "\n";
+        // std::cout << "Motor " << id << " has position " << r.position << " revs" << "\n";
         // 5e) Handle fault or timeout modes immediately
         if (r.mode == moteus::Mode::kFault ||
             r.mode == moteus::Mode::kPositionTimeout)
@@ -175,6 +210,12 @@ void MotorController::SetPosition(double pos,
     // 6) All done — motor reached target safely
 }
 
+/**
+ * @brief Moves all motors to the specified “arm pose” by launching
+ *        worker threads that cycle through each motor command.
+ * @param positions Array of target positions (radians) per motor.
+ * @param accel_limit Shared acceleration limit for all motors.
+ */
 void MotorController::SetArmPose(const double positions[MOTORS],
                                  const double accel_limit)
 {
@@ -250,11 +291,18 @@ void MotorController::SetArmPose(const double positions[MOTORS],
     stopHoldThreads();
 }
 
+/**
+ * @brief Immediately stops (releases torque on) a single motor.
+ * @param id Motor index.
+ */
 void MotorController::ReleaseMotorTorque(unsigned id)
 {
     controllers_[id].SetStop();
 }
 
+/**
+ * @brief Immediately stops (releases torque on) all motors.
+ */
 void MotorController::ReleaseArmTorque()
 {
     for (int i = 0; i < MOTORS; i++)

@@ -15,25 +15,25 @@ int main()
 
         // 2) Test single‐motor move (will block until position or throw)
         // std::cout << "→ Calling SetPosition(0.5 rad, accel=1.0, id=0)\n";
-        // mc.SetPosition(0.0, 1.0, 0);
-        // mc.SetPosition(0.0, 1.0, 1);
+        mc.SetPosition(0.0, 1.0, 0);
+        mc.SetPosition(0.0, 1.0, 1);
         // std::cout << "✔ SetPosition completed\n";
 
         // 3) Test full‐arm pose
         // double poses[MotorController::MOTORS] = {
         //     0.1, 0.2, 0.3, 0.4, 0.5, 0.6
         // };
-        double poses[MotorController::getMOTORS()] = {
-        0.0, 0.0l
-        };
-        std::cout << "→ Calling SetArmPose([...], accel=0.5)\n";
-        mc.SetArmPose(poses, NaN);
-        // sleep(2);
-        std::cout << "✔ SetArmPose completed\n";
+        // double poses[MotorController::getMOTORS()] = {
+        // 5.0, -5.0
+        // };
+        // std::cout << "→ Calling SetArmPose([...], accel=0.5)\n";
+        // mc.SetArmPose(poses, NaN);
+        // // sleep(2);
+        // std::cout << "✔ SetArmPose completed\n";
 
-        // sleep(5);
+        sleep(0.1);
         // std::cout << "Releasing Motor Torque\n";
-        // mc.ReleaseArmTorque();
+        mc.ReleaseArmTorque();
     }
     catch (const std::exception &e)
     {
