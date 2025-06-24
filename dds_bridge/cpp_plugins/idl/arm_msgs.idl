@@ -1,0 +1,46 @@
+module arm_msgs {
+
+  @extensibility(APPENDABLE)
+  struct Time {
+    int32 sec;
+    uint32 nanosec;
+  };
+
+  @extensibility(APPENDABLE)
+  struct Header {
+    Time stamp;
+    string<256> frame_id;
+  };
+
+  @extensibility(APPENDABLE)
+  struct Point {
+    double x;
+    double y;
+    double z;
+  };
+
+  @extensibility(APPENDABLE)
+  struct Quaternion {
+    double x;
+    double y;
+    double z;
+    double w;
+  };
+
+  @extensibility(APPENDABLE)
+  struct Pose {
+    Point position;
+    Quaternion orientation;
+  };
+
+  @extensibility(APPENDABLE)
+  struct JointAngles {
+    double j1;
+    double j2;
+    double j3;
+    double j4;
+    double j5;
+    double j6;
+  };
+
+};

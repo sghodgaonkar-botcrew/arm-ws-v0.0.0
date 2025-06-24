@@ -1,0 +1,3 @@
+repository='https://github.com/mjbots/moteus.git'
+module=''
+tag='origin'
