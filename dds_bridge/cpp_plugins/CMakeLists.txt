@@ -1,18 +1,21 @@
-cmake_minimum_required(VERSION 3.14)
-project(cpp_plugins LANGUAGES CXX)
+cmake_minimum_required(VERSION 3.5)
+project(pcl_cpp_pluggins LANGUAGES CXX)
 
-set(CMAKE_CXX_STANDARD 20)
+set(CMAKE_CXX_STANDARD 17)
 
-# Allow user to specify install location via env var or default path
-if(NOT DEFINED ENV{CYCLONE_INSTALL})
-    message(FATAL_ERROR "Please set environment variable CYCLONE_INSTALL to point to CycloneDDS installation")
-endif()
-
-list(APPEND CMAKE_PREFIX_PATH "$ENV{CYCLONE_INSTALL}")
+# 1) Let CMake look under your custom DDS prefixes
+list(APPEND CMAKE_PREFIX_PATH
+  "$ENV{CYCLONE_INSTALL}"
+  "$ENV{CXX_INSTALL}"
+)
 message(STATUS "CMAKE_PREFIX_PATH = ${CMAKE_PREFIX_PATH}")
 
-# Find CycloneDDS-CXX package
-find_package(CycloneDDS-CXX REQUIRED)
+# 2) Pull in Iceoryx C binding (installed via apt)
+find_package(iceoryx_binding_c CONFIG REQUIRED)
+
+# 3) Pull in CycloneDDS C++ wrapper
+find_package(CycloneDDS-CXX CONFIG REQUIRED)
+
 
 # Fetch Moteus from GitHub
 include(FetchContent)
@@ -26,24 +29,24 @@ FetchContent_Declare(
 # Make moteus available
 FetchContent_MakeAvailable(moteus)
 
-# Location where IDL-generated code exists
+
+# 4) Where your IDL‐generated code lives
 set(GEN_DIR "${CMAKE_CURRENT_BINARY_DIR}/generated")
 
-# Your sources
+# 5) Image_odom_db
 add_executable(ik_solver_sub
   src/ik_solver_sub.cpp
+  src/motor_controller.cpp 
   ${GEN_DIR}/arm_msgs.cpp
 )
 
-# Include generated headers + your own include directory
 target_include_directories(ik_solver_sub PRIVATE
   ${GEN_DIR}
+  $ENV{CXX_INSTALL}/include
   ${CMAKE_CURRENT_SOURCE_DIR}/include
-  ${moteus_SOURCE_DIR}/lib
 )
 
-# Link against CycloneDDS-CXX
 target_link_libraries(ik_solver_sub
   CycloneDDS-CXX::ddscxx
-  moteus::cpp
+  iceoryx_binding_c::iceoryx_binding_c
 )

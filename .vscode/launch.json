@@ -4,7 +4,7 @@
     // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
     "version": "0.2.0",
     "configurations": [
-     {
+        {
             "name": "Debug mc_tester",
             "type": "cppdbg",
             "request": "launch",
@@ -23,6 +23,28 @@
                 }
             ],
             "preLaunchTask": "build mc_tester",
+            "miDebuggerPath": "/usr/bin/gdb"
+        },
+        
+        {
+            "name": "Debug ik_solver_sub",
+            "type": "cppdbg",
+            "request": "launch",
+            "program": "${workspaceFolder}/dds_bridge/cpp_plugins/build/ik_solver_sub",
+            "args": [],
+            "stopAtEntry": false,
+            "cwd": "${workspaceFolder}/dds_bridge/cpp_plugins",
+            "environment": [],
+            "externalConsole": false,
+            "MIMode": "gdb",
+            "setupCommands": [
+                {
+                    "description": "Enable pretty-printing for gdb",
+                    "text": "-enable-pretty-printing",
+                    "ignoreFailures": true
+                }
+            ],
+            "preLaunchTask": "CMake Build",
             "miDebuggerPath": "/usr/bin/gdb"
         }
 

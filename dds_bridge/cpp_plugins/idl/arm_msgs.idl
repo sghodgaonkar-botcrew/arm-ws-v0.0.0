@@ -33,6 +33,7 @@ module arm_msgs {
     Quaternion orientation;
   };
 
+
   @extensibility(APPENDABLE)
   struct JointAngles {
     double j1;
@@ -42,5 +43,12 @@ module arm_msgs {
     double j5;
     double j6;
   };
+
+  @extensibility(APPENDABLE)
+  struct ArmCommand {
+    Header header;
+    Pose pose;
+  };
+
 
 };

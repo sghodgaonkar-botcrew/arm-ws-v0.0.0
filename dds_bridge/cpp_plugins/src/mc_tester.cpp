@@ -17,19 +17,20 @@ int main()
         // std::cout << "→ Calling SetPosition(0.5 rad, accel=1.0, id=0)\n";
         mc.SetPosition(0.0, 1.0, 0);
         mc.SetPosition(0.0, 1.0, 1);
-        // std::cout << "✔ SetPosition completed\n";
-
+        std::cout << "✔ SetPosition completed\n";
+        sleep(3);
+        mc.ReleaseArmTorque();
         // 3) Test full‐arm pose
         // double poses[MotorController::MOTORS] = {
         //     0.1, 0.2, 0.3, 0.4, 0.5, 0.6
         // };
-        // double poses[MotorController::getMOTORS()] = {
-        // 5.0, -5.0
-        // };
-        // std::cout << "→ Calling SetArmPose([...], accel=0.5)\n";
-        // mc.SetArmPose(poses, NaN);
-        // // sleep(2);
-        // std::cout << "✔ SetArmPose completed\n";
+        double poses[MotorController::getMOTORS()] = {
+        5.0, -5.0
+        };
+        std::cout << "→ Calling SetArmPose([...], accel=0.5)\n";
+        mc.SetArmPose(poses, NaN);
+        // sleep(2);
+        std::cout << "✔ SetArmPose completed\n";
 
         sleep(0.1);
         // std::cout << "Releasing Motor Torque\n";
