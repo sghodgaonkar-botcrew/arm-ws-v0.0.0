@@ -216,6 +216,40 @@ propvec &get_type_props<::arm_msgs::JointAngles>() {
   return props;
 }
 
+template<>
+propvec &get_type_props<::arm_msgs::ArmCommand>() {
+  static thread_local std::mutex mtx;
+  static thread_local propvec props;
+  static thread_local entity_properties_t *props_end = nullptr;
+  static thread_local std::atomic_bool initialized {false};
+  key_endpoint keylist;
+  if (initialized.load(std::memory_order_relaxed)) {
+    auto ptr = props.data();
+    while (ptr < props_end)
+      (ptr++)->is_present = false;
+    return props;
+  }
+  std::lock_guard<std::mutex> lock(mtx);
+  if (initialized.load(std::memory_order_relaxed)) {
+    auto ptr = props.data();
+    while (ptr < props_end)
+      (ptr++)->is_present = false;
+    return props;
+  }
+  props.clear();
+
+  props.push_back(entity_properties_t(0, 0, false, bb_unset, extensibility::ext_appendable));  //root
+  props.push_back(entity_properties_t(1, 0, false, get_bit_bound<::arm_msgs::Header>(), extensibility::ext_appendable, false));  //::header
+  entity_properties_t::append_struct_contents(props, get_type_props<::arm_msgs::Header>());  //internal contents of ::header
+  props.push_back(entity_properties_t(1, 1, false, get_bit_bound<::arm_msgs::Pose>(), extensibility::ext_appendable, false));  //::pose
+  entity_properties_t::append_struct_contents(props, get_type_props<::arm_msgs::Pose>());  //internal contents of ::pose
+
+  entity_properties_t::finish(props, keylist);
+  props_end = props.data() + props.size();
+  initialized.store(true, std::memory_order_release);
+  return props;
+}
+
 } //namespace cdr
 } //namespace core
 } //namespace cyclonedds

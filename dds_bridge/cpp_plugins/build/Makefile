@@ -177,6 +177,30 @@ src/ik_solver_sub.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/ik_solver_sub.dir/build.make CMakeFiles/ik_solver_sub.dir/src/ik_solver_sub.cpp.s
 .PHONY : src/ik_solver_sub.cpp.s
 
+src/motor_controller.o: src/motor_controller.cpp.o
+.PHONY : src/motor_controller.o
+
+# target to build an object file
+src/motor_controller.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/ik_solver_sub.dir/build.make CMakeFiles/ik_solver_sub.dir/src/motor_controller.cpp.o
+.PHONY : src/motor_controller.cpp.o
+
+src/motor_controller.i: src/motor_controller.cpp.i
+.PHONY : src/motor_controller.i
+
+# target to preprocess a source file
+src/motor_controller.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/ik_solver_sub.dir/build.make CMakeFiles/ik_solver_sub.dir/src/motor_controller.cpp.i
+.PHONY : src/motor_controller.cpp.i
+
+src/motor_controller.s: src/motor_controller.cpp.s
+.PHONY : src/motor_controller.s
+
+# target to generate assembly for a file
+src/motor_controller.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/ik_solver_sub.dir/build.make CMakeFiles/ik_solver_sub.dir/src/motor_controller.cpp.s
+.PHONY : src/motor_controller.cpp.s
+
 # Help Target
 help:
 	@echo "The following are some of the valid targets for this Makefile:"
@@ -192,6 +216,9 @@ help:
 	@echo "... src/ik_solver_sub.o"
 	@echo "... src/ik_solver_sub.i"
 	@echo "... src/ik_solver_sub.s"
+	@echo "... src/motor_controller.o"
+	@echo "... src/motor_controller.i"
+	@echo "... src/motor_controller.s"
 .PHONY : help
 
 

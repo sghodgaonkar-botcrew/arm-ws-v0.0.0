@@ -10,6 +10,7 @@ set(CMAKE_DEPENDS_LANGUAGES
 set(CMAKE_DEPENDS_DEPENDENCY_FILES
   "/home/shanto/Documents/arm-ws-v0.0.0/dds_bridge/cpp_plugins/build/generated/arm_msgs.cpp" "CMakeFiles/ik_solver_sub.dir/generated/arm_msgs.cpp.o" "gcc" "CMakeFiles/ik_solver_sub.dir/generated/arm_msgs.cpp.o.d"
   "/home/shanto/Documents/arm-ws-v0.0.0/dds_bridge/cpp_plugins/src/ik_solver_sub.cpp" "CMakeFiles/ik_solver_sub.dir/src/ik_solver_sub.cpp.o" "gcc" "CMakeFiles/ik_solver_sub.dir/src/ik_solver_sub.cpp.o.d"
+  "/home/shanto/Documents/arm-ws-v0.0.0/dds_bridge/cpp_plugins/src/motor_controller.cpp" "CMakeFiles/ik_solver_sub.dir/src/motor_controller.cpp.o" "gcc" "CMakeFiles/ik_solver_sub.dir/src/motor_controller.cpp.o.d"
   )
 
 # Targets to which this target links.

@@ -145,7 +145,7 @@ CMAKE_PROJECT_DESCRIPTION:STATIC=
 CMAKE_PROJECT_HOMEPAGE_URL:STATIC=
 
 //Value Computed by CMake
-CMAKE_PROJECT_NAME:STATIC=cpp_plugins
+CMAKE_PROJECT_NAME:STATIC=pcl_cpp_pluggins
 
 //Value Computed by CMake
 CMAKE_PROJECT_VERSION:STATIC=0.1.20230821
@@ -262,6 +262,15 @@ cpp_plugins_IS_TOP_LEVEL:STATIC=ON
 //Value Computed by CMake
 cpp_plugins_SOURCE_DIR:STATIC=/home/shanto/Documents/arm-ws-v0.0.0/dds_bridge/cpp_plugins
 
+//The directory containing a CMake configuration file for iceoryx_binding_c.
+iceoryx_binding_c_DIR:PATH=/usr/lib/x86_64-linux-gnu/cmake/iceoryx_binding_c
+
+//The directory containing a CMake configuration file for iceoryx_posh.
+iceoryx_posh_DIR:PATH=/usr/lib/x86_64-linux-gnu/cmake/iceoryx_posh
+
+//The directory containing a CMake configuration file for iceoryx_utils.
+iceoryx_utils_DIR:PATH=/usr/lib/x86_64-linux-gnu/cmake/iceoryx_utils
+
 //Value Computed by CMake
 moteus_BINARY_DIR:STATIC=/home/shanto/Documents/arm-ws-v0.0.0/dds_bridge/cpp_plugins/build/_deps/moteus-build
 
@@ -270,6 +279,15 @@ moteus_IS_TOP_LEVEL:STATIC=OFF
 
 //Value Computed by CMake
 moteus_SOURCE_DIR:STATIC=/home/shanto/Documents/arm-ws-v0.0.0/dds_bridge/cpp_plugins/build/_deps/moteus-src
+
+//Value Computed by CMake
+pcl_cpp_pluggins_BINARY_DIR:STATIC=/home/shanto/Documents/arm-ws-v0.0.0/dds_bridge/cpp_plugins/build
+
+//Value Computed by CMake
+pcl_cpp_pluggins_IS_TOP_LEVEL:STATIC=ON
+
+//Value Computed by CMake
+pcl_cpp_pluggins_SOURCE_DIR:STATIC=/home/shanto/Documents/arm-ws-v0.0.0/dds_bridge/cpp_plugins
 
 
 ########################
