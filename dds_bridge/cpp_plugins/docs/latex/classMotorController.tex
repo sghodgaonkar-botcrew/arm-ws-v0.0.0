@@ -1,0 +1,181 @@
+\hypertarget{classMotorController}{}\doxysection{Motor\+Controller Class Reference}
+\label{classMotorController}\index{MotorController@{MotorController}}
+
+
+Manages multiple Moteus motor controllers, providing position control, torque release, and a threaded hold mechanism to maintain an arm pose.  
+
+
+
+
+{\ttfamily \#include $<$motor\+\_\+controller.\+h$>$}
+
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classMotorController_a1c32db157ba4b6dba1f2d6bc8891f16d}{Motor\+Controller}} ()
+\begin{DoxyCompactList}\small\item\em Default constructor. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{classMotorController_a3eec9a8e9b7621eb1fbb90724ce987fd}{Motor\+Controller}} (const std\+::array$<$ double, MOTORS $>$ \&max\+\_\+torque)
+\begin{DoxyCompactList}\small\item\em Constructor with explicit torque limits. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{classMotorController_ae4a6055b64466936c3576fb52fda9307}{$\sim$\+Motor\+Controller}} ()
+\begin{DoxyCompactList}\small\item\em Destructor. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classMotorController_acfaac8eeb10f06da87ddd8bbd8222500}{Set\+Position}} (double pos, double accel\+\_\+limit=1.\+0, unsigned id=0)
+\begin{DoxyCompactList}\small\item\em Moves a single motor to a target position. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classMotorController_a477521a554c2f58b8ec81ab8afbeccd1}{Set\+Arm\+Pose}} (const double pos\mbox{[}MOTORS\mbox{]}, const double accel\+\_\+limit=1.\+0)
+\begin{DoxyCompactList}\small\item\em Moves all motors to specified joint positions (“arm pose”). \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classMotorController_a709c2ece64860bf78c9d12d13fe0a05f}{Release\+Motor\+Torque}} (unsigned id)
+\begin{DoxyCompactList}\small\item\em Immediately stops (releases torque on) a single motor. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classMotorController_a733ca4720bcfd6b57cd2710c1c05f542}\label{classMotorController_a733ca4720bcfd6b57cd2710c1c05f542}} 
+void \mbox{\hyperlink{classMotorController_a733ca4720bcfd6b57cd2710c1c05f542}{Release\+Arm\+Torque}} ()
+\begin{DoxyCompactList}\small\item\em Immediately stops (releases torque on) all motors. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Static Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+static constexpr unsigned \mbox{\hyperlink{classMotorController_a338de7ec3d9b85e259833ce098b8ac77}{get\+MOTORS}} ()
+\begin{DoxyCompactList}\small\item\em Returns the number of motors managed by this controller. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Manages multiple Moteus motor controllers, providing position control, torque release, and a threaded hold mechanism to maintain an arm pose. 
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classMotorController_a1c32db157ba4b6dba1f2d6bc8891f16d}\label{classMotorController_a1c32db157ba4b6dba1f2d6bc8891f16d}} 
+\index{MotorController@{MotorController}!MotorController@{MotorController}}
+\index{MotorController@{MotorController}!MotorController@{MotorController}}
+\doxysubsubsection{\texorpdfstring{MotorController()}{MotorController()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily Motor\+Controller\+::\+Motor\+Controller (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Default constructor. 
+
+$<$ Bring moteus Controller types into scope.
+
+Initializes controllers\+\_\+ with default options, sets MAX\+\_\+\+TORQUE to NaN, and prepares internal data structures for holding poses.
+
+Default constructs \mbox{\hyperlink{classMotorController}{Motor\+Controller}} with NaN torque limits.
+
+Initializes each Moteus controller with default options, then stops and queries each to ensure clean state. \mbox{\Hypertarget{classMotorController_a3eec9a8e9b7621eb1fbb90724ce987fd}\label{classMotorController_a3eec9a8e9b7621eb1fbb90724ce987fd}} 
+\index{MotorController@{MotorController}!MotorController@{MotorController}}
+\index{MotorController@{MotorController}!MotorController@{MotorController}}
+\doxysubsubsection{\texorpdfstring{MotorController()}{MotorController()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily Motor\+Controller\+::\+Motor\+Controller (\begin{DoxyParamCaption}\item[{const std\+::array$<$ double, MOTORS $>$ \&}]{max\+\_\+torque }\end{DoxyParamCaption})}
+
+
+
+Constructor with explicit torque limits. 
+
+Constructs \mbox{\hyperlink{classMotorController}{Motor\+Controller}} with explicit torque limits.
+
+
+\begin{DoxyParams}{Parameters}
+{\em max\+\_\+torque} & Array of maximum torque values per motor.\\
+\hline
+{\em max\+\_\+torque} & Array specifying maximum torque per motor. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classMotorController_ae4a6055b64466936c3576fb52fda9307}\label{classMotorController_ae4a6055b64466936c3576fb52fda9307}} 
+\index{MotorController@{MotorController}!````~MotorController@{$\sim$MotorController}}
+\index{````~MotorController@{$\sim$MotorController}!MotorController@{MotorController}}
+\doxysubsubsection{\texorpdfstring{$\sim$MotorController()}{~MotorController()}}
+{\footnotesize\ttfamily Motor\+Controller\+::$\sim$\+Motor\+Controller (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Destructor. 
+
+Destructor stops any running hold threads and cleans up.
+
+Stops any running hold threads and releases resources before object destruction. 
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classMotorController_a338de7ec3d9b85e259833ce098b8ac77}\label{classMotorController_a338de7ec3d9b85e259833ce098b8ac77}} 
+\index{MotorController@{MotorController}!getMOTORS@{getMOTORS}}
+\index{getMOTORS@{getMOTORS}!MotorController@{MotorController}}
+\doxysubsubsection{\texorpdfstring{getMOTORS()}{getMOTORS()}}
+{\footnotesize\ttfamily static constexpr unsigned Motor\+Controller\+::get\+MOTORS (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}, {\ttfamily [constexpr]}}
+
+
+
+Returns the number of motors managed by this controller. 
+
+\begin{DoxyReturn}{Returns}
+The constant MOTORS value. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classMotorController_a709c2ece64860bf78c9d12d13fe0a05f}\label{classMotorController_a709c2ece64860bf78c9d12d13fe0a05f}} 
+\index{MotorController@{MotorController}!ReleaseMotorTorque@{ReleaseMotorTorque}}
+\index{ReleaseMotorTorque@{ReleaseMotorTorque}!MotorController@{MotorController}}
+\doxysubsubsection{\texorpdfstring{ReleaseMotorTorque()}{ReleaseMotorTorque()}}
+{\footnotesize\ttfamily void Motor\+Controller\+::\+Release\+Motor\+Torque (\begin{DoxyParamCaption}\item[{unsigned}]{id }\end{DoxyParamCaption})}
+
+
+
+Immediately stops (releases torque on) a single motor. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em id} & Motor index. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classMotorController_a477521a554c2f58b8ec81ab8afbeccd1}\label{classMotorController_a477521a554c2f58b8ec81ab8afbeccd1}} 
+\index{MotorController@{MotorController}!SetArmPose@{SetArmPose}}
+\index{SetArmPose@{SetArmPose}!MotorController@{MotorController}}
+\doxysubsubsection{\texorpdfstring{SetArmPose()}{SetArmPose()}}
+{\footnotesize\ttfamily void Motor\+Controller\+::\+Set\+Arm\+Pose (\begin{DoxyParamCaption}\item[{const double}]{positions\mbox{[}\+MOTORS\mbox{]},  }\item[{const double}]{accel\+\_\+limit = {\ttfamily 1.0} }\end{DoxyParamCaption})}
+
+
+
+Moves all motors to specified joint positions (“arm pose”). 
+
+Moves all motors to the specified \char`\"{}arm pose\char`\"{} by launching worker threads that cycle through each motor command.
+
+
+\begin{DoxyParams}{Parameters}
+{\em pos} & Array of target positions (radians) of length MOTORS. \\
+\hline
+{\em accel\+\_\+limit} & Acceleration limit applied to all motors.\\
+\hline
+{\em positions} & Array of target positions (radians) per motor. \\
+\hline
+{\em accel\+\_\+limit} & Shared acceleration limit for all motors. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classMotorController_acfaac8eeb10f06da87ddd8bbd8222500}\label{classMotorController_acfaac8eeb10f06da87ddd8bbd8222500}} 
+\index{MotorController@{MotorController}!SetPosition@{SetPosition}}
+\index{SetPosition@{SetPosition}!MotorController@{MotorController}}
+\doxysubsubsection{\texorpdfstring{SetPosition()}{SetPosition()}}
+{\footnotesize\ttfamily void Motor\+Controller\+::\+Set\+Position (\begin{DoxyParamCaption}\item[{double}]{pos,  }\item[{double}]{accel\+\_\+limit = {\ttfamily 1.0},  }\item[{unsigned}]{id = {\ttfamily 0} }\end{DoxyParamCaption})}
+
+
+
+Moves a single motor to a target position. 
+
+Moves a single motor to a specified position, retrying on communication failures, and waits until the target is reached or timeout expires.
+
+
+\begin{DoxyParams}{Parameters}
+{\em pos} & Target position in radians. \\
+\hline
+{\em accel\+\_\+limit} & Acceleration limit in revolutions/sec². \\
+\hline
+{\em id} & Motor index \mbox{[}0 … MOTORS-\/1\mbox{]}.\\
+\hline
+{\em pos} & Desired angular position in radians. \\
+\hline
+{\em accel\+\_\+limit} & Maximum acceleration (revs/sec²). \\
+\hline
+{\em id} & Motor index \mbox{[}0…\+MOTORS-\/1\mbox{]}. \\
+\hline
+\end{DoxyParams}
+
+\begin{DoxyExceptions}{Exceptions}
+{\em std\+::out\+\_\+of\+\_\+range} & if id is invalid. \\
+\hline
+{\em std\+::runtime\+\_\+error} & on timeout or repeated no-\/response. \\
+\hline
+\end{DoxyExceptions}
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+/home/shanto/\+Documents/arm-\/ws-\/v0.\+0.\+0/dds\+\_\+bridge/cpp\+\_\+plugins/include/motor\+\_\+controller.\+h\item 
+/home/shanto/\+Documents/arm-\/ws-\/v0.\+0.\+0/dds\+\_\+bridge/cpp\+\_\+plugins/src/motor\+\_\+controller.\+cpp\end{DoxyCompactItemize}

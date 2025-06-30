@@ -1,0 +1,46 @@
+\hypertarget{index_intro_sec}{}\doxysection{Introduction}\label{index_intro_sec}
+This project provides a comprehensive robotics control system for robotic arms, featuring\+:
+\begin{DoxyItemize}
+\item {\bfseries{Inverse Kinematics (IK)}}\+: Advanced IK solver using Pinocchio library
+\item {\bfseries{Motor Control}}\+: Moteus motor controller integration
+\item {\bfseries{DDS Communication}}\+: Real-\/time data distribution system
+\end{DoxyItemize}
+
+The system is designed for real-\/time robotic arm control with collision avoidance and optimization capabilities.\hypertarget{index_classes_sec}{}\doxysection{Main Classes}\label{index_classes_sec}
+\hypertarget{index_autotoc_md0}{}\doxysubsubsection{@ref IKModel \char`\"{}\+IKModel Class\char`\"{}}\label{index_autotoc_md0}
+The core inverse kinematics model that provides\+:
+\begin{DoxyItemize}
+\item Forward kinematics computation using Pinocchio
+\item Cost function, gradient, and Hessian computation for IK optimization
+\item Collision checking and avoidance
+\item Joint limit enforcement
+\end{DoxyItemize}\hypertarget{index_autotoc_md1}{}\doxysubsubsection{@ref Motor\+Controller \char`\"{}\+Motor\+Controller Class\char`\"{}}\label{index_autotoc_md1}
+Motor control interface that manages\+:
+\begin{DoxyItemize}
+\item Multiple Moteus motor controllers
+\item Position control with acceleration limits
+\item Torque release functionality
+\item Threaded pose holding mechanism
+\end{DoxyItemize}\hypertarget{index_features_sec}{}\doxysection{Key Features}\label{index_features_sec}
+
+\begin{DoxyItemize}
+\item {\bfseries{Real-\/time Performance}}\+: Optimized for real-\/time control applications
+\item {\bfseries{Collision Avoidance}}\+: Built-\/in collision detection and avoidance
+\item {\bfseries{Joint Limit Safety}}\+: Automatic joint limit enforcement
+\item {\bfseries{Multi-\/motor Support}}\+: Control multiple motors simultaneously
+\item {\bfseries{DDS Integration}}\+: Real-\/time communication using Cyclone\+DDS
+\end{DoxyItemize}\hypertarget{index_usage_sec}{}\doxysection{Usage}\label{index_usage_sec}
+The system is designed to work with\+:
+\begin{DoxyItemize}
+\item URDF robot descriptions
+\item Moteus motor controllers
+\item Cyclone\+DDS for communication
+\end{DoxyItemize}\hypertarget{index_dependencies_sec}{}\doxysection{Dependencies}\label{index_dependencies_sec}
+
+\begin{DoxyItemize}
+\item {\bfseries{Pinocchio}}\+: Robotics dynamics and kinematics library
+\item {\bfseries{Eigen}}\+: Linear algebra library
+\item {\bfseries{Moteus}}\+: Motor control library
+\item {\bfseries{Cyclone\+DDS}}\+: Data distribution system
+\end{DoxyItemize}\hypertarget{index_build_sec}{}\doxysection{Building}\label{index_build_sec}
+The project uses CMake for building. See the CMake\+Lists.\+txt file for detailed build instructions and dependencies. 

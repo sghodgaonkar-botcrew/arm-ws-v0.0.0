@@ -1,0 +1,56 @@
+/**
+ * @mainpage CPP Plugins Documentation
+ * 
+ * @section intro_sec Introduction
+ * 
+ * This project provides a comprehensive robotics control system for robotic arms, featuring:
+ * - **Inverse Kinematics (IK)**: Advanced IK solver using Pinocchio library
+ * - **Motor Control**: Moteus motor controller integration
+ * - **DDS Communication**: Real-time data distribution system
+ * 
+ * The system is designed for real-time robotic arm control with collision avoidance
+ * and optimization capabilities.
+ * 
+ * @section classes_sec Main Classes
+ * 
+ * ### @ref IKModel "IKModel Class"
+ * The core inverse kinematics model that provides:
+ * - Forward kinematics computation using Pinocchio
+ * - Cost function, gradient, and Hessian computation for IK optimization
+ * - Collision checking and avoidance
+ * - Joint limit enforcement
+ * 
+ * ### @ref MotorController "MotorController Class"
+ * Motor control interface that manages:
+ * - Multiple Moteus motor controllers
+ * - Position control with acceleration limits
+ * - Torque release functionality
+ * - Threaded pose holding mechanism
+ * 
+ * @section features_sec Key Features
+ * 
+ * - **Real-time Performance**: Optimized for real-time control applications
+ * - **Collision Avoidance**: Built-in collision detection and avoidance
+ * - **Joint Limit Safety**: Automatic joint limit enforcement
+ * - **Multi-motor Support**: Control multiple motors simultaneously
+ * - **DDS Integration**: Real-time communication using CycloneDDS
+ * 
+ * @section usage_sec Usage
+ * 
+ * The system is designed to work with:
+ * - URDF robot descriptions
+ * - Moteus motor controllers
+ * - CycloneDDS for communication
+ * 
+ * @section dependencies_sec Dependencies
+ * 
+ * - **Pinocchio**: Robotics dynamics and kinematics library
+ * - **Eigen**: Linear algebra library
+ * - **Moteus**: Motor control library
+ * - **CycloneDDS**: Data distribution system
+ * 
+ * @section build_sec Building
+ * 
+ * The project uses CMake for building. See the CMakeLists.txt file for
+ * detailed build instructions and dependencies.
+ */ 

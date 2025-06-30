@@ -1,0 +1,6 @@
+[submodule "dds_bridge/cpp_plugins/build/_deps/moteus-src"]
+	path = dds_bridge/cpp_plugins/build/_deps/moteus-src
+	url = https://github.com/mjbots/moteus.git
+[submodule "dds_bridge/cpp_plugins/include/pinocchio"]
+	path = dds_bridge/cpp_plugins/include/pinocchio
+	url = https://github.com/stack-of-tasks/pinocchio.git

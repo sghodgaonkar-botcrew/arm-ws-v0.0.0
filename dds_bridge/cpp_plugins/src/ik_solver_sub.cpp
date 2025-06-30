@@ -5,6 +5,7 @@
 #include <chrono>
 #include <dds/dds.hpp>
 #include <iomanip>
+#include "ik_model.h"
 
 /**
  * @brief Returns the current time in seconds with nanosecond precision.
