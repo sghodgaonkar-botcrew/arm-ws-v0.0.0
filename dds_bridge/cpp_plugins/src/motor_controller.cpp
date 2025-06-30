@@ -196,7 +196,7 @@ void MotorController::SetPosition(double pos,
                                      std::to_string(r.fault) + ")");
         }
 
-        // 5f) Check if we’ve reached the target (to 2 decimal places)
+        // 5f) Check if we've reached the target (to 2 decimal places)
         if (close_enough(r.position, cmd.position))
         {
             // Success! Exit the loop and return to caller
@@ -211,7 +211,7 @@ void MotorController::SetPosition(double pos,
 }
 
 /**
- * @brief Moves all motors to the specified “arm pose” by launching
+ * @brief Moves all motors to the specified "arm pose" by launching
  *        worker threads that cycle through each motor command.
  * @param positions Array of target positions (radians) per motor.
  * @param accel_limit Shared acceleration limit for all motors.
@@ -219,76 +219,59 @@ void MotorController::SetPosition(double pos,
 void MotorController::SetArmPose(const double positions[MOTORS],
                                  const double accel_limit)
 {
-    // 1) Stop any existing hold threads
-    stopHoldThreads();
-    hold_running_ = true;
-
-    // 3) Launch exactly two worker threads to time‐slice through all motors
-    const int num_workers = 2;
-    hold_threads_.clear();
-    hold_threads_.reserve(num_workers);
-
-    for (int w = 0; w < num_workers; ++w)
+    // Step 1: Safety first - release all motor torques to prevent conflicts
+    this->ReleaseArmTorque();
+    
+    // Step 2: Prepare position commands for all motors
+    moteus::PositionMode::Command cmd[MOTORS];
+    for (int i = 0; i < MOTORS; i++)
     {
-        hold_threads_.emplace_back(
-            [this, positions, accel_limit, w]()
-            {
-                while (hold_running_)
-                {
-                    // Each worker services motors w, w+2, w+4, ...
-                    for (int i = w; i < MOTORS; i += num_workers)
-                    {
-
-                        moteus::PositionMode::Command cmd;
-                        cmd.position = rad2rev(positions[i]);
-                        cmd.accel_limit = accel_limit;
-                        if (!std::isnan(MAX_TORQUE[i]))
-                            cmd.maximum_torque = MAX_TORQUE[i];
-
-                        // Serialize access to each controller
-                        {
-                            std::lock_guard<std::mutex> lock(controller_mutexes_[i]);
-                            controllers_[i].SetPosition(cmd);
-                        }
-
-                        // Time‐slice: sleep for 20 ms before next motor
-                        std::this_thread::sleep_for(std::chrono::milliseconds(20));
-                    }
-                }
-            });
+        // std::cout << "Setting position for motor with id " << i << std::endl;
+        cmd[i].position = rad2rev(positions[i]);  // Convert radians to revolutions
+        cmd[i].accel_limit = accel_limit;         // Set acceleration limit
+        if (!std::isnan(MAX_TORQUE[i]))
+            cmd[i].maximum_torque = MAX_TORQUE[i]; // Apply torque limit if specified
+        controllers_[i].SetPosition(cmd[i]);      // Send initial position command
     }
-
-    // 4) Poll each motor until all have reached their targets
-    bool pose_reached[MOTORS] = {}; // all false initially
-    constexpr double kTol = 0.005;  // tolerance in revolutions
-
-    while (std::any_of(pose_reached, pose_reached + MOTORS,
-                       [](bool done)
-                       { return !done; }))
+    
+    // Step 3: Polling loop to ensure all motors reach their targets
+    bool all_done = false;
+    while (!all_done)
     {
-        for (int m = 0; m < MOTORS; ++m)
-        {
-            if (!pose_reached[m])
-            {
-                mjbots::moteus::Optional<mjbots::moteus::Controller::Result> r;
-                {
-                    std::lock_guard<std::mutex> lock(controller_mutexes_[m]);
-                    r = controllers_[m].SetQuery();
-                }
-                if (r)
-                {
-                    if (close_enough((r->values).position, rad2rev(positions[m])))
-                        pose_reached[m] = true;
-                    // std::cerr << "Motor " << m << " reached target\n";
-                }
+        all_done = true;  // Assume all motors are done, will be set to false if any aren't
+        
+        // Step 3a: Check each motor's status
+        for (int i = 0; i < MOTORS; ++i) {
+            auto maybe = controllers_[i].SetQuery();  // Query motor status
+
+            // Step 3b: Handle communication failures (no reply from motor)
+            if (!maybe) {
+                all_done = false;                    // Mark as not done
+                controllers_[i].SetPosition(cmd[i]); // Re-send position command
+                continue;                            // Move to next motor
+            }
+
+            // Step 3c: Handle motor faults - clear fault and restart movement
+            if (maybe->values.fault) {
+                std::cerr 
+                  << "Motor " << i << " fault " << maybe->values.fault << "\n";
+
+                controllers_[i].SetStop();            // Clear fault latch by stopping
+                controllers_[i].SetPosition(cmd[i]);  // Re-enable movement to target
+                all_done = false;                     // Mark as not done
+                continue;                             // Move to next motor
+            }
+
+            // Step 3d: Check if motor has reached target position
+            if (!close_enough(maybe->values.position, cmd[i].position)) {
+                controllers_[i].SetPosition(cmd[i]);  // Re-send command if not at target
+                all_done = false;                     // Mark as not done
             }
         }
-        // Throttle polling to avoid bus flooding
+
+        // Step 3e: Brief pause to avoid overwhelming the communication bus
         std::this_thread::sleep_for(std::chrono::milliseconds(10));
     }
-
-    // 5) All motors reached targets—clean up threads
-    stopHoldThreads();
 }
 
 /**
