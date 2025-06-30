@@ -97,10 +97,24 @@ CMakeFiles/ik_solver_sub.dir/src/motor_controller.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/ik_solver_sub.dir/src/motor_controller.cpp.s"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/shanto/Documents/arm-ws-v0.0.0/dds_bridge/cpp_plugins/src/motor_controller.cpp -o CMakeFiles/ik_solver_sub.dir/src/motor_controller.cpp.s
 
+CMakeFiles/ik_solver_sub.dir/src/ik_model.cpp.o: CMakeFiles/ik_solver_sub.dir/flags.make
+CMakeFiles/ik_solver_sub.dir/src/ik_model.cpp.o: ../src/ik_model.cpp
+CMakeFiles/ik_solver_sub.dir/src/ik_model.cpp.o: CMakeFiles/ik_solver_sub.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/shanto/Documents/arm-ws-v0.0.0/dds_bridge/cpp_plugins/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building CXX object CMakeFiles/ik_solver_sub.dir/src/ik_model.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/ik_solver_sub.dir/src/ik_model.cpp.o -MF CMakeFiles/ik_solver_sub.dir/src/ik_model.cpp.o.d -o CMakeFiles/ik_solver_sub.dir/src/ik_model.cpp.o -c /home/shanto/Documents/arm-ws-v0.0.0/dds_bridge/cpp_plugins/src/ik_model.cpp
+
+CMakeFiles/ik_solver_sub.dir/src/ik_model.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/ik_solver_sub.dir/src/ik_model.cpp.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/shanto/Documents/arm-ws-v0.0.0/dds_bridge/cpp_plugins/src/ik_model.cpp > CMakeFiles/ik_solver_sub.dir/src/ik_model.cpp.i
+
+CMakeFiles/ik_solver_sub.dir/src/ik_model.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/ik_solver_sub.dir/src/ik_model.cpp.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/shanto/Documents/arm-ws-v0.0.0/dds_bridge/cpp_plugins/src/ik_model.cpp -o CMakeFiles/ik_solver_sub.dir/src/ik_model.cpp.s
+
 CMakeFiles/ik_solver_sub.dir/generated/arm_msgs.cpp.o: CMakeFiles/ik_solver_sub.dir/flags.make
 CMakeFiles/ik_solver_sub.dir/generated/arm_msgs.cpp.o: generated/arm_msgs.cpp
 CMakeFiles/ik_solver_sub.dir/generated/arm_msgs.cpp.o: CMakeFiles/ik_solver_sub.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/shanto/Documents/arm-ws-v0.0.0/dds_bridge/cpp_plugins/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building CXX object CMakeFiles/ik_solver_sub.dir/generated/arm_msgs.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/shanto/Documents/arm-ws-v0.0.0/dds_bridge/cpp_plugins/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Building CXX object CMakeFiles/ik_solver_sub.dir/generated/arm_msgs.cpp.o"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/ik_solver_sub.dir/generated/arm_msgs.cpp.o -MF CMakeFiles/ik_solver_sub.dir/generated/arm_msgs.cpp.o.d -o CMakeFiles/ik_solver_sub.dir/generated/arm_msgs.cpp.o -c /home/shanto/Documents/arm-ws-v0.0.0/dds_bridge/cpp_plugins/build/generated/arm_msgs.cpp
 
 CMakeFiles/ik_solver_sub.dir/generated/arm_msgs.cpp.i: cmake_force
@@ -115,6 +129,7 @@ CMakeFiles/ik_solver_sub.dir/generated/arm_msgs.cpp.s: cmake_force
 ik_solver_sub_OBJECTS = \
 "CMakeFiles/ik_solver_sub.dir/src/ik_solver_sub.cpp.o" \
 "CMakeFiles/ik_solver_sub.dir/src/motor_controller.cpp.o" \
+"CMakeFiles/ik_solver_sub.dir/src/ik_model.cpp.o" \
 "CMakeFiles/ik_solver_sub.dir/generated/arm_msgs.cpp.o"
 
 # External object files for target ik_solver_sub
@@ -122,13 +137,27 @@ ik_solver_sub_EXTERNAL_OBJECTS =
 
 ik_solver_sub: CMakeFiles/ik_solver_sub.dir/src/ik_solver_sub.cpp.o
 ik_solver_sub: CMakeFiles/ik_solver_sub.dir/src/motor_controller.cpp.o
+ik_solver_sub: CMakeFiles/ik_solver_sub.dir/src/ik_model.cpp.o
 ik_solver_sub: CMakeFiles/ik_solver_sub.dir/generated/arm_msgs.cpp.o
 ik_solver_sub: CMakeFiles/ik_solver_sub.dir/build.make
 ik_solver_sub: /home/shanto/dds-cxx-install/lib/libddscxx.so.0.10.5
-ik_solver_sub: /usr/lib/x86_64-linux-gnu/libiceoryx_binding_c.so.1.0.1
+ik_solver_sub: /opt/openrobots/lib/libpinocchio_parsers.so.3.4.0
+ik_solver_sub: /usr/lib/x86_64-linux-gnu/liburdfdom_sensor.so
+ik_solver_sub: /usr/lib/x86_64-linux-gnu/liburdfdom_model_state.so
+ik_solver_sub: /usr/lib/x86_64-linux-gnu/liburdfdom_model.so
+ik_solver_sub: /usr/lib/x86_64-linux-gnu/liburdfdom_world.so
+ik_solver_sub: /usr/lib/x86_64-linux-gnu/libconsole_bridge.so.1.0
+ik_solver_sub: /opt/openrobots/lib/libpinocchio_collision.so.3.4.0
+ik_solver_sub: /opt/openrobots/lib/libpinocchio_default.so.3.4.0
+ik_solver_sub: /opt/openrobots/lib/libcoal.so.3.0.1
+ik_solver_sub: /usr/lib/x86_64-linux-gnu/libboost_filesystem.so
+ik_solver_sub: /usr/lib/x86_64-linux-gnu/libboost_serialization.so
+ik_solver_sub: /usr/lib/x86_64-linux-gnu/libboost_chrono.so
+ik_solver_sub: /usr/lib/x86_64-linux-gnu/liboctomap.so
+ik_solver_sub: /usr/lib/x86_64-linux-gnu/liboctomath.so
 ik_solver_sub: /home/shanto/dds-install/lib/libddsc.so.0.10.5
 ik_solver_sub: CMakeFiles/ik_solver_sub.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/shanto/Documents/arm-ws-v0.0.0/dds_bridge/cpp_plugins/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Linking CXX executable ik_solver_sub"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/shanto/Documents/arm-ws-v0.0.0/dds_bridge/cpp_plugins/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Linking CXX executable ik_solver_sub"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/ik_solver_sub.dir/link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.

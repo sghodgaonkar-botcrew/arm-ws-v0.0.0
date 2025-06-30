@@ -153,6 +153,30 @@ generated/arm_msgs.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/ik_solver_sub.dir/build.make CMakeFiles/ik_solver_sub.dir/generated/arm_msgs.cpp.s
 .PHONY : generated/arm_msgs.cpp.s
 
+src/ik_model.o: src/ik_model.cpp.o
+.PHONY : src/ik_model.o
+
+# target to build an object file
+src/ik_model.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/ik_solver_sub.dir/build.make CMakeFiles/ik_solver_sub.dir/src/ik_model.cpp.o
+.PHONY : src/ik_model.cpp.o
+
+src/ik_model.i: src/ik_model.cpp.i
+.PHONY : src/ik_model.i
+
+# target to preprocess a source file
+src/ik_model.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/ik_solver_sub.dir/build.make CMakeFiles/ik_solver_sub.dir/src/ik_model.cpp.i
+.PHONY : src/ik_model.cpp.i
+
+src/ik_model.s: src/ik_model.cpp.s
+.PHONY : src/ik_model.s
+
+# target to generate assembly for a file
+src/ik_model.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/ik_solver_sub.dir/build.make CMakeFiles/ik_solver_sub.dir/src/ik_model.cpp.s
+.PHONY : src/ik_model.cpp.s
+
 src/ik_solver_sub.o: src/ik_solver_sub.cpp.o
 .PHONY : src/ik_solver_sub.o
 
@@ -213,6 +237,9 @@ help:
 	@echo "... generated/arm_msgs.o"
 	@echo "... generated/arm_msgs.i"
 	@echo "... generated/arm_msgs.s"
+	@echo "... src/ik_model.o"
+	@echo "... src/ik_model.i"
+	@echo "... src/ik_model.s"
 	@echo "... src/ik_solver_sub.o"
 	@echo "... src/ik_solver_sub.i"
 	@echo "... src/ik_solver_sub.s"

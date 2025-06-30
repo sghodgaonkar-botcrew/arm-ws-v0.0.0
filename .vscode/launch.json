@@ -8,7 +8,7 @@
             "name": "Debug mc_tester",
             "type": "cppdbg",
             "request": "launch",
-            "program": "${workspaceFolder}/dds_bridge/cpp_plugins/built/mc_tester",
+            "program": "${workspaceFolder}/dds_bridge/cpp_plugins/build/mc_tester",
             "args": [],
             "stopAtEntry": false,
             "cwd": "${workspaceFolder}/dds_bridge/cpp_plugins",

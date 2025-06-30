@@ -30,13 +30,15 @@
             "args": [
                 "-fdiagnostics-color=always",
                 "-g",
+                // "-pg",
+                // "-Og",
                 "./src/mc_tester.cpp",
                 "./src/motor_controller.cpp",
                 "-std=c++17",
                 "-I./build/_deps/moteus-src/lib/cpp/mjbots/moteus",
                 "-I./include",
                 "-o",
-                "./built/mc_tester"
+                "./build/mc_tester"
             ],
             "options": {
                 "cwd": "${workspaceFolder}/dds_bridge/cpp_plugins"
