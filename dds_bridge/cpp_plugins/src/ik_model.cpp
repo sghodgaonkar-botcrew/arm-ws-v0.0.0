@@ -1,385 +1,242 @@
-#include "../include/ik_model.h"
+#include "ik_model.h"
+#include <pinocchio/parsers/urdf.hpp>
+#include <pinocchio/algorithm/frames.hpp>
+#include <pinocchio/algorithm/kinematics.hpp>
 #include <iostream>
-#include <fstream>
-#include <stdexcept>
-#include <cmath>
+#include <iomanip>
 
-namespace
-{
-    /// Mathematical constant π.
-    constexpr double PI = 3.141592653589793;
-    
-    /**
-     * @brief Check if a file exists
-     * @param filename Path to the file
-     * @return True if file exists, false otherwise
-     */
-    bool fileExists(const std::string& filename)
-    {
-        std::ifstream file(filename);
-        return file.good();
+// Define static member
+const JointConfig IKModel::NEUTRAL_JOINT_CONFIG = JointConfig::Zero();
+
+IKModel::IKModel(const std::string& urdf_path, const std::string& end_effector_name, const XYZQuat& pose_weights) 
+    : urdf_path_(urdf_path), end_effector_name_(end_effector_name), current_joint_config_(NEUTRAL_JOINT_CONFIG), pose_weights_(pose_weights.asDiagonal()) {
+    try {
+        // Load the URDF model
+        pinocchio::urdf::buildModel(urdf_path, model_);
+        
+        // Create the data object
+        data_ = pinocchio::Data(model_);
+        
+        // Find the end effector frame
+        end_effector_id_ = model_.getFrameId(end_effector_name);
+        
+        if (end_effector_id_ >= model_.nframes) {
+            std::cerr << "Error: End effector frame '" << end_effector_name << "' not found in URDF!" << std::endl;
+            throw std::runtime_error("End effector frame not found");
+        }
+        std::cout << "Successfully loaded URDF from: " << urdf_path << std::endl;
+        std::cout << "Model has " << model_.nframes << " frames" << std::endl;
+        std::cout << "Model has " << model_.nq << " configuration variables" << std::endl;
+        std::cout << "Model has " << model_.nv << " velocity variables" << std::endl;
+        std::cout << "End effector frame: '" << end_effector_name << "' (ID: " << end_effector_id_ << ")" << std::endl;
+    // Compute and print the end effector pose in neutral configuration
+    computeForwardKinematics(NEUTRAL_JOINT_CONFIG);
+    std::cout << "End effector pose (neutral config): [" << end_effector_xyzquat_.transpose() << "]" << std::endl;
+    } catch (const std::exception& e) {
+        std::cerr << "Error loading URDF: " << e.what() << std::endl;
+        throw;
     }
 }
 
-////////////////////////////////////////////////////////////////////////////////
-// Constructor / Destructor
-////////////////////////////////////////////////////////////////////////////////
+void IKModel::printAllFrames() const {
+    std::cout << "\n=== All Frames in Robot Model ===" << std::endl;
+    std::cout << std::setw(30) << std::left << "Frame Name" 
+              << std::setw(15) << std::left << "Type" 
+              << std::setw(10) << std::left << "ID" 
+              << std::setw(10) << std::left << "Parent ID" << std::endl;
+    std::cout << std::string(65, '-') << std::endl;
+    
+    for (pinocchio::FrameIndex i = 0; i < model_.nframes; ++i) {
+        const pinocchio::Frame& frame = model_.frames[i];
+        std::string frame_type;
+        
+        switch (frame.type) {
+            case pinocchio::FrameType::OP_FRAME:
+                frame_type = "OP_FRAME";
+                break;
+            case pinocchio::FrameType::JOINT:
+                frame_type = "JOINT";
+                break;
+            case pinocchio::FrameType::FIXED_JOINT:
+                frame_type = "FIXED_JOINT";
+                break;
+            case pinocchio::FrameType::BODY:
+                frame_type = "BODY";
+                break;
+            case pinocchio::FrameType::SENSOR:
+                frame_type = "SENSOR";
+                break;
+            default:
+                frame_type = "UNKNOWN";
+                break;
+        }
+        
+        std::cout << std::setw(30) << std::left << frame.name
+                  << std::setw(15) << std::left << frame_type
+                  << std::setw(10) << std::left << i
+                  << std::setw(10) << std::left << frame.parentJoint << std::endl;
+    }
+    std::cout << std::endl;
+}
 
-IKModel::IKModel(const std::string& urdf_path)
-{
-    // Check if URDF file exists
-    if (!fileExists(urdf_path))
-    {
-        throw std::runtime_error("URDF file not found: " + urdf_path);
+void IKModel::findAndPrintFrame(const std::string& frame_name) {
+    std::cout << "\n=== Searching for Frame: " << frame_name << " ===" << std::endl;
+    
+    // Search for the frame by name
+    pinocchio::FrameIndex frame_id = model_.getFrameId(frame_name);
+    
+    if (frame_id >= model_.nframes) {
+        std::cout << "Frame '" << frame_name << "' not found!" << std::endl;
+        return;
     }
     
-    initializeModel(urdf_path);
-}
-
-////////////////////////////////////////////////////////////////////////////////
-// Model Information
-////////////////////////////////////////////////////////////////////////////////
-
-int IKModel::getNumJoints() const
-{
-    return model_->njoints;
-}
-
-int IKModel::getNumDOFs() const
-{
-    return model_->nq;
-}
-
-Eigen::MatrixXd IKModel::getJointLimits() const
-{
-    return joint_limits_;
-}
-
-int IKModel::getEndEffectorFrameId() const
-{
-    return end_effector_frame_id_;
-}
-
-////////////////////////////////////////////////////////////////////////////////
-// Forward Kinematics
-////////////////////////////////////////////////////////////////////////////////
-
-Eigen::Matrix4d IKModel::computeForwardKinematics(const Eigen::VectorXd& q)
-{
-    // Validate input dimensions
-    if (q.size() != model_->nq)
-    {
-        throw std::invalid_argument("Joint angles vector size mismatch. Expected: " + 
-                                   std::to_string(model_->nq) + ", Got: " + std::to_string(q.size()));
+    const pinocchio::Frame& frame = model_.frames[frame_id];
+    
+    // Determine frame type
+    std::string frame_type;
+    switch (frame.type) {
+        case pinocchio::FrameType::OP_FRAME:
+            frame_type = "OP_FRAME";
+            break;
+        case pinocchio::FrameType::JOINT:
+            frame_type = "JOINT";
+            break;
+        case pinocchio::FrameType::FIXED_JOINT:
+            frame_type = "FIXED_JOINT";
+            break;
+        case pinocchio::FrameType::BODY:
+            frame_type = "BODY";
+            break;
+        case pinocchio::FrameType::SENSOR:
+            frame_type = "SENSOR";
+            break;
+        default:
+            frame_type = "UNKNOWN";
+            break;
     }
     
-    // Update Pinocchio data with current configuration
-    pinocchio::forwardKinematics(*model_, *data_, q);
-    pinocchio::updateFramePlacements(*model_, *data_);
+    // Print frame information
+    std::cout << "Frame Name: " << frame.name << std::endl;
+    std::cout << "Frame Type: " << frame_type << std::endl;
+    std::cout << "Frame ID: " << frame_id << std::endl;
+    std::cout << "Parent Joint ID: " << frame.parentJoint << std::endl;
+        
+
+    // Compute forward kinematics using current joint configuration
+    pinocchio::forwardKinematics(model_, data_, current_joint_config_);
+    pinocchio::updateFramePlacements(model_, data_);
     
-    // Get end effector transformation
-    return data_->oMf[end_effector_frame_id_].toHomogeneousMatrix();
+    // Get the frame pose in world coordinates
+    const pinocchio::SE3& frame_pose = data_.oMf[frame_id];
+    
+    // Create the XYZQuat representation
+    XYZQuat xyzquat;
+    xyzquat.head<3>() = frame_pose.translation();
+    
+    // Convert rotation matrix to quaternion (w, x, y, z)
+    Eigen::Quaterniond quat(frame_pose.rotation());
+    xyzquat.segment<4>(3) = Eigen::Vector4d(quat.x(), quat.y(), quat.z(), quat.w());
+    // Print the frame pose in XYZQuat format
+    std::cout << "Frame Pose (world coordinates, XYZQuat): [" 
+              << xyzquat.transpose() << "]" << std::endl;
 }
 
-void IKModel::computeForwardKinematics(const Eigen::VectorXd& q, 
-                                       Eigen::Vector3d& position, 
-                                       Eigen::Vector4d& orientation)
-{
-    // Compute full transformation matrix
-    Eigen::Matrix4d transform = computeForwardKinematics(q);
+XYZQuat IKModel::computeForwardKinematics(const JointConfig& q) {
+    // Check if joint configuration has correct size
+    if (model_.nq != 6) {
+        throw std::runtime_error("Model configuration size (" + std::to_string(model_.nq) + 
+                                ") does not match expected size (6)");
+    }
     
-    // Extract position
-    position = transform.block<3, 1>(0, 3);
+    // Compute forward kinematics
+    pinocchio::forwardKinematics(model_, data_, q);
+    
+    // Update frame placements
+    pinocchio::updateFramePlacements(model_, data_);
+    
+    // Get the end effector transformation
+    const pinocchio::SE3& end_effector_pose = data_.oMf[end_effector_id_];
+    
+    // Create the XYZQuat representation directly
+    XYZQuat xyzquat;
+    xyzquat.head<3>() = end_effector_pose.translation();
+    
+    // Convert rotation matrix to quaternion (w, x, y, z)
+    Eigen::Quaterniond quat(end_effector_pose.rotation());
+    xyzquat.segment<4>(3) = Eigen::Vector4d(quat.x(), quat.y(), quat.z(), quat.w());
+    
+    // Update the stored XYZQuat representation and current joint config
+    end_effector_xyzquat_ = xyzquat;
+    current_joint_config_ = q;
+    
+    return xyzquat;
+}
+
+int IKModel::getNumJoints() const {
+    return model_.nq;
+}
+
+XYZQuat IKModel::homogeneousToXYZQuat(const Eigen::Matrix4d& homogeneous_transform) {
+    XYZQuat xyzquat;
+    
+    // Extract translation (x, y, z)
+    xyzquat.head<3>() = homogeneous_transform.block<3,1>(0,3);
     
     // Extract rotation matrix and convert to quaternion
-    Eigen::Matrix3d rotation = transform.block<3, 3>(0, 0);
-    orientation = rotationMatrixToQuaternion(rotation);
+    Eigen::Matrix3d rotation_matrix = homogeneous_transform.block<3,3>(0,0);
+    Eigen::Quaterniond quat(rotation_matrix);
+    
+    // Store quaternion as [qw, qx, qy, qz]
+    xyzquat.segment<4>(3) = Eigen::Vector4d(quat.x(), quat.y(), quat.z(), quat.w());
+    
+    return xyzquat;
 }
 
-Eigen::MatrixXd IKModel::computeJacobian(const Eigen::VectorXd& q)
-{
-    // Validate input dimensions
-    if (q.size() != model_->nq)
-    {
-        throw std::invalid_argument("Joint angles vector size mismatch. Expected: " + 
-                                   std::to_string(model_->nq) + ", Got: " + std::to_string(q.size()));
-    }
+Eigen::Matrix4d IKModel::xyzQuatToHomogeneous(const XYZQuat& xyzquat) {
+    Eigen::Matrix4d homogeneous_transform = Eigen::Matrix4d::Identity();
     
-    // Update Pinocchio data
-    pinocchio::computeJointJacobians(*model_, *data_, q);
-    pinocchio::updateFramePlacements(*model_, *data_);
+    // Set translation
+    homogeneous_transform.block<3,1>(0,3) = xyzquat.head<3>();
     
-    // Compute frame Jacobian
-    Eigen::MatrixXd J(6, model_->nv);
-    pinocchio::computeFrameJacobian(*model_, *data_, q, end_effector_frame_id_, 
-                                   pinocchio::ReferenceFrame::WORLD, J);
+    // Convert quaternion to rotation matrix
+    Eigen::Quaterniond quat(xyzquat(3), xyzquat(4), xyzquat(5), xyzquat(6)); // w, x, y, z
+    homogeneous_transform.block<3,3>(0,0) = quat.toRotationMatrix();
     
-    return J;
+    return homogeneous_transform;
 }
 
-////////////////////////////////////////////////////////////////////////////////
-// Collision Checking
-////////////////////////////////////////////////////////////////////////////////
+double IKModel::cost(const JointConfig& q, const XYZQuat& target_pose) {
+    // 1. Forward kinematics for the given joint config
+    XYZQuat fk_pose = computeForwardKinematics(q);
 
-bool IKModel::isCollisionFree(const Eigen::VectorXd& q)
-{
-    return getCollisionDistance(q) > 0.0;
-}
+    // 2. Extract translation and quaternion for both poses
+    Eigen::Vector3d tc = fk_pose.head<3>();
+    Eigen::Vector3d td = target_pose.head<3>();
+    Eigen::Quaterniond qc(fk_pose(3), fk_pose(4), fk_pose(5), fk_pose(6)); // (w, x, y, z)
+    Eigen::Quaterniond qd(target_pose(3), target_pose(4), target_pose(5), target_pose(6));
 
-double IKModel::getCollisionDistance(const Eigen::VectorXd& q)
-{
-    // TODO: Implement collision checking using Pinocchio's collision detection
-    // This is a placeholder implementation
-    // In a real implementation, you would:
-    // 1. Update the robot configuration
-    // 2. Check for self-collisions and environment collisions
-    // 3. Return the minimum distance to obstacles
-    
-    // For now, return a positive value (no collision)
-    return 1.0;
-}
+    // 3. Compute translation error
+    Eigen::Vector3d r_t = tc - td;
 
-Eigen::VectorXd IKModel::getCollisionGradient(const Eigen::VectorXd& q)
-{
-    // TODO: Implement collision gradient computation
-    // This is a placeholder implementation
-    // In a real implementation, you would compute the gradient of the collision distance
-    // with respect to joint angles using finite differences or analytical methods
-    
-    return Eigen::VectorXd::Zero(model_->nv);
-}
+    // 4. Compute orientation error using quaternion log map
+    // Compute relative quaternion: q_err = qc^{-1} * qd
+    Eigen::Quaterniond qc_inv = qc.conjugate();
+    Eigen::Quaterniond q_err = qc_inv * qd;
+    q_err.normalize();
 
-////////////////////////////////////////////////////////////////////////////////
-// Optimization Functions for IK
-////////////////////////////////////////////////////////////////////////////////
+    // Clamp w to [-1, 1] for numerical stability
+    double w = std::max(-1.0, std::min(1.0, q_err.w()));
+    double theta = 2.0 * std::acos(w);
 
-double IKModel::computeCost(const Eigen::VectorXd& q,
-                            const Eigen::Vector3d& target_position,
-                            const Eigen::Vector4d& target_orientation,
-                            double weight_position,
-                            double weight_orientation,
-                            double weight_collision)
-{
-    // Compute current end effector pose
-    Eigen::Vector3d current_position;
-    Eigen::Vector4d current_orientation;
-    computeForwardKinematics(q, current_position, current_orientation);
-    
-    // Compute individual cost components
-    double position_cost = computePositionErrorCost(current_position, target_position);
-    double orientation_cost = computeOrientationErrorCost(current_orientation, target_orientation);
-    double collision_cost = computeCollisionPenaltyCost(q);
-    
-    // Return weighted sum
-    return weight_position * position_cost + 
-           weight_orientation * orientation_cost + 
-           weight_collision * collision_cost;
-}
-
-Eigen::VectorXd IKModel::computeGradient(const Eigen::VectorXd& q,
-                                         const Eigen::Vector3d& target_position,
-                                         const Eigen::Vector4d& target_orientation,
-                                         double weight_position,
-                                         double weight_orientation,
-                                         double weight_collision)
-{
-    // Compute individual gradient components
-    Eigen::VectorXd position_gradient = computePositionErrorGradient(q, target_position);
-    Eigen::VectorXd orientation_gradient = computeOrientationErrorGradient(q, target_orientation);
-    Eigen::VectorXd collision_gradient = getCollisionGradient(q);
-    
-    // Return weighted sum
-    return weight_position * position_gradient + 
-           weight_orientation * orientation_gradient + 
-           weight_collision * collision_gradient;
-}
-
-Eigen::MatrixXd IKModel::computeHessian(const Eigen::VectorXd& q,
-                                        const Eigen::Vector3d& target_position,
-                                        const Eigen::Vector4d& target_orientation,
-                                        double weight_position,
-                                        double weight_orientation,
-                                        double weight_collision)
-{
-    // TODO: Implement Hessian computation
-    // This is a placeholder implementation
-    // In a real implementation, you would compute the second derivatives of the cost function
-    // with respect to joint angles
-    
-    int n = model_->nv;
-    return Eigen::MatrixXd::Identity(n, n);
-}
-
-////////////////////////////////////////////////////////////////////////////////
-// Utility Functions
-////////////////////////////////////////////////////////////////////////////////
-
-bool IKModel::isWithinJointLimits(const Eigen::VectorXd& q) const
-{
-    if (q.size() != joint_limits_.rows())
-    {
-        return false;
-    }
-    
-    for (int i = 0; i < q.size(); ++i)
-    {
-        if (q(i) < joint_limits_(i, 0) || q(i) > joint_limits_(i, 1))
-        {
-            return false;
+    Eigen::Vector3d r_o = Eigen::Vector3d::Zero();
+    if (theta > 1e-8) {
+        double sin_half_theta = std::sin(theta / 2.0);
+        if (std::abs(sin_half_theta) > 1e-8) {
+            r_o = (theta / sin_half_theta) * Eigen::Vector3d(q_err.x(), q_err.y(), q_err.z());
         }
     }
-    return true;
-}
 
-void IKModel::clampToJointLimits(Eigen::VectorXd& q) const
-{
-    if (q.size() != joint_limits_.rows())
-    {
-        throw std::invalid_argument("Joint angles vector size mismatch");
-    }
-    
-    for (int i = 0; i < q.size(); ++i)
-    {
-        q(i) = std::max(joint_limits_(i, 0), std::min(joint_limits_(i, 1), q(i)));
-    }
-}
-
-Eigen::Matrix3d IKModel::quaternionToRotationMatrix(const Eigen::Vector4d& quat)
-{
-    // Normalize quaternion
-    Eigen::Vector4d q = quat.normalized();
-    
-    // Extract components
-    double x = q(0), y = q(1), z = q(2), w = q(3);
-    
-    // Convert to rotation matrix
-    Eigen::Matrix3d R;
-    R << 1 - 2*y*y - 2*z*z,  2*x*y - 2*w*z,      2*x*z + 2*w*y,
-         2*x*y + 2*w*z,      1 - 2*x*x - 2*z*z,  2*y*z - 2*w*x,
-         2*x*z - 2*w*y,      2*y*z + 2*w*x,      1 - 2*x*x - 2*y*y;
-    
-    return R;
-}
-
-Eigen::Vector4d IKModel::rotationMatrixToQuaternion(const Eigen::Matrix3d& rot)
-{
-    // TODO: Implement robust rotation matrix to quaternion conversion
-    // This is a placeholder implementation
-    // In a real implementation, you would use a robust method like:
-    // - Eigen's built-in conversion
-    // - Shepperd's method
-    // - Markley's method
-    
-    // For now, return identity quaternion
-    return Eigen::Vector4d(0.0, 0.0, 0.0, 1.0);
-}
-
-////////////////////////////////////////////////////////////////////////////////
-// Private Helper Functions
-////////////////////////////////////////////////////////////////////////////////
-
-void IKModel::initializeModel(const std::string& urdf_path)
-{
-    try
-    {
-        // Load model from URDF
-        model_ = std::make_unique<pinocchio::Model>();
-        pinocchio::urdf::buildModel(urdf_path, *model_);
-        
-        // Create data object
-        data_ = std::make_unique<pinocchio::Data>(*model_);
-        
-        // Find end effector frame
-        end_effector_frame_id_ = model_->getFrameId(end_effector_frame_);
-        if (end_effector_frame_id_ == model_->frames.size())
-        {
-            throw std::runtime_error("End effector frame '" + end_effector_frame_ + "' not found in URDF");
-        }
-        
-        // Initialize joint limits
-        joint_limits_ = Eigen::MatrixXd(model_->nq, 2);
-        for (int i = 0; i < model_->nq; ++i)
-        {
-            joint_limits_(i, 0) = model_->lowerPositionLimit(i);
-            joint_limits_(i, 1) = model_->upperPositionLimit(i);
-        }
-        
-        std::cout << "IKModel initialized successfully:" << std::endl;
-        std::cout << "  - Number of joints: " << model_->njoints << std::endl;
-        std::cout << "  - Number of DOFs: " << model_->nq << std::endl;
-        std::cout << "  - End effector frame: " << end_effector_frame_ << " (ID: " << end_effector_frame_id_ << ")" << std::endl;
-    }
-    catch (const std::exception& e)
-    {
-        throw std::runtime_error("Failed to initialize IKModel: " + std::string(e.what()));
-    }
-}
-
-double IKModel::computePositionErrorCost(const Eigen::Vector3d& current_pos,
-                                         const Eigen::Vector3d& target_pos)
-{
-    // Compute squared Euclidean distance
-    Eigen::Vector3d error = current_pos - target_pos;
-    return 0.5 * error.squaredNorm();
-}
-
-double IKModel::computeOrientationErrorCost(const Eigen::Vector4d& current_quat,
-                                            const Eigen::Vector4d& target_quat)
-{
-    // Compute quaternion distance (1 - |dot product|)
-    // This gives a cost of 0 when orientations match and 2 when they're opposite
-    double dot_product = std::abs(current_quat.dot(target_quat));
-    return 1.0 - dot_product;
-}
-
-double IKModel::computeCollisionPenaltyCost(const Eigen::VectorXd& q)
-{
-    // TODO: Implement collision penalty cost
-    // This is a placeholder implementation
-    // In a real implementation, you would:
-    // 1. Compute collision distance
-    // 2. Apply a penalty function (e.g., barrier function, exponential penalty)
-    
-    double distance = getCollisionDistance(q);
-    if (distance > 0.0)
-    {
-        // No collision penalty
-        return 0.0;
-    }
-    else
-    {
-        // Collision penalty (exponential barrier)
-        return std::exp(-distance) - 1.0;
-    }
-}
-
-Eigen::VectorXd IKModel::computePositionErrorGradient(const Eigen::VectorXd& q,
-                                                      const Eigen::Vector3d& target_pos)
-{
-    // Compute current position
-    Eigen::Vector3d current_pos;
-    Eigen::Vector4d dummy_orientation;
-    computeForwardKinematics(q, current_pos, dummy_orientation);
-    
-    // Compute position error
-    Eigen::Vector3d error = current_pos - target_pos;
-    
-    // Compute Jacobian
-    Eigen::MatrixXd J = computeJacobian(q);
-    
-    // Return gradient: J^T * error
-    return J.block(0, 0, 3, J.cols()).transpose() * error;
-}
-
-Eigen::VectorXd IKModel::computeOrientationErrorGradient(const Eigen::VectorXd& q,
-                                                         const Eigen::Vector4d& target_quat)
-{
-    // TODO: Implement orientation error gradient
-    // This is a placeholder implementation
-    // In a real implementation, you would:
-    // 1. Compute current orientation
-    // 2. Compute orientation error gradient
-    // 3. Use the angular part of the Jacobian
-    
-    return Eigen::VectorXd::Zero(model_->nv);
+    // 5. Weighted cost: 0.5 * (r_t^T * r_t + r_o^T * R_o * r_o)
+    double cost = 0.5 * (r_t.squaredNorm() + r_o.transpose() * pose_weights_.bottomRightCorner<3,3>() * r_o);
+    return cost;
 }
