@@ -1,0 +1,139 @@
+<?xml version="1.0"?>
+<robot name="arm">
+    <link name="robot_base">
+        <visual name="arm">
+            <origin xyz="0.000000 0.000000 0.065550" rpy="-3.141593 3.141593 -3.141593" />
+            <geometry>
+                <cylinder radius="0.1725" length="0.1311" />
+            </geometry>
+            <material name="robot_base_material">
+                <color rgba="1.000000 1.000000 1.000000 1.0" />
+            </material>
+        </visual>
+    </link>
+    <joint name="Revolute_joint" type="revolute">
+        <axis xyz="0 0 1" />
+        <limit lower="-3.14" effort="10.0" upper="3.14" velocity="10.786134777326" />
+        <parent link="robot_base" />
+        <child link="Cylinder" />
+        <origin xyz="0.000000 0.000000 0.140550" rpy="-3.141593 3.141593 -3.141593" />
+    </joint>
+    <link name="Cylinder">
+        <visual name="Cylinder">
+            <origin xyz="0.000000 0.000000 0.315500" rpy="-3.141593 3.141593 -3.141593" />
+            <geometry>
+                <cylinder radius="0.1525" length="0.6499" />
+            </geometry>
+            <material name="Cylinder_material">
+                <color rgba="0.850000 0.850000 1.000000 1.0" />
+            </material>
+        </visual>
+    </link>
+    <joint name="Revolute_joint_2" type="revolute">
+        <axis xyz="0 0 1" />
+        <limit lower="-3.14" effort="10.0" upper="3.14" velocity="10.786134777326" />
+        <parent link="Cylinder" />
+        <child link="Cylinder_2" />
+        <origin xyz="0.000000 0.000000 0.640650" rpy="-1.570796 3.141593 -3.141593" />
+    </joint>
+    <link name="Cylinder_2">
+        <visual name="Cylinder">
+            <origin xyz="0.000000 0.750000 -0.000000" rpy="1.570796 3.141593 -3.141593" />
+            <geometry>
+                <cylinder radius="0.1325" length="1.5" />
+            </geometry>
+            <material name="Cylinder_2_material">
+                <color rgba="0.850000 0.850000 1.000000 1.0" />
+            </material>
+        </visual>
+    </link>
+    <joint name="Revolute_joint_3" type="revolute">
+        <axis xyz="0 0 1" />
+        <limit lower="-3.14" effort="10.0" upper="3.14" velocity="10.786134777326" />
+        <parent link="Cylinder_2" />
+        <child link="Cylinder_3" />
+        <origin xyz="0.000000 1.500000 -0.000000" rpy="-3.141593 3.141593 -3.141593" />
+    </joint>
+    <link name="Cylinder_3">
+        <visual name="Cylinder">
+            <origin xyz="0.000000 0.252550 0.000000" rpy="1.570796 3.141593 -3.141593" />
+            <geometry>
+                <cylinder radius="0.1125" length="0.505096" />
+            </geometry>
+            <material name="Cylinder_3_material">
+                <color rgba="1.000000 1.000000 1.000000 1.0" />
+            </material>
+        </visual>
+    </link>
+    <joint name="Revolute_joint_4" type="revolute">
+        <axis xyz="0 0 1" />
+        <limit lower="-3.14" effort="10.0" upper="3.14" velocity="10.786134777326" />
+        <parent link="Cylinder_3" />
+        <child link="Cylinder_4" />
+        <origin xyz="0.000000 0.502550 -0.000000" rpy="1.570796 3.141593 -3.141593" />
+    </joint>
+    <link name="Cylinder_4">
+        <visual name="Cylinder">
+            <origin xyz="0.000000 0.000000 0.090000" rpy="-3.141593 3.141593 -3.141593" />
+            <geometry>
+                <cylinder radius="0.0925" length="0.18" />
+            </geometry>
+            <material name="Cylinder_4_material">
+                <color rgba="1.000000 1.000000 1.000000 1.0" />
+            </material>
+        </visual>
+    </link>
+    <joint name="Revolute_joint_5" type="revolute">
+        <axis xyz="0 0 1" />
+        <limit lower="-3.14" effort="10.0" upper="3.14" velocity="10.786134777326" />
+        <parent link="Cylinder_4" />
+        <child link="Cylinder_5" />
+        <origin xyz="0.000000 0.000000 0.180000" rpy="-1.570796 3.141593 -3.141593" />
+    </joint>
+    <link name="Cylinder_5">
+        <visual name="Cylinder">
+            <origin xyz="0.000000 0.157910 0.000000" rpy="1.570796 3.141593 -3.141593" />
+            <geometry>
+                <cylinder radius="0.0725" length="0.315821" />
+            </geometry>
+            <material name="Cylinder_5_material">
+                <color rgba="1.000000 1.000000 1.000000 1.0" />
+            </material>
+        </visual>
+    </link>
+    <joint name="Revolute_joint_6" type="revolute">
+        <axis xyz="0 0 1" />
+        <limit lower="-3.14" effort="10.0" upper="3.14" velocity="10.786134777326" />
+        <parent link="Cylinder_5" />
+        <child link="auxShape" />
+        <origin xyz="0.000000 0.315820 -0.000000" rpy="1.570796 3.141593 -3.141593" />
+    </joint>
+    <link name="auxShape">
+        <visual name="auxShape">
+            <origin xyz="0.000000 0.000000 0.000000" rpy="-3.141593 3.141593 -3.141593" />
+            <geometry>
+                <sphere radius="0.025" />
+            </geometry>
+            <material name="auxShape_material">
+                <color rgba="1.000000 1.000000 1.000000 1.0" />
+            </material>
+        </visual>
+    </link>
+    <joint name="forceSensor" type="fixed">
+        <axis xyz="0 0 1" />
+        <parent link="auxShape" />
+        <child link="connection_frame" />
+        <origin xyz="0.000000 0.000000 0.000000" rpy="-3.141593 3.141593 -3.141593" />
+    </joint>
+    <link name="connection_frame">
+        <visual name="Sphere">
+            <origin xyz="0.000000 0.000000 0.012000" rpy="-3.141593 3.141593 -3.141593" />
+            <geometry>
+                <sphere radius="0.0005" />
+            </geometry>
+            <material name="Sphere_material">
+                <color rgba="1.000000 1.000000 1.000000 1.0" />
+            </material>
+        </visual>
+    </link>
+</robot>
