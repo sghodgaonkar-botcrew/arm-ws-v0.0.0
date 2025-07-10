@@ -1,6 +1,6 @@
 #include "../include/motor_controller.h"
 #include <iostream>
-#include <limits>
+#include <chrono>
 #include <cmath> // for std::round
 
 namespace
@@ -46,13 +46,10 @@ MotorController::MotorController()
     controllers_.reserve(MOTORS);
     for (int i = 0; i < MOTORS; ++i)
     {
-        moteus::Controller::Options options;
-        options.id = i;
-        options.position_format.accel_limit = moteus::kFloat;
-        controllers_.emplace_back(options);
-        controllers_[i].SetStop();
-        controllers_[i].SetQuery();
+        controllers_.emplace_back(createOptions(i));
+        motor_statuses_[i] = controllers_[i].SetStop()->values;
     }
+    worker_thread_ = std::thread(&MotorController::WorkerLoop, this);
 }
 
 /**
@@ -66,13 +63,10 @@ MotorController::MotorController(const std::array<double, MOTORS> &max_torque)
     controllers_.reserve(MOTORS);
     for (int i = 0; i < MOTORS; ++i)
     {
-        moteus::Controller::Options options;
-        options.id = i;
-        options.position_format.accel_limit = moteus::kFloat;
-        controllers_.emplace_back(options);
-        controllers_[i].SetStop();
-        controllers_[i].SetQuery();
+        controllers_.emplace_back(createOptions(i));
+        motor_statuses_[i] = controllers_[i].SetStop()->values;
     }
+    worker_thread_ = std::thread(&MotorController::WorkerLoop, this);
 }
 
 /**
@@ -80,32 +74,17 @@ MotorController::MotorController(const std::array<double, MOTORS> &max_torque)
  */
 MotorController::~MotorController()
 {
-    stopHoldThreads();
+    { // tell the worker to stop
+        std::lock_guard<std::mutex> lock(command_mutex_);
+        stop_thread_ = true;
+        command_cv_.notify_one();
+    }
+    worker_thread_.join();
 }
 
 ////////////////////////////////////////////////////////////////////////////////
 // Private Helpers
 ////////////////////////////////////////////////////////////////////////////////
-
-/**
- * @brief Stops and joins all active hold threads if running.
- *
- * Uses a lock_guard to protect against concurrent modifications.
- */
-void MotorController::stopHoldThreads()
-{
-    std::lock_guard<std::mutex> lk(hold_mutex_);
-    if (hold_running_)
-    {
-        hold_running_ = false;
-        for (auto &t : hold_threads_)
-        {
-            if (t.joinable())
-                t.join();
-        }
-        hold_threads_.clear();
-    }
-}
 
 ////////////////////////////////////////////////////////////////////////////////
 // Public APIs
@@ -120,9 +99,9 @@ void MotorController::stopHoldThreads()
  * @throws std::out_of_range if id is invalid.
  * @throws std::runtime_error on timeout or repeated no-response.
  */
-void MotorController::SetPosition(double pos,
-                                  double accel_limit,
-                                  unsigned id)
+void MotorController::SetMotorPosition(double pos,
+                                       double accel_limit,
+                                       unsigned id)
 {
     // 1) Validate motor index
     if (id < 0 || id >= MOTORS)
@@ -210,84 +189,111 @@ void MotorController::SetPosition(double pos,
     // 6) All done — motor reached target safely
 }
 
-/**
- * @brief Moves all motors to the specified "arm pose" by launching
- *        worker threads that cycle through each motor command.
- * @param positions Array of target positions (radians) per motor.
- * @param accel_limit Shared acceleration limit for all motors.
- */
-void MotorController::SetArmPose(const double positions[MOTORS],
-                                 const double accel_limit)
+void MotorController::WorkerLoop()
 {
-    // Step 1: Safety first - release all motor torques to prevent conflicts
-    this->ReleaseArmTorque();
-    
-    // Step 2: Prepare position commands for all motors
-    moteus::PositionMode::Command cmd[MOTORS];
-    for (int i = 0; i < MOTORS; i++)
+    std::unique_lock<std::mutex> lock(command_mutex_);
+    while (true)
     {
-        // std::cout << "Setting position for motor with id " << i << std::endl;
-        cmd[i].position = rad2rev(positions[i]);  // Convert radians to revolutions
-        cmd[i].accel_limit = accel_limit;         // Set acceleration limit
-        if (!std::isnan(MAX_TORQUE[i]))
-            cmd[i].maximum_torque = MAX_TORQUE[i]; // Apply torque limit if specified
-        controllers_[i].SetPosition(cmd[i]);      // Send initial position command
+        command_cv_.wait(lock, [&]
+                         { return has_new_command_ || stop_thread_; });
+        if (stop_thread_)
+            break;
+
+        auto positions = next_positions_;
+        auto accel = next_accel_;
+        has_new_command_ = false;
+        lock.unlock();
+
+        DoSetMotorPositions_(positions, accel);
+
+        lock.lock();
     }
-    
-    // Step 3: Polling loop to ensure all motors reach their targets
-    bool all_done = false;
-    while (!all_done)
+}
+
+void MotorController::DoSetMotorPositions_(
+    const std::array<double, MOTORS>& positions,
+    double accel_limit)
+{
+  // 1) Safety stop & clear any lingering faults
+  for (size_t i = 0; i < MOTORS; ++i) {
+    controllers_[i].SetStop();
+  }
+
+  // 2) Build the position commands once
+  moteus::PositionMode::Command cmd[MOTORS];
+  for (size_t i = 0; i < MOTORS; ++i) {
+    cmd[i].position    = rad2rev(positions[i]);
+    cmd[i].accel_limit = accel_limit;
+    if (!std::isnan(MAX_TORQUE[i])) {
+      cmd[i].maximum_torque = MAX_TORQUE[i];
+    }
+  }
+
+  // 3) Hammer-and-poll loop, never exits on success (only on timeout or new command)
+  while (true) {
+    // ——— 3a) Preempt on a brand-new command enqueued by SetMotorPositions() ———
     {
-        all_done = true;  // Assume all motors are done, will be set to false if any aren't
-        
-        // Step 3a: Check each motor's status
-        for (int i = 0; i < MOTORS; ++i) {
-            auto maybe = controllers_[i].SetQuery();  // Query motor status
+      std::lock_guard<std::mutex> lk(command_mutex_);
+      if (has_new_command_) {
+        // Return to WorkerLoop(), which will pick up the new positions
+        return;
+      }
+    }
 
-            // Step 3b: Handle communication failures (no reply from motor)
-            if (!maybe) {
-                all_done = false;                    // Mark as not done
-                controllers_[i].SetPosition(cmd[i]); // Re-send position command
-                continue;                            // Move to next motor
-            }
+    bool all_done = true;
+    for (size_t i = 0; i < MOTORS; ++i) {
+      // 3b) Send the hammering command
+      auto maybe = controllers_[i].SetPosition(cmd[i]);
 
-            // Step 3c: Handle motor faults - clear fault and restart movement
-            if (maybe->values.fault) {
-                std::cerr 
-                  << "Motor " << i << " fault " << maybe->values.fault << "\n";
+      // 3c) No reply? we’ll retry next iteration
+      if (!maybe) {
+        all_done = false;
+        continue;
+      }
+      auto &st = maybe->values;
+      motor_statuses_[i] = st;
 
-                controllers_[i].SetStop();            // Clear fault latch by stopping
-                controllers_[i].SetPosition(cmd[i]);  // Re-enable movement to target
-                all_done = false;                     // Mark as not done
-                continue;                             // Move to next motor
-            }
-
-            // Step 3d: Check if motor has reached target position
-            if (!close_enough(maybe->values.position, cmd[i].position)) {
-                controllers_[i].SetPosition(cmd[i]);  // Re-send command if not at target
-                all_done = false;                     // Mark as not done
-            }
+      // 3d) Timeout → stop everything and bail out
+      if (st.mode == moteus::Mode::kPositionTimeout) {
+        for (size_t j = 0; j < MOTORS; ++j) {
+          controllers_[j].SetStop();
         }
+        trajectory_complete_.store(false);
+        return;
+      }
 
-        // Step 3e: Brief pause to avoid overwhelming the communication bus
-        std::this_thread::sleep_for(std::chrono::milliseconds(10));
-    }
-}
-
-/**
- * @brief Immediately stops (releases torque on) a single motor.
- * @param id Motor index.
- */
-void MotorController::ReleaseMotorTorque(unsigned id)
-{
-    controllers_[id].SetStop();
-}
-
-/**
- * @brief Immediately stops (releases torque on) all motors.
- */
-void MotorController::ReleaseArmTorque()
-{
-    for (int i = 0; i < MOTORS; i++)
+      // 3e) Fault → clear & continue hammering
+      if (st.fault) {
         controllers_[i].SetStop();
+        all_done = false;
+        continue;
+      }
+
+      // 3f) Only consider “done” if we’re actually in Position mode *and* trajectory_complete
+      if (!(st.mode == moteus::Mode::kPosition && st.trajectory_complete)) {
+        all_done = false;
+      }
+    }
+
+    // 3g) If everyone is really done, set the flag (but keep hammering until new command)
+    if (all_done) {
+      trajectory_complete_.store(true);
+    }
+
+    std::this_thread::sleep_for(std::chrono::milliseconds(10));
+  }
+}
+
+void MotorController::SetMotorPositions(
+    const std::array<double, MOTORS> &positions,
+    double accel_limit)
+{
+    {
+        std::lock_guard<std::mutex> lock(command_mutex_);
+        next_positions_ = positions;
+        next_accel_ = accel_limit;
+        has_new_command_ = true;
+        trajectory_complete_.store(false);
+    }
+    command_cv_.notify_one();
 }
