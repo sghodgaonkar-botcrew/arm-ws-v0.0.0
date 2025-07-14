@@ -8,74 +8,96 @@
 
 int main()
 {
-    try
-    {
-        // 1) Instantiate controller
-        MotorController mc;
-        std::cout << "[Main] MotorController constructed.\n";
-
-        // 2) Launch status‐printing thread
-        std::atomic<bool> status_running{true};
-        std::thread status_thread([&]()
-                                  {
+  try
+  {
+    // 1) Instantiate controller
+    MotorController mc;
+    std::cout << "[Main] MotorController constructed.\n";
+    mc.SetMotorsStop();
+    // 2) Launch status‐printing thread
+    std::atomic<bool> status_running{true};
+    std::thread status_thread([&]()
+                              {
       while (status_running.load()) {
         auto const& st = mc.getMotorStatuses();  // directly read the array
-        ::printf("M0 m%3d p/v/t=(%7.3f,%7.3f,%7.3f) \t M1 m%3d p/v/t=(%7.3f,%7.3f,%7.3f)\r",
+        ::printf("M0 m%3d p/v/t/T=(%7.3f,%7.3f,%7.3f,%c) \t M1 m%3d p/v/t/T=(%7.3f,%7.3f,%7.3f,%c)\r",
              static_cast<int>(st[0].mode),
              st[0].position,
              st[0].velocity,
              st[0].torque,
+             st[0].trajectory_complete ? 't':'f',
              static_cast<int>(st[1].mode),
              st[1].position,
              st[1].velocity,
-             st[1].torque);
+             st[1].torque,
+             st[1].trajectory_complete ? 't':'f');
       ::fflush(stdout);
         std::this_thread::sleep_for(std::chrono::milliseconds(30));
       } });
 
-        mc.SetMotorPosition(0.0, 5.0, 0);
-        mc.SetMotorPosition(0.0, 5.0, 1);
-std::this_thread::sleep_for(std::chrono::milliseconds(3000));
-        // 3) Define two poses
-        constexpr size_t N = MotorController::getMOTORS();
-        std::array<double, N> pose1{M_PI, -M_PI};
-        std::array<double, N> pose2{-M_PI, M_PI};
-
-        // // Helper to enqueue and wait
-        // auto runPose = [&](const std::array<double,N>& target, double accel){
-        //   std::cout << "[Main] Enqueuing pose: ";
-        //   for (auto v : target) std::cout << v << " ";
-        //   std::cout << "\n";
-
-        //   mc.SetMotorPositions(target, accel);
-        //   // busy-wait until the background worker flags completion
-        //   while (!mc.getTrajectoryComplete()) {
-        //     std::this_thread::sleep_for(std::chrono::milliseconds(10));
-        //   }
-        //   std::cout << "[Main] Pose reached.\n";
-        // };
-
-        // // 4) Run first pose, then return pose
-        // runPose(pose1, /*accel=*/2.0);
-        // runPose(pose2, /*accel=*/2.0);
-
-        while (true)
-        {
-            mc.SetMotorPositions(pose1, 5.0);
-            while(!mc.getTrajectoryComplete());
-            mc.SetMotorPositions(pose2, 5.0);
-            while(!mc.getTrajectoryComplete());
-        }
-
-        // 5) Tear down
-        status_running.store(false);
-        status_thread.join();
-        // std::cout << "[Main] Done. Exiting.\n";
-    }
-    catch (const std::exception &e)
+    // mc.SetMotorPosition(0.0, 5.0, 0);
+    // mc.SetMotorPosition(0.0, 5.0, 1);
+    mc.SetMotorPositions({0.0, 0.0}, 5.0);
+    while (!mc.getTrajectoryComplete())
     {
-        std::cerr << "\n[Error] Exception: " << e.what() << "\n";
-        return 1;
-    }
-    return 0;
+      std::this_thread::sleep_for(std::chrono::milliseconds(5));
+    };
+    // std::this_thread::sleep_for(std::chrono::milliseconds(3000));
+    // 3) Define two poses
+    constexpr size_t N = MotorController::getMOTORS();
+    std::array<double, N> pose1{M_PI, -M_PI};
+    std::array<double, N> pose2{-M_PI, M_PI};
+    double accel = 1.25;
+    // // Helper to enqueue and wait
+    // auto runPose = [&](const std::array<double,N>& target, double accel){
+    //   std::cout << "[Main] Enqueuing pose: ";
+    //   for (auto v : target) std::cout << v << " ";
+    //   std::cout << "\n";
+
+    //   mc.SetMotorPositions(target, accel);
+    //   // busy-wait until the background worker flags completion
+    //   while (!mc.getTrajectoryComplete()) {
+    //     std::this_thread::sleep_for(std::chrono::milliseconds(10));
+    //   }
+    //   std::cout << "[Main] Pose reached.\n";
+    // };
+
+    // // 4) Run first pose, then return pose
+    // runPose(pose1, /*accel=*/2.0);
+    // runPose(pose2, /*accel=*/2.0);
+
+    // while (true)
+    // {
+    //     mc.SetMotorPositions(pose1, 0.1);
+    //     while(!mc.getTrajectoryComplete());
+    //     mc.SetMotorPositions(pose2, 5.0);
+    //     while(!mc.getTrajectoryComplete());
+    // }
+    mc.SetMotorsStop();
+    mc.SetMotorPositions(pose1, accel);
+    // std::this_thread::sleep_for(std::chrono::milliseconds(10000));
+    while (!mc.getTrajectoryComplete())
+    {
+      std::this_thread::sleep_for(std::chrono::milliseconds(5));
+    };
+
+    mc.SetMotorPositions(pose2, accel);
+    // std::this_thread::sleep_for(std::chrono::milliseconds(500));
+    while (!mc.getTrajectoryComplete())
+    {
+      std::this_thread::sleep_for(std::chrono::milliseconds(5));
+    };
+    // std::this_thread::sleep_for(std::chrono::milliseconds(3000));
+
+    // 5) Tear down
+    status_running.store(false);
+    status_thread.join();
+    // std::cout << "[Main] Done. Exiting.\n";
+  }
+  catch (const std::exception &e)
+  {
+    std::cerr << "\n[Error] Exception: " << e.what() << "\n";
+    return 1;
+  }
+  return 0;
 }
