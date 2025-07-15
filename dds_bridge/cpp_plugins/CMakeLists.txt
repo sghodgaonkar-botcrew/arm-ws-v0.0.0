@@ -1,135 +1,210 @@
-cmake_minimum_required(VERSION 3.17)
-project(cpp_plugins CXX)
+cmake_minimum_required(VERSION 3.16)
+project(ik_profiling_example)
 
-# Enable debug symbols
-set(CMAKE_BUILD_TYPE Debug)
-set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -g -O0")
+# Set C++ standard
+set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-# Enable ccache for faster rebuilds
-# find_program(CCACHE_PROGRAM ccache)
-# if(CCACHE_PROGRAM)
-#     set(CMAKE_CXX_COMPILER_LAUNCHER ${CCACHE_PROGRAM})
-#     message(STATUS "Using ccache for faster builds")
-# endif()
-
-# # Disable Moteus updates to speed up builds
-# set(FETCHCONTENT_UPDATES_DISCONNECTED ON)
-
-# set(CMAKE_CXX_STANDARD 17)
-# set(CMAKE_CXX_STANDARD_REQUIRED ON)
-
-# # Check for required environment variables
-# if(NOT DEFINED ENV{CXX_INSTALL})
-#     message(FATAL_ERROR "CXX_INSTALL environment variable is not set")
-# endif()
-
-# 1) Let CMake look under your custom DDS prefixes
-# list(APPEND CMAKE_PREFIX_PATH
-#   "$ENV{CYCLONE_INSTALL}"
-#   "$ENV{CXX_INSTALL}"
-#   # "/opt/openrobots"
-# )
-message(STATUS "CMAKE_PREFIX_PATH = ${CMAKE_PREFIX_PATH}")
-
-# message(STATUS "CMAKE_CURRENT_SOURCE_DIR = ${CMAKE_CURRENT_SOURCE_DIR}")
-
-# 2) Pull in Iceoryx C binding (installed via apt)
-# find_package(iceoryx_binding_c CONFIG REQUIRED)
-
-# 3) Pull in CycloneDDS C++ wrapper
-find_package(CycloneDDS-CXX CONFIG REQUIRED)
-
-# Find IPOPT
+# Find required packages
 find_package(PkgConfig REQUIRED)
-pkg_check_modules(IPOPT REQUIRED ipopt)
+find_package(Eigen3 REQUIRED)
 
-# … your other find_package() calls …
+# Find Pinocchio (default installation)
 find_package(pinocchio REQUIRED)
-# message(STATUS "Pinocchio include dirs: ${pinocchio_INCLUDE_DIRS}")
-# message(STATUS "Pinocchio CMake dir:   ${pinocchio_DIR}")
 
-# Debug pinocchio targets and variables (commented out for performance)
-# get_property(pinocchio_targets DIRECTORY PROPERTY TARGETS)
-# message(STATUS "Available targets: ${pinocchio_targets}")
+# Find OpenMP (optional, for reachable_workspace parallelization)
+find_package(OpenMP)
+if(OpenMP_CXX_FOUND)
+    message(STATUS "OpenMP found - reachable_workspace will use parallel processing")
+else()
+    message(STATUS "OpenMP not found - reachable_workspace will use single-threaded processing")
+endif()
 
-# Check if pinocchio::pinocchio target exists
-# if(TARGET pinocchio::pinocchio)
-#     message(STATUS "pinocchio::pinocchio target found")
-# else()
-#     message(STATUS "pinocchio::pinocchio target NOT found")
-#     # List all targets that contain "pinocchio"
-#     get_property(all_targets DIRECTORY PROPERTY TARGETS)
-#     foreach(target ${all_targets})
-#         if(target MATCHES ".*pinocchio.*")
-#             message(STATUS "Found pinocchio-related target: ${target}")
-#         endif()
-#     endforeach()
+# Try to find IPOPT (optional)
+find_package(PkgConfig QUIET)
+pkg_check_modules(IPOPT QUIET ipopt)
+if(IPOPT_FOUND)
+    add_definitions(-DHAVE_IPOPT)
+    message(STATUS "IPOPT found - IK solver will be available")
+else()
+    message(STATUS "IPOPT not found - IK solver will be disabled")
+endif()
+
+# Add profiling definitions
+add_definitions(-DENABLE_PROFILING)
+
+# Include directories
+include_directories(include)
+include_directories(${EIGEN3_INCLUDE_DIRS})
+include_directories(${PINOCCHIO_INCLUDE_DIRS})
+
+# Create library
+add_library(ik_model_lib
+    src/ik_model.cpp
+)
+
+# Link libraries for ik_model_lib
+target_link_libraries(ik_model_lib
+    ${PINOCCHIO_LIBRARIES}
+    ${EIGEN3_LIBRARIES}
+)
+
+# Create IK solver library (only if IPOPT is available)
+if(IPOPT_FOUND)
+    add_library(ik_solver_lib
+        src/ik_solver_v2.cpp
+    )
+    
+    target_link_libraries(ik_solver_lib
+        ik_model_lib
+        ${IPOPT_LIBRARIES}
+    )
+    
+    target_include_directories(ik_solver_lib PRIVATE
+        ${IPOPT_INCLUDE_DIRS}
+    )
+endif()
+
+# # Create profiling example executable
+# add_executable(profile_example
+#     src/profile_example.cpp
+# )
+
+# # Link libraries for profiling example
+# target_link_libraries(profile_example
+#     ik_model_lib
+# )
+
+# if(IPOPT_FOUND)
+#     target_include_directories(profile_example PRIVATE
+#         ${IPOPT_INCLUDE_DIRS}
+#     )
+#     target_link_libraries(profile_example
+#         ik_solver_lib
+#         ${IPOPT_LIBRARIES}
+#     )
 # endif()
 
-# Fetch Moteus from GitHub
-include(FetchContent)
+# Create IPOPT profiling test executable (only if IPOPT is available)
+if(IPOPT_FOUND)
+#     add_executable(ipopt_profile_test
+#         src/ipopt_profile_test.cpp
+#     )
+    
+#     target_link_libraries(ipopt_profile_test
+#         ik_model_lib
+#         ik_solver_lib
+#         ${IPOPT_LIBRARIES}
+#     )
+    
+#     target_include_directories(ipopt_profile_test PRIVATE
+#         ${IPOPT_INCLUDE_DIRS}
+#     )
+    
+#     # Create detailed IPOPT profiling test
+#     add_executable(ipopt_detailed_profile
+#         src/ipopt_detailed_profile.cpp
+#     )
+    
+#     target_link_libraries(ipopt_detailed_profile
+#         ik_model_lib
+#         ik_solver_lib
+#         ${IPOPT_LIBRARIES}
+#     )
+    
+#     target_include_directories(ipopt_detailed_profile PRIVATE
+#         ${IPOPT_INCLUDE_DIRS}
+#     )
+    
+#     # Create simple IPOPT profiling test
+#     add_executable(ipopt_simple_profile
+#         src/ipopt_simple_profile.cpp
+#     )
+    
+#     target_link_libraries(ipopt_simple_profile
+#         ik_model_lib
+#         ik_solver_lib
+#         ${IPOPT_LIBRARIES}
+#     )
+    
+#     target_include_directories(ipopt_simple_profile PRIVATE
+#         ${IPOPT_INCLUDE_DIRS}
+#     )
 
-FetchContent_Declare(
-  moteus
-  GIT_REPOSITORY https://github.com/mjbots/moteus.git
-  GIT_TAG        2a44cf4e27902cb786d154b85b56bf5d9b567c22
-)
 
-# Make Moteus available
-FetchContent_MakeAvailable(moteus)
-
-# 4) Where your IDL‐generated code lives
-set(GEN_DIR "${CMAKE_CURRENT_BINARY_DIR}/generated")
-
-# 5) Image_odom_db
-add_executable(ik_sub
-  src/ik_sub.cpp
-  src/motor_controller.cpp 
-  src/ik_model.cpp
-  ${GEN_DIR}/arm_msgs.cpp
-)
-
-target_include_directories(ik_sub PRIVATE
-  ${GEN_DIR}
-  $ENV{CXX_INSTALL}/include
-  ${CMAKE_CURRENT_SOURCE_DIR}/include
-  # /opt/openrobots/include/pinocchio/
-)
-
-target_link_libraries(ik_sub PUBLIC
-pinocchio::pinocchio  
-CycloneDDS-CXX::ddscxx
-)
-
-# 6) IPOPT IK Solver test executable (commented out - files deleted)
-# add_executable(test_ipopt_solver
-#   src/test_ipopt_solver.cpp
-#   src/ipopt_ik_solver.cpp
-#   src/ik_model.cpp
-# )
-# 
-# target_include_directories(test_ipopt_solver PRIVATE
-#   ${CMAKE_CURRENT_SOURCE_DIR}/include
-#   ${IPOPT_INCLUDE_DIRS}
-# )
-# 
-# target_link_libraries(test_ipopt_solver PUBLIC
-#   pinocchio::pinocchio
-#   ${IPOPT_LIBRARIES}
-# )
-# 
-# target_compile_options(test_ipopt_solver PRIVATE ${IPOPT_CFLAGS_OTHER})
-
-# 7) IK Model test executable
-add_executable(test_ik_model
-  src/test_ik_model.cpp
+# 10) IPOPT IK Solver test executable
+add_executable(test_ik_solver_v2
+  src/test_ik_solver_v2.cpp
+  src/ik_solver_v2.cpp
   src/ik_model.cpp
 )
 
-target_include_directories(test_ik_model PRIVATE
+target_include_directories(test_ik_solver_v2 PRIVATE
   ${CMAKE_CURRENT_SOURCE_DIR}/include
+  ${IPOPT_INCLUDE_DIRS}
 )
 
-target_link_libraries(test_ik_model PUBLIC
+target_link_libraries(test_ik_solver_v2 PUBLIC
   pinocchio::pinocchio
+  ${IPOPT_LIBRARIES}
 )
+
+target_compile_options(test_ik_solver_v2 PRIVATE ${IPOPT_CFLAGS_OTHER})
+
+option(ENABLE_ASAN "Build with AddressSanitizer" ON)
+
+if(ENABLE_ASAN)
+  target_compile_options(test_ik_solver_v2 PRIVATE
+    -g -O1 -fsanitize=address
+  )
+  target_link_options   (test_ik_solver_v2 PRIVATE
+    -fsanitize=address
+  )
+endif()
+
+    
+    message(STATUS "IPOPT profiling test targets created")
+else()
+    message(STATUS "IPOPT profiling test targets skipped (IPOPT not found)")
+endif()
+
+# Add reachable_workspace executable
+add_executable(reachable_workspace src/reachable_workspace.cpp)
+
+# Link libraries for reachable_workspace
+target_link_libraries(reachable_workspace
+    ik_model_lib
+    ${PINOCCHIO_LIBRARIES}
+    ${EIGEN3_LIBRARIES}
+    pinocchio::pinocchio
+    pinocchio::pinocchio_parsers
+)
+
+# Add OpenMP support for reachable_workspace if available
+if(OpenMP_CXX_FOUND)
+    target_link_libraries(reachable_workspace OpenMP::OpenMP_CXX)
+    target_compile_options(reachable_workspace PRIVATE ${OpenMP_CXX_FLAGS})
+    message(STATUS "OpenMP linked to reachable_workspace")
+endif()
+
+# Enable AddressSanitizer for reachable_workspace only
+# target_compile_options(reachable_workspace PRIVATE
+#     -g -O1 -fsanitize=address -fno-omit-frame-pointer
+# )
+# target_link_options(reachable_workspace PRIVATE
+#     -fsanitize=address
+# )
+
+
+
+# Set compiler flags for optimization and debugging
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O2 -g")
+
+# Print configuration summary
+message(STATUS "Configuration Summary:")
+message(STATUS "  C++ Standard: ${CMAKE_CXX_STANDARD}")
+message(STATUS "  Profiling: ENABLED")
+message(STATUS "  IPOPT: ${IPOPT_FOUND}")
+message(STATUS "  Eigen3: ${EIGEN3_FOUND}")
+message(STATUS "  Pinocchio: ${PINOCCHIO_FOUND}")
+message(STATUS "  OpenMP: ${OpenMP_CXX_FOUND}")
