@@ -1,0 +1,264 @@
+[0.000000] (-) TimerEvent: {}
+[0.000192] (-) JobUnselected: {'identifier': 'planner'}
+[0.000240] (coppeliasim_bridge) JobQueued: {'identifier': 'coppeliasim_bridge', 'dependencies': OrderedDict()}
+[0.000275] (coppeliasim_bridge) JobStarted: {'identifier': 'coppeliasim_bridge'}
+[0.010071] (coppeliasim_bridge) JobProgress: {'identifier': 'coppeliasim_bridge', 'progress': 'cmake'}
+[0.010655] (coppeliasim_bridge) JobProgress: {'identifier': 'coppeliasim_bridge', 'progress': 'build'}
+[0.011053] (coppeliasim_bridge) Command: {'cmd': ['/usr/bin/cmake', '--build', '/home/shanto/Documents/arm-ws-v0.0.0/ros_ws/build/coppeliasim_bridge', '--', '-j22', '-l22'], 'cwd': '/home/shanto/Documents/arm-ws-v0.0.0/ros_ws/build/coppeliasim_bridge', 'env': OrderedDict([('LESSOPEN', '| /usr/bin/lesspipe %s'), ('USER', 'shanto'), ('XDG_SESSION_TYPE', 'x11'), ('CYCLONE_INSTALL', '/home/shanto/dds-install'), ('SHLVL', '1'), ('LD_LIBRARY_PATH', '/usr/local/lib64:/usr/local/lib:/home/shanto/ipopt-install/lib:/opt/openrobots/lib:/home/shanto/dist/lib:/home/shanto/ipopt-install/lib:/home/shanto/dds-cxx-install/lib:/home/shanto/dds-install/lib:/opt/ros/humble/opt/rviz_ogre_vendor/lib:/opt/ros/humble/lib/x86_64-linux-gnu:/opt/ros/humble/lib'), ('HOME', '/home/shanto'), ('OLDPWD', '/home/shanto'), ('DESKTOP_SESSION', 'ubuntu'), ('ROS_PYTHON_VERSION', '3'), ('GNOME_SHELL_SESSION_MODE', 'ubuntu'), ('GTK_MODULES', 'gail:atk-bridge'), ('SYSTEMD_EXEC_PID', '2726'), ('DBUS_SESSION_BUS_ADDRESS', 'unix:path=/run/user/1000/bus'), ('COLORTERM', 'truecolor'), ('ROS_DISTRO', 'humble'), ('GTK_IM_MODULE', 'ibus'), ('LOGNAME', 'shanto'), ('_', '/usr/bin/colcon'), ('ROS_VERSION', '2'), ('PKG_CONFIG_PATH', '/opt/openrobots/lib/pkgconfig:'), ('XDG_SESSION_CLASS', 'user'), ('USERNAME', 'shanto'), ('TERM', 'xterm-256color'), ('GNOME_DESKTOP_SESSION_ID', 'this-is-deprecated'), ('ROS_LOCALHOST_ONLY', '0'), ('WINDOWPATH', '2'), ('PATH', '/usr/local/lib64:/usr/local/lib:/opt/openrobots/bin:/home/shanto/dds-install/bin:/opt/ros/humble/bin:/home/shanto/.local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:/snap/bin'), ('SESSION_MANAGER', 'local/shanto-Alienware-m16-R2:@/tmp/.ICE-unix/2428,unix/shanto-Alienware-m16-R2:/tmp/.ICE-unix/2428'), ('XDG_MENU_PREFIX', 'gnome-'), ('GNOME_TERMINAL_SCREEN', '/org/gnome/Terminal/screen/9d8624cd_1bb9_4dea_994d_096aa6bb1769'), ('XDG_RUNTIME_DIR', '/run/user/1000'), ('DISPLAY', ':1'), ('LANG', 'en_US.UTF-8'), ('XDG_CURRENT_DESKTOP', 'ubuntu:GNOME'), ('XMODIFIERS', '@im=ibus'), ('XDG_SESSION_DESKTOP', 'ubuntu'), ('XAUTHORITY', '/run/user/1000/gdm/Xauthority'), ('LS_COLORS', 'rs=0:di=01;34:ln=01;36:mh=00:pi=40;33:so=01;35:do=01;35:bd=40;33;01:cd=40;33;01:or=40;31;01:mi=00:su=37;41:sg=30;43:ca=30;41:tw=30;42:ow=34;42:st=37;44:ex=01;32:*.tar=01;31:*.tgz=01;31:*.arc=01;31:*.arj=01;31:*.taz=01;31:*.lha=01;31:*.lz4=01;31:*.lzh=01;31:*.lzma=01;31:*.tlz=01;31:*.txz=01;31:*.tzo=01;31:*.t7z=01;31:*.zip=01;31:*.z=01;31:*.dz=01;31:*.gz=01;31:*.lrz=01;31:*.lz=01;31:*.lzo=01;31:*.xz=01;31:*.zst=01;31:*.tzst=01;31:*.bz2=01;31:*.bz=01;31:*.tbz=01;31:*.tbz2=01;31:*.tz=01;31:*.deb=01;31:*.rpm=01;31:*.jar=01;31:*.war=01;31:*.ear=01;31:*.sar=01;31:*.rar=01;31:*.alz=01;31:*.ace=01;31:*.zoo=01;31:*.cpio=01;31:*.7z=01;31:*.rz=01;31:*.cab=01;31:*.wim=01;31:*.swm=01;31:*.dwm=01;31:*.esd=01;31:*.jpg=01;35:*.jpeg=01;35:*.mjpg=01;35:*.mjpeg=01;35:*.gif=01;35:*.bmp=01;35:*.pbm=01;35:*.pgm=01;35:*.ppm=01;35:*.tga=01;35:*.xbm=01;35:*.xpm=01;35:*.tif=01;35:*.tiff=01;35:*.png=01;35:*.svg=01;35:*.svgz=01;35:*.mng=01;35:*.pcx=01;35:*.mov=01;35:*.mpg=01;35:*.mpeg=01;35:*.m2v=01;35:*.mkv=01;35:*.webm=01;35:*.webp=01;35:*.ogm=01;35:*.mp4=01;35:*.m4v=01;35:*.mp4v=01;35:*.vob=01;35:*.qt=01;35:*.nuv=01;35:*.wmv=01;35:*.asf=01;35:*.rm=01;35:*.rmvb=01;35:*.flc=01;35:*.avi=01;35:*.fli=01;35:*.flv=01;35:*.gl=01;35:*.dl=01;35:*.xcf=01;35:*.xwd=01;35:*.yuv=01;35:*.cgm=01;35:*.emf=01;35:*.ogv=01;35:*.ogx=01;35:*.aac=00;36:*.au=00;36:*.flac=00;36:*.m4a=00;36:*.mid=00;36:*.midi=00;36:*.mka=00;36:*.mp3=00;36:*.mpc=00;36:*.ogg=00;36:*.ra=00;36:*.wav=00;36:*.oga=00;36:*.opus=00;36:*.spx=00;36:*.xspf=00;36:'), ('GNOME_TERMINAL_SERVICE', ':1.311'), ('SSH_AGENT_LAUNCHER', 'gnome-keyring'), ('SSH_AUTH_SOCK', '/run/user/1000/keyring/ssh'), ('AMENT_PREFIX_PATH', '/opt/ros/humble'), ('SHELL', '/bin/bash'), ('QT_ACCESSIBILITY', '1'), ('GDMSESSION', 'ubuntu'), ('LESSCLOSE', '/usr/bin/lesspipe %s %s'), ('OPENTHREADS_LIB_DIR', '/usr/local/lib64:/usr/local/lib'), ('GPG_AGENT_INFO', '/run/user/1000/gnupg/S.gpg-agent:0:1'), ('QT_IM_MODULE', 'ibus'), ('OPENTHREADS_INC_DIR', '/usr/local/include'), ('PWD', '/home/shanto/Documents/arm-ws-v0.0.0/ros_ws/build/coppeliasim_bridge'), ('LC_ALL', 'en_US.UTF-8'), ('XDG_CONFIG_DIRS', '/etc/xdg/xdg-ubuntu:/etc/xdg'), ('CXX_INSTALL', '/home/shanto/dds-cxx-install'), ('XDG_DATA_DIRS', '/usr/share/ubuntu:/usr/share/gnome:/usr/local/share/:/usr/share/:/var/lib/snapd/desktop'), ('PYTHONPATH', '/opt/openrobots/lib/python3.10/site-packages:/opt/ros/humble/lib/python3.10/site-packages:/opt/ros/humble/local/lib/python3.10/dist-packages'), ('COLCON', '1'), ('VTE_VERSION', '6800'), ('CMAKE_PREFIX_PATH', '/opt/openrobots:/home/shanto/dds-cxx-install:/home/shanto/dds-install::/opt/ros/humble')]), 'shell': False}
+[0.073445] (coppeliasim_bridge) StdoutLine: {'line': b'[  2%] Built target zmq_pub\n'}
+[0.099450] (-) TimerEvent: {}
+[0.108220] (coppeliasim_bridge) StdoutLine: {'line': b'\x1b[35m\x1b[1mConsolidate compiler generated dependencies of target unit_tests\x1b[0m\n'}
+[0.168320] (coppeliasim_bridge) StdoutLine: {'line': b'[  3%] \x1b[32mBuilding CXX object _deps/jsoncons-build/test/CMakeFiles/unit_tests.dir/corelib/src/reflect/reflect_traits_container_tests.cpp.o\x1b[0m\n'}
+[0.199592] (-) TimerEvent: {}
+[0.300008] (-) TimerEvent: {}
+[0.400372] (-) TimerEvent: {}
+[0.500720] (-) TimerEvent: {}
+[0.601073] (-) TimerEvent: {}
+[0.701557] (-) TimerEvent: {}
+[0.801889] (-) TimerEvent: {}
+[0.902247] (-) TimerEvent: {}
+[1.002700] (-) TimerEvent: {}
+[1.103032] (-) TimerEvent: {}
+[1.203379] (-) TimerEvent: {}
+[1.303705] (-) TimerEvent: {}
+[1.404048] (-) TimerEvent: {}
+[1.504393] (-) TimerEvent: {}
+[1.604717] (-) TimerEvent: {}
+[1.705044] (-) TimerEvent: {}
+[1.805391] (-) TimerEvent: {}
+[1.905731] (-) TimerEvent: {}
+[2.006064] (-) TimerEvent: {}
+[2.106497] (-) TimerEvent: {}
+[2.206825] (-) TimerEvent: {}
+[2.307179] (-) TimerEvent: {}
+[2.407649] (-) TimerEvent: {}
+[2.507980] (-) TimerEvent: {}
+[2.608321] (-) TimerEvent: {}
+[2.708647] (-) TimerEvent: {}
+[2.808975] (-) TimerEvent: {}
+[2.909306] (-) TimerEvent: {}
+[3.009641] (-) TimerEvent: {}
+[3.109977] (-) TimerEvent: {}
+[3.210335] (-) TimerEvent: {}
+[3.310665] (-) TimerEvent: {}
+[3.411001] (-) TimerEvent: {}
+[3.511357] (-) TimerEvent: {}
+[3.611737] (-) TimerEvent: {}
+[3.712315] (-) TimerEvent: {}
+[3.812638] (-) TimerEvent: {}
+[3.912956] (-) TimerEvent: {}
+[4.013284] (-) TimerEvent: {}
+[4.113623] (-) TimerEvent: {}
+[4.213949] (-) TimerEvent: {}
+[4.314306] (-) TimerEvent: {}
+[4.414702] (-) TimerEvent: {}
+[4.515022] (-) TimerEvent: {}
+[4.615351] (-) TimerEvent: {}
+[4.715664] (-) TimerEvent: {}
+[4.815982] (-) TimerEvent: {}
+[4.916294] (-) TimerEvent: {}
+[5.016630] (-) TimerEvent: {}
+[5.116947] (-) TimerEvent: {}
+[5.217271] (-) TimerEvent: {}
+[5.317589] (-) TimerEvent: {}
+[5.417910] (-) TimerEvent: {}
+[5.518390] (-) TimerEvent: {}
+[5.618805] (-) TimerEvent: {}
+[5.719121] (-) TimerEvent: {}
+[5.819459] (-) TimerEvent: {}
+[5.919780] (-) TimerEvent: {}
+[6.020098] (-) TimerEvent: {}
+[6.120434] (-) TimerEvent: {}
+[6.184106] (coppeliasim_bridge) StdoutLine: {'line': b'[  5%] \x1b[32mBuilding CXX object _deps/jsoncons-build/test/CMakeFiles/unit_tests.dir/jsonpath/src/jsonpath_test_suite.cpp.o\x1b[0m\n'}
+[6.184326] (coppeliasim_bridge) StdoutLine: {'line': b'[  5%] \x1b[32mBuilding CXX object _deps/jsoncons-build/test/CMakeFiles/unit_tests.dir/jsonpointer/src/jsonpointer_flatten_tests.cpp.o\x1b[0m\n'}
+[6.184404] (coppeliasim_bridge) StdoutLine: {'line': b'[  5%] \x1b[32mBuilding CXX object _deps/jsoncons-build/test/CMakeFiles/unit_tests.dir/jsonpath/src/path_node_tests.cpp.o\x1b[0m\n'}
+[6.220648] (-) TimerEvent: {}
+[6.320986] (-) TimerEvent: {}
+[6.421342] (-) TimerEvent: {}
+[6.521668] (-) TimerEvent: {}
+[6.622002] (-) TimerEvent: {}
+[6.722354] (-) TimerEvent: {}
+[6.822764] (-) TimerEvent: {}
+[6.923111] (-) TimerEvent: {}
+[7.023468] (-) TimerEvent: {}
+[7.123811] (-) TimerEvent: {}
+[7.196635] (coppeliasim_bridge) StdoutLine: {'line': b'[  7%] \x1b[32mBuilding CXX object _deps/jsoncons-build/test/CMakeFiles/unit_tests.dir/jsonpath/src/jsonpath_stateful_allocator_tests.cpp.o\x1b[0m\n'}
+[7.196865] (coppeliasim_bridge) StdoutLine: {'line': b'[  7%] \x1b[32mBuilding CXX object _deps/jsoncons-build/test/CMakeFiles/unit_tests.dir/jsonpath/src/jsonpath_select_paths_tests.cpp.o\x1b[0m\n'}
+[7.223953] (-) TimerEvent: {}
+[7.324364] (-) TimerEvent: {}
+[7.424771] (-) TimerEvent: {}
+[7.525239] (-) TimerEvent: {}
+[7.591238] (coppeliasim_bridge) StdoutLine: {'line': b'[  7%] \x1b[32mBuilding CXX object _deps/jsoncons-build/test/CMakeFiles/unit_tests.dir/jsonpath/src/jsonpath_json_replace_tests.cpp.o\x1b[0m\n'}
+[7.625388] (-) TimerEvent: {}
+[7.725800] (-) TimerEvent: {}
+[7.826228] (-) TimerEvent: {}
+[7.926653] (-) TimerEvent: {}
+[8.027083] (-) TimerEvent: {}
+[8.127525] (-) TimerEvent: {}
+[8.227985] (-) TimerEvent: {}
+[8.328426] (-) TimerEvent: {}
+[8.428923] (-) TimerEvent: {}
+[8.529439] (-) TimerEvent: {}
+[8.602993] (coppeliasim_bridge) StdoutLine: {'line': b'[  9%] \x1b[32mBuilding CXX object _deps/jsoncons-build/test/CMakeFiles/unit_tests.dir/jsonpath/src/jsonpath_json_query_tests.cpp.o\x1b[0m\n'}
+[8.603215] (coppeliasim_bridge) StdoutLine: {'line': b'[  9%] \x1b[32mBuilding CXX object _deps/jsoncons-build/test/CMakeFiles/unit_tests.dir/jsonpointer/src/jsonpointer_tests.cpp.o\x1b[0m\n'}
+[8.603578] (coppeliasim_bridge) StdoutLine: {'line': b'[ 10%] \x1b[32mBuilding CXX object _deps/jsoncons-build/test/CMakeFiles/unit_tests.dir/jsonpath/src/jsonpath_function_tests.cpp.o\x1b[0m\n'}
+[8.629546] (-) TimerEvent: {}
+[8.729881] (-) TimerEvent: {}
+[8.830247] (-) TimerEvent: {}
+[8.930574] (-) TimerEvent: {}
+[9.030907] (-) TimerEvent: {}
+[9.131239] (-) TimerEvent: {}
+[9.231564] (-) TimerEvent: {}
+[9.331927] (-) TimerEvent: {}
+[9.432270] (-) TimerEvent: {}
+[9.532598] (-) TimerEvent: {}
+[9.614993] (coppeliasim_bridge) StdoutLine: {'line': b'[ 11%] \x1b[32mBuilding CXX object _deps/jsoncons-build/test/CMakeFiles/unit_tests.dir/jsonpath/src/jsonpath_flatten_tests.cpp.o\x1b[0m\n'}
+[9.615268] (coppeliasim_bridge) StdoutLine: {'line': b'[ 11%] \x1b[32mBuilding CXX object _deps/jsoncons-build/test/CMakeFiles/unit_tests.dir/jsonpath/src/jsonpath_expression_tests.cpp.o\x1b[0m\n'}
+[9.632723] (-) TimerEvent: {}
+[9.733111] (-) TimerEvent: {}
+[9.833497] (-) TimerEvent: {}
+[9.933873] (-) TimerEvent: {}
+[10.034311] (-) TimerEvent: {}
+[10.134693] (-) TimerEvent: {}
+[10.235065] (-) TimerEvent: {}
+[10.335444] (-) TimerEvent: {}
+[10.435826] (-) TimerEvent: {}
+[10.536204] (-) TimerEvent: {}
+[10.625608] (coppeliasim_bridge) StdoutLine: {'line': b'[ 13%] \x1b[32mBuilding CXX object _deps/jsoncons-build/test/CMakeFiles/unit_tests.dir/jsonpatch/src/jsonpatch_tests.cpp.o\x1b[0m\n'}
+[10.625862] (coppeliasim_bridge) StdoutLine: {'line': b'[ 13%] \x1b[32mBuilding CXX object _deps/jsoncons-build/test/CMakeFiles/unit_tests.dir/jmespath/src/jmespath_tests.cpp.o\x1b[0m\n'}
+[10.625951] (coppeliasim_bridge) StdoutLine: {'line': b'[ 13%] \x1b[32mBuilding CXX object _deps/jsoncons-build/test/CMakeFiles/unit_tests.dir/jsonpath/src/jsonpath_custom_function_tests.cpp.o\x1b[0m\n'}
+[10.634558] (coppeliasim_bridge) StdoutLine: {'line': b'[ 15%] \x1b[32mBuilding CXX object _deps/jsoncons-build/test/CMakeFiles/unit_tests.dir/jmespath/src/jmespath_expression_tests.cpp.o\x1b[0m\n'}
+[10.634758] (coppeliasim_bridge) StdoutLine: {'line': b'[ 15%] \x1b[32mBuilding CXX object _deps/jsoncons-build/test/CMakeFiles/unit_tests.dir/jmespath/src/jmespath_let_tests.cpp.o\x1b[0m\n'}
+[10.634890] (coppeliasim_bridge) StdoutLine: {'line': b'[ 15%] \x1b[32mBuilding CXX object _deps/jsoncons-build/test/CMakeFiles/unit_tests.dir/jmespath/src/jmespath_custom_function_tests.cpp.o\x1b[0m\n'}
+[10.636484] (-) TimerEvent: {}
+[10.736749] (-) TimerEvent: {}
+[10.837767] (-) TimerEvent: {}
+[10.938096] (-) TimerEvent: {}
+[11.038446] (-) TimerEvent: {}
+[11.138778] (-) TimerEvent: {}
+[11.231536] (coppeliasim_bridge) StdoutLine: {'line': b'[ 16%] \x1b[32mBuilding CXX object _deps/jsoncons-build/test/CMakeFiles/unit_tests.dir/corelib/src/reflect/reflect_traits_gen_tests.cpp.o\x1b[0m\n'}
+[11.232377] (coppeliasim_bridge) StdoutLine: {'line': b'[ 19%] \x1b[32mBuilding CXX object _deps/jsoncons-build/test/CMakeFiles/unit_tests.dir/csv/src/csv_cursor_tests.cpp.o\x1b[0m\n'}
+[11.232506] (coppeliasim_bridge) StdoutLine: {'line': b'[ 19%] \x1b[32mBuilding CXX object _deps/jsoncons-build/test/CMakeFiles/unit_tests.dir/csv/src/csv_tests.cpp.o\x1b[0m\n'}
+[11.232658] (coppeliasim_bridge) StdoutLine: {'line': b'[ 19%] \x1b[32mBuilding CXX object _deps/jsoncons-build/test/CMakeFiles/unit_tests.dir/csv/src/encode_decode_csv_tests.cpp.o\x1b[0m\n'}
+[11.232749] (coppeliasim_bridge) StdoutLine: {'line': b'[ 19%] \x1b[32mBuilding CXX object _deps/jsoncons-build/test/CMakeFiles/unit_tests.dir/corelib/src/reflect/reflect_traits_gen_functional_tests.cpp.o\x1b[0m\n'}
+[11.240301] (-) TimerEvent: {}
+[11.340633] (-) TimerEvent: {}
+[11.441279] (-) TimerEvent: {}
+[11.541653] (-) TimerEvent: {}
+[11.642010] (-) TimerEvent: {}
+[11.742378] (-) TimerEvent: {}
+[11.842730] (-) TimerEvent: {}
+[11.943086] (-) TimerEvent: {}
+[12.043441] (-) TimerEvent: {}
+[12.143786] (-) TimerEvent: {}
+[12.245267] (-) TimerEvent: {}
+[12.250304] (coppeliasim_bridge) StdoutLine: {'line': b'[ 19%] \x1b[32mBuilding CXX object _deps/jsoncons-build/test/CMakeFiles/unit_tests.dir/jsonschema/src/abort_early_tests.cpp.o\x1b[0m\n'}
+[12.345659] (-) TimerEvent: {}
+[12.448253] (-) TimerEvent: {}
+[12.548609] (-) TimerEvent: {}
+[12.648966] (-) TimerEvent: {}
+[12.749320] (-) TimerEvent: {}
+[12.849662] (-) TimerEvent: {}
+[12.950000] (-) TimerEvent: {}
+[13.050365] (-) TimerEvent: {}
+[13.152252] (-) TimerEvent: {}
+[13.252595] (-) TimerEvent: {}
+[13.352948] (-) TimerEvent: {}
+[13.453321] (-) TimerEvent: {}
+[13.553679] (-) TimerEvent: {}
+[13.655254] (-) TimerEvent: {}
+[13.755610] (-) TimerEvent: {}
+[13.855971] (-) TimerEvent: {}
+[13.956385] (-) TimerEvent: {}
+[14.058257] (-) TimerEvent: {}
+[14.158615] (-) TimerEvent: {}
+[14.259038] (-) TimerEvent: {}
+[14.369256] (-) TimerEvent: {}
+[14.469626] (-) TimerEvent: {}
+[14.569956] (-) TimerEvent: {}
+[14.674261] (-) TimerEvent: {}
+[14.763451] (coppeliasim_bridge) StdoutLine: {'line': b'[ 20%] \x1b[32mBuilding CXX object _deps/jsoncons-build/test/CMakeFiles/unit_tests.dir/jsonschema/src/custom_message_tests.cpp.o\x1b[0m\n'}
+[14.774377] (-) TimerEvent: {}
+[14.874720] (-) TimerEvent: {}
+[14.975069] (-) TimerEvent: {}
+[15.075436] (-) TimerEvent: {}
+[15.175805] (-) TimerEvent: {}
+[15.276138] (-) TimerEvent: {}
+[15.376498] (-) TimerEvent: {}
+[15.476871] (-) TimerEvent: {}
+[15.577328] (-) TimerEvent: {}
+[15.677661] (-) TimerEvent: {}
+[15.778041] (-) TimerEvent: {}
+[15.878493] (-) TimerEvent: {}
+[15.979441] (-) TimerEvent: {}
+[16.080395] (-) TimerEvent: {}
+[16.180767] (-) TimerEvent: {}
+[16.283251] (-) TimerEvent: {}
+[16.383606] (-) TimerEvent: {}
+[16.483942] (-) TimerEvent: {}
+[16.585395] (-) TimerEvent: {}
+[16.696761] (-) TimerEvent: {}
+[16.797094] (-) TimerEvent: {}
+[16.898382] (-) TimerEvent: {}
+[16.998725] (-) TimerEvent: {}
+[17.099207] (-) TimerEvent: {}
+[17.199540] (-) TimerEvent: {}
+[17.299870] (-) TimerEvent: {}
+[17.400410] (-) TimerEvent: {}
+[17.500760] (-) TimerEvent: {}
+[17.602107] (-) TimerEvent: {}
+[17.702507] (-) TimerEvent: {}
+[17.803345] (-) TimerEvent: {}
+[17.907493] (-) TimerEvent: {}
+[18.008275] (-) TimerEvent: {}
+[18.110043] (-) TimerEvent: {}
+[18.210527] (-) TimerEvent: {}
+[18.310855] (-) TimerEvent: {}
+[18.411950] (-) TimerEvent: {}
+[18.512254] (-) TimerEvent: {}
+[18.613114] (-) TimerEvent: {}
+[18.715342] (-) TimerEvent: {}
+[18.818462] (-) TimerEvent: {}
+[18.919825] (-) TimerEvent: {}
+[19.020226] (-) TimerEvent: {}
+[19.122671] (-) TimerEvent: {}
+[19.235195] (-) TimerEvent: {}
+[19.342906] (-) TimerEvent: {}
+[19.455517] (-) TimerEvent: {}
+[19.569239] (-) TimerEvent: {}
+[19.683678] (-) TimerEvent: {}
+[19.797059] (-) TimerEvent: {}
+[19.954959] (-) TimerEvent: {}
+[20.079663] (-) TimerEvent: {}
+[20.381213] (-) TimerEvent: {}
+[21.066724] (-) TimerEvent: {}
+[21.786074] (-) TimerEvent: {}
+[22.861757] (-) TimerEvent: {}
+[23.982649] (-) TimerEvent: {}
+[25.708736] (-) TimerEvent: {}
+[27.708182] (-) TimerEvent: {}
+[29.514307] (-) TimerEvent: {}
+[32.007225] (-) TimerEvent: {}
+[33.460326] (-) TimerEvent: {}
+[34.696138] (-) TimerEvent: {}
+[36.209374] (-) TimerEvent: {}
+[38.104327] (-) TimerEvent: {}
+[39.975020] (-) TimerEvent: {}
+[41.962929] (-) TimerEvent: {}
+[43.953725] (-) TimerEvent: {}
+[45.710953] (-) TimerEvent: {}
+[48.014975] (-) TimerEvent: {}
+[51.189114] (-) TimerEvent: {}
+[54.077654] (-) TimerEvent: {}
+[57.294789] (-) TimerEvent: {}
+[61.184983] (-) TimerEvent: {}
+[61.305465] (-) TimerEvent: {}
+[61.409951] (-) TimerEvent: {}
+[61.475361] (coppeliasim_bridge) StderrLine: {'line': b'gmake[2]: *** [_deps/jsoncons-build/test/CMakeFiles/unit_tests.dir/build.make:1602: _deps/jsoncons-build/test/CMakeFiles/unit_tests.dir/jsonpath/src/jsonpath_test_suite.cpp.o] Interrupt\n'}
+[61.532370] (-) TimerEvent: {}
+[61.532713] (coppeliasim_bridge) StderrLine: {'line': b'gmake[1]: *** [CMakeFiles/Makefile2:951: _deps/jsoncons-build/test/CMakeFiles/unit_tests.dir/all] Interrupt\n'}
+[61.534081] (coppeliasim_bridge) StderrLine: {'line': b'gmake: *** [Makefile:146: all] Interrupt\n'}
+[61.618037] (coppeliasim_bridge) CommandEnded: {'returncode': -2}
+[61.634454] (-) TimerEvent: {}
+[61.679563] (coppeliasim_bridge) JobEnded: {'identifier': 'coppeliasim_bridge', 'rc': 'SIGINT'}
+[61.691035] (-) EventReactorShutdown: {}

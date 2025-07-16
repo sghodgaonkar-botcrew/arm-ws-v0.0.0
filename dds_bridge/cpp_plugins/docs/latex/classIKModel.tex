@@ -1,334 +1,222 @@
 \hypertarget{classIKModel}{}\doxysection{IKModel Class Reference}
 \label{classIKModel}\index{IKModel@{IKModel}}
-
-
-Inverse Kinematics Model class for robotic arm control.  
-
-
-
-
-{\ttfamily \#include $<$ik\+\_\+model.\+h$>$}
-
 \doxysubsection*{Public Member Functions}
 \begin{DoxyCompactItemize}
 \item 
-\mbox{\hyperlink{classIKModel_a92e3e28a9013f4cddbea1aa42577265c}{IKModel}} (const std\+::string \&urdf\+\_\+path)
-\begin{DoxyCompactList}\small\item\em Constructor. \end{DoxyCompactList}\item 
-\mbox{\Hypertarget{classIKModel_a559813c73d212d9cebaa62f6916856f9}\label{classIKModel_a559813c73d212d9cebaa62f6916856f9}} 
-\mbox{\hyperlink{classIKModel_a559813c73d212d9cebaa62f6916856f9}{$\sim$\+IKModel}} ()=default
-\begin{DoxyCompactList}\small\item\em Destructor. \end{DoxyCompactList}\item 
-\mbox{\Hypertarget{classIKModel_ab48541d3bf0163df180b3e07b62c4179}\label{classIKModel_ab48541d3bf0163df180b3e07b62c4179}} 
-{\bfseries IKModel} (const \mbox{\hyperlink{classIKModel}{IKModel}} \&)=delete
-\item 
-\mbox{\Hypertarget{classIKModel_a369c9a1eeddaaebbf35bf3db3089c414}\label{classIKModel_a369c9a1eeddaaebbf35bf3db3089c414}} 
-\mbox{\hyperlink{classIKModel}{IKModel}} \& {\bfseries operator=} (const \mbox{\hyperlink{classIKModel}{IKModel}} \&)=delete
-\item 
-\mbox{\Hypertarget{classIKModel_a0365dc21d793facea120ae5015e36426}\label{classIKModel_a0365dc21d793facea120ae5015e36426}} 
-{\bfseries IKModel} (\mbox{\hyperlink{classIKModel}{IKModel}} \&\&)=default
-\item 
-\mbox{\Hypertarget{classIKModel_a9c4b133836ab20b12cb41b93d7d9f3a8}\label{classIKModel_a9c4b133836ab20b12cb41b93d7d9f3a8}} 
-\mbox{\hyperlink{classIKModel}{IKModel}} \& {\bfseries operator=} (\mbox{\hyperlink{classIKModel}{IKModel}} \&\&)=default
-\item 
+\mbox{\hyperlink{classIKModel_a30cabb37e69b0a41f42a0e434d80344d}{IKModel}} (const std\+::string \&urdf\+\_\+path, const std\+::string \&end\+\_\+effector\+\_\+name, const Eigen\+::\+Vector$<$ double, 6 $>$ \&pose\+\_\+weights)
+\begin{DoxyCompactList}\small\item\em Constructor to load a URDF file. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classIKModel_afe190131c5bd76c9bb4a4b7dd8741570}\label{classIKModel_afe190131c5bd76c9bb4a4b7dd8741570}} 
+void \mbox{\hyperlink{classIKModel_afe190131c5bd76c9bb4a4b7dd8741570}{print\+All\+Frames}} () const
+\begin{DoxyCompactList}\small\item\em Print all loaded frames. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classIKModel_a363ffa1dc25a9b7871439d899d9be045}{find\+And\+Print\+Frame}} (const std\+::string \&frame\+\_\+name)
+\begin{DoxyCompactList}\small\item\em Find a frame by name and print its information. \end{DoxyCompactList}\item 
+pinocchio\+::\+SE3 \mbox{\hyperlink{classIKModel_a122e8f1befe4a1b5a0cd14593fad42da}{compute\+Forward\+Kinematics}} (const Joint\+Config \&q)
+\begin{DoxyCompactList}\small\item\em Compute forward kinematics for given joint configuration. \end{DoxyCompactList}\item 
+XYZQuat \mbox{\hyperlink{classIKModel_af1be0b6adebffbe0cd07c8af631c2343}{compute\+Forward\+Kinematics}} (pinocchio\+::\+Frame\+Index frame\+\_\+id)
+\begin{DoxyCompactList}\small\item\em Compute forward kinematics for a specific frame using current joint configuration. \end{DoxyCompactList}\item 
 int \mbox{\hyperlink{classIKModel_ad3b547de8e6da6455129ba82f0b688aa}{get\+Num\+Joints}} () const
-\begin{DoxyCompactList}\small\item\em Get the number of joints in the robot model. \end{DoxyCompactList}\item 
-int \mbox{\hyperlink{classIKModel_a91481c421eb73ceaf74f7914fc3fbcea}{get\+Num\+DOFs}} () const
-\begin{DoxyCompactList}\small\item\em Get the number of degrees of freedom. \end{DoxyCompactList}\item 
-Eigen\+::\+Matrix\+Xd \mbox{\hyperlink{classIKModel_a22661c110503b9d5537842bfd583ba81}{get\+Joint\+Limits}} () const
-\begin{DoxyCompactList}\small\item\em Get joint limits. \end{DoxyCompactList}\item 
-int \mbox{\hyperlink{classIKModel_a65c3a40f1734f6d778c0707510700e8a}{get\+End\+Effector\+Frame\+Id}} () const
-\begin{DoxyCompactList}\small\item\em Get the end effector frame ID. \end{DoxyCompactList}\item 
-Eigen\+::\+Matrix4d \mbox{\hyperlink{classIKModel_aacee090df1a582296c45c15c5e8010e2}{compute\+Forward\+Kinematics}} (const Eigen\+::\+Vector\+Xd \&q)
-\begin{DoxyCompactList}\small\item\em Compute forward kinematics for given joint angles. \end{DoxyCompactList}\item 
-void \mbox{\hyperlink{classIKModel_a483b102d76da2f86deff5ae0a2955124}{compute\+Forward\+Kinematics}} (const Eigen\+::\+Vector\+Xd \&q, Eigen\+::\+Vector3d \&position, Eigen\+::\+Vector4d \&orientation)
-\begin{DoxyCompactList}\small\item\em Compute forward kinematics and return position and orientation separately. \end{DoxyCompactList}\item 
-Eigen\+::\+Matrix\+Xd \mbox{\hyperlink{classIKModel_a59b4de32eb7a7570d9538789c0f39dc4}{compute\+Jacobian}} (const Eigen\+::\+Vector\+Xd \&q)
-\begin{DoxyCompactList}\small\item\em Compute Jacobian matrix for the end effector. \end{DoxyCompactList}\item 
-bool \mbox{\hyperlink{classIKModel_a483f154501b3b0b61d687e37c832e850}{is\+Collision\+Free}} (const Eigen\+::\+Vector\+Xd \&q)
-\begin{DoxyCompactList}\small\item\em Check if a configuration is collision-\/free. \end{DoxyCompactList}\item 
-double \mbox{\hyperlink{classIKModel_a5fbeddf5f46c82a77f0f6e8227e378ac}{get\+Collision\+Distance}} (const Eigen\+::\+Vector\+Xd \&q)
-\begin{DoxyCompactList}\small\item\em Get collision distance (negative if in collision) \end{DoxyCompactList}\item 
-Eigen\+::\+Vector\+Xd \mbox{\hyperlink{classIKModel_afd0c08a2152c993e2e01293e3780dd09}{get\+Collision\+Gradient}} (const Eigen\+::\+Vector\+Xd \&q)
-\begin{DoxyCompactList}\small\item\em Get collision gradient (derivative of collision distance w.\+r.\+t. joint angles) \end{DoxyCompactList}\item 
-double \mbox{\hyperlink{classIKModel_a125306b2d71e926c87ce50bbdd4c3209}{compute\+Cost}} (const Eigen\+::\+Vector\+Xd \&q, const Eigen\+::\+Vector3d \&target\+\_\+position, const Eigen\+::\+Vector4d \&target\+\_\+orientation, double weight\+\_\+position=1.\+0, double weight\+\_\+orientation=1.\+0, double weight\+\_\+collision=10.\+0)
-\begin{DoxyCompactList}\small\item\em Compute cost function for IK optimization. \end{DoxyCompactList}\item 
-Eigen\+::\+Vector\+Xd \mbox{\hyperlink{classIKModel_a5f54c45d540f5e654fcf73323d4f1b01}{compute\+Gradient}} (const Eigen\+::\+Vector\+Xd \&q, const Eigen\+::\+Vector3d \&target\+\_\+position, const Eigen\+::\+Vector4d \&target\+\_\+orientation, double weight\+\_\+position=1.\+0, double weight\+\_\+orientation=1.\+0, double weight\+\_\+collision=10.\+0)
-\begin{DoxyCompactList}\small\item\em Compute gradient of cost function. \end{DoxyCompactList}\item 
-Eigen\+::\+Matrix\+Xd \mbox{\hyperlink{classIKModel_a270aa488dba69db3cdac517e0e2c4cea}{compute\+Hessian}} (const Eigen\+::\+Vector\+Xd \&q, const Eigen\+::\+Vector3d \&target\+\_\+position, const Eigen\+::\+Vector4d \&target\+\_\+orientation, double weight\+\_\+position=1.\+0, double weight\+\_\+orientation=1.\+0, double weight\+\_\+collision=10.\+0)
-\begin{DoxyCompactList}\small\item\em Compute Hessian matrix of cost function. \end{DoxyCompactList}\item 
-bool \mbox{\hyperlink{classIKModel_a2a54de4cdd238e1b4bdbfbccd3b7af38}{is\+Within\+Joint\+Limits}} (const Eigen\+::\+Vector\+Xd \&q) const
-\begin{DoxyCompactList}\small\item\em Check if joint angles are within limits. \end{DoxyCompactList}\item 
-void \mbox{\hyperlink{classIKModel_a5903ea08c8958226c8e88899ea8f2ed8}{clamp\+To\+Joint\+Limits}} (Eigen\+::\+Vector\+Xd \&q) const
-\begin{DoxyCompactList}\small\item\em Clamp joint angles to limits. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\begin{DoxyCompactList}\small\item\em Get the number of joints in the model. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{classIKModel_ae41d15fbe9866641c925fc73f90e94a9}{get\+Num\+Velocity\+Variables}} () const
+\begin{DoxyCompactList}\small\item\em Get the number of velocity variables in the model. \end{DoxyCompactList}\item 
+double \mbox{\hyperlink{classIKModel_ac85dca1f93da459bc5b7948f02ef6e54}{cost}} (const Joint\+Config \&q, const pinocchio\+::\+SE3 \&target\+\_\+pose)
+\begin{DoxyCompactList}\small\item\em Compute the cost between a joint configuration and a target pose (XYZQuat) \end{DoxyCompactList}\item 
+Joint\+Config \mbox{\hyperlink{classIKModel_a5669f51a3d7ff6317aa5aba260f5cbef}{cost\+\_\+grad}} (const Joint\+Config \&q, const pinocchio\+::\+SE3 \&target\+\_\+pose)
+\begin{DoxyCompactList}\small\item\em Compute the gradient of the cost function with respect to joint configuration. \end{DoxyCompactList}\item 
+Eigen\+::\+Matrix$<$ double, 6, 6 $>$ \mbox{\hyperlink{classIKModel_a78711f2580217a0aaadd90b431253038}{cost\+\_\+hess}} (const Joint\+Config \&q)
+\begin{DoxyCompactList}\small\item\em Compute the Gauss-\/\+Newton approximation of the Hessian of the cost function. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classIKModel_a71484e6eee2abbf72f4a42bdf7f3a970}\label{classIKModel_a71484e6eee2abbf72f4a42bdf7f3a970}} 
+const Joint\+Config \& \mbox{\hyperlink{classIKModel_a71484e6eee2abbf72f4a42bdf7f3a970}{get\+Current\+Joint\+Config}} () const
+\begin{DoxyCompactList}\small\item\em Get the current joint configuration. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classIKModel_ae3041a2d238feaee2173bc87b98c8901}\label{classIKModel_ae3041a2d238feaee2173bc87b98c8901}} 
+const pinocchio\+::\+SE3 \& \mbox{\hyperlink{classIKModel_ae3041a2d238feaee2173bc87b98c8901}{get\+End\+Effector\+Frame}} () const
+\begin{DoxyCompactList}\small\item\em Get the current end effector pose in XYZQuat format. \end{DoxyCompactList}\item 
+Eigen\+::\+Matrix$<$ double, 6, 6 $>$ \mbox{\hyperlink{classIKModel_a47a761d0d92b0e3e21e45ca8560fdc6c}{compute\+Geometric\+Jacobian}} (const Joint\+Config \&q)
+\begin{DoxyCompactList}\small\item\em Compute the geometric Jacobian of the end effector. \end{DoxyCompactList}\item 
+Eigen\+::\+Matrix$<$ double, 7, 6 $>$ \mbox{\hyperlink{classIKModel_aad7403e8b92da351790933359781e67e}{compute\+End\+Effector\+Full\+Jacobian}} (const Eigen\+::\+Vector\+Xd \&q)
+\begin{DoxyCompactList}\small\item\em Compute the full 7×nv Jacobian mapping joint velocities to end-\/effector pose rates. \end{DoxyCompactList}\end{DoxyCompactItemize}
 \doxysubsection*{Static Public Member Functions}
 \begin{DoxyCompactItemize}
 \item 
-static Eigen\+::\+Matrix3d \mbox{\hyperlink{classIKModel_a40aa3bc6f56d62aab55b8e1a7c9abe3e}{quaternion\+To\+Rotation\+Matrix}} (const Eigen\+::\+Vector4d \&quat)
-\begin{DoxyCompactList}\small\item\em Convert quaternion to rotation matrix. \end{DoxyCompactList}\item 
-static Eigen\+::\+Vector4d \mbox{\hyperlink{classIKModel_a6d6f7103348f137a84f2fccc02a7aff8}{rotation\+Matrix\+To\+Quaternion}} (const Eigen\+::\+Matrix3d \&rot)
-\begin{DoxyCompactList}\small\item\em Convert rotation matrix to quaternion. \end{DoxyCompactList}\end{DoxyCompactItemize}
+static XYZQuat \mbox{\hyperlink{classIKModel_a8b96fe0c0419d5754cdfbe1355055a81}{homogeneous\+To\+XYZQuat}} (const pinocchio\+::\+SE3 \&homogeneous\+\_\+transform)
+\begin{DoxyCompactList}\small\item\em Convert homogeneous transform to XYZQuat representation. \end{DoxyCompactList}\item 
+static pinocchio\+::\+SE3 \mbox{\hyperlink{classIKModel_ab6cdb13dacf7ca5c94f385aa733d4f74}{xyz\+Quat\+To\+Homogeneous}} (const XYZQuat \&xyzquat)
+\begin{DoxyCompactList}\small\item\em Convert XYZQuat representation to homogeneous transform. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Static Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classIKModel_a42eb83836121edae0082981a4c8ca597}\label{classIKModel_a42eb83836121edae0082981a4c8ca597}} 
+static const Joint\+Config {\bfseries NEUTRAL\+\_\+\+JOINT\+\_\+\+CONFIG} = Joint\+Config\+::\+Zero()
+\end{DoxyCompactItemize}
 
-
-\doxysubsection{Detailed Description}
-Inverse Kinematics Model class for robotic arm control. 
-
-This class provides functionality for\+:
-\begin{DoxyItemize}
-\item Loading and storing robot model from URDF
-\item Forward kinematics using Pinocchio
-\item Collision checking
-\item Cost function, gradient, and Hessian computation for IK optimization 
-\end{DoxyItemize}
 
 \doxysubsection{Constructor \& Destructor Documentation}
-\mbox{\Hypertarget{classIKModel_a92e3e28a9013f4cddbea1aa42577265c}\label{classIKModel_a92e3e28a9013f4cddbea1aa42577265c}} 
+\mbox{\Hypertarget{classIKModel_a30cabb37e69b0a41f42a0e434d80344d}\label{classIKModel_a30cabb37e69b0a41f42a0e434d80344d}} 
 \index{IKModel@{IKModel}!IKModel@{IKModel}}
 \index{IKModel@{IKModel}!IKModel@{IKModel}}
 \doxysubsubsection{\texorpdfstring{IKModel()}{IKModel()}}
-{\footnotesize\ttfamily IKModel\+::\+IKModel (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{urdf\+\_\+path }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [explicit]}}
+{\footnotesize\ttfamily IKModel\+::\+IKModel (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{urdf\+\_\+path,  }\item[{const std\+::string \&}]{end\+\_\+effector\+\_\+name,  }\item[{const Eigen\+::\+Vector$<$ double, 6 $>$ \&}]{pose\+\_\+weights }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [explicit]}}
 
 
 
-Constructor. 
+Constructor to load a URDF file. 
 
 
 \begin{DoxyParams}{Parameters}
 {\em urdf\+\_\+path} & Path to the URDF file describing the robot \\
 \hline
-{\em end\+\_\+effector\+\_\+frame} & Name of the end effector frame \\
+{\em end\+\_\+effector\+\_\+name} & Name of the end effector frame in the URDF \\
+\hline
+{\em pose\+\_\+weights} & 6D vector for pose weights \mbox{[}x, y, z, ωx, ωy, ωz\mbox{]} \\
 \hline
 \end{DoxyParams}
 
 
 \doxysubsection{Member Function Documentation}
-\mbox{\Hypertarget{classIKModel_a5903ea08c8958226c8e88899ea8f2ed8}\label{classIKModel_a5903ea08c8958226c8e88899ea8f2ed8}} 
-\index{IKModel@{IKModel}!clampToJointLimits@{clampToJointLimits}}
-\index{clampToJointLimits@{clampToJointLimits}!IKModel@{IKModel}}
-\doxysubsubsection{\texorpdfstring{clampToJointLimits()}{clampToJointLimits()}}
-{\footnotesize\ttfamily void IKModel\+::clamp\+To\+Joint\+Limits (\begin{DoxyParamCaption}\item[{Eigen\+::\+Vector\+Xd \&}]{q }\end{DoxyParamCaption}) const}
+\mbox{\Hypertarget{classIKModel_aad7403e8b92da351790933359781e67e}\label{classIKModel_aad7403e8b92da351790933359781e67e}} 
+\index{IKModel@{IKModel}!computeEndEffectorFullJacobian@{computeEndEffectorFullJacobian}}
+\index{computeEndEffectorFullJacobian@{computeEndEffectorFullJacobian}!IKModel@{IKModel}}
+\doxysubsubsection{\texorpdfstring{computeEndEffectorFullJacobian()}{computeEndEffectorFullJacobian()}}
+{\footnotesize\ttfamily Eigen\+::\+Matrix$<$ double, 7, 6 $>$ IKModel\+::compute\+End\+Effector\+Full\+Jacobian (\begin{DoxyParamCaption}\item[{const Eigen\+::\+Vector\+Xd \&}]{q }\end{DoxyParamCaption})}
 
 
 
-Clamp joint angles to limits. 
-
-
-\begin{DoxyParams}{Parameters}
-{\em q} & Joint angles vector (modified in place) \\
-\hline
-\end{DoxyParams}
-\mbox{\Hypertarget{classIKModel_a125306b2d71e926c87ce50bbdd4c3209}\label{classIKModel_a125306b2d71e926c87ce50bbdd4c3209}} 
-\index{IKModel@{IKModel}!computeCost@{computeCost}}
-\index{computeCost@{computeCost}!IKModel@{IKModel}}
-\doxysubsubsection{\texorpdfstring{computeCost()}{computeCost()}}
-{\footnotesize\ttfamily double IKModel\+::compute\+Cost (\begin{DoxyParamCaption}\item[{const Eigen\+::\+Vector\+Xd \&}]{q,  }\item[{const Eigen\+::\+Vector3d \&}]{target\+\_\+position,  }\item[{const Eigen\+::\+Vector4d \&}]{target\+\_\+orientation,  }\item[{double}]{weight\+\_\+position = {\ttfamily 1.0},  }\item[{double}]{weight\+\_\+orientation = {\ttfamily 1.0},  }\item[{double}]{weight\+\_\+collision = {\ttfamily 10.0} }\end{DoxyParamCaption})}
-
-
-
-Compute cost function for IK optimization. 
+Compute the full 7×nv Jacobian mapping joint velocities to end-\/effector pose rates. 
 
 
 \begin{DoxyParams}{Parameters}
-{\em q} & Joint angles vector \\
-\hline
-{\em target\+\_\+position} & Target end effector position \\
-\hline
-{\em target\+\_\+orientation} & Target end effector orientation (quaternion) \\
-\hline
-{\em weight\+\_\+position} & Weight for position error \\
-\hline
-{\em weight\+\_\+orientation} & Weight for orientation error \\
-\hline
-{\em weight\+\_\+collision} & Weight for collision penalty \\
+{\em q} & Joint configuration vector (can be dynamic size) \\
 \hline
 \end{DoxyParams}
 \begin{DoxyReturn}{Returns}
-Total cost value 
+7×nv Jacobian matrix (position + quaternion rates) 
 \end{DoxyReturn}
-\mbox{\Hypertarget{classIKModel_aacee090df1a582296c45c15c5e8010e2}\label{classIKModel_aacee090df1a582296c45c15c5e8010e2}} 
+\mbox{\Hypertarget{classIKModel_a122e8f1befe4a1b5a0cd14593fad42da}\label{classIKModel_a122e8f1befe4a1b5a0cd14593fad42da}} 
 \index{IKModel@{IKModel}!computeForwardKinematics@{computeForwardKinematics}}
 \index{computeForwardKinematics@{computeForwardKinematics}!IKModel@{IKModel}}
 \doxysubsubsection{\texorpdfstring{computeForwardKinematics()}{computeForwardKinematics()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
-{\footnotesize\ttfamily Eigen\+::\+Matrix4d IKModel\+::compute\+Forward\+Kinematics (\begin{DoxyParamCaption}\item[{const Eigen\+::\+Vector\+Xd \&}]{q }\end{DoxyParamCaption})}
+{\footnotesize\ttfamily pinocchio\+::\+SE3 IKModel\+::compute\+Forward\+Kinematics (\begin{DoxyParamCaption}\item[{const Joint\+Config \&}]{q }\end{DoxyParamCaption})}
 
 
 
-Compute forward kinematics for given joint angles. 
+Compute forward kinematics for given joint configuration. 
 
 
 \begin{DoxyParams}{Parameters}
-{\em q} & Joint angles vector \\
+{\em q} & Joint configuration vector \\
 \hline
 \end{DoxyParams}
 \begin{DoxyReturn}{Returns}
-4x4 transformation matrix of end effector pose 
+4x4 homogeneous transformation matrix of the end effector pose 
 \end{DoxyReturn}
-\mbox{\Hypertarget{classIKModel_a483b102d76da2f86deff5ae0a2955124}\label{classIKModel_a483b102d76da2f86deff5ae0a2955124}} 
+\mbox{\Hypertarget{classIKModel_af1be0b6adebffbe0cd07c8af631c2343}\label{classIKModel_af1be0b6adebffbe0cd07c8af631c2343}} 
 \index{IKModel@{IKModel}!computeForwardKinematics@{computeForwardKinematics}}
 \index{computeForwardKinematics@{computeForwardKinematics}!IKModel@{IKModel}}
 \doxysubsubsection{\texorpdfstring{computeForwardKinematics()}{computeForwardKinematics()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
-{\footnotesize\ttfamily void IKModel\+::compute\+Forward\+Kinematics (\begin{DoxyParamCaption}\item[{const Eigen\+::\+Vector\+Xd \&}]{q,  }\item[{Eigen\+::\+Vector3d \&}]{position,  }\item[{Eigen\+::\+Vector4d \&}]{orientation }\end{DoxyParamCaption})}
+{\footnotesize\ttfamily XYZQuat IKModel\+::compute\+Forward\+Kinematics (\begin{DoxyParamCaption}\item[{pinocchio\+::\+Frame\+Index}]{frame\+\_\+id }\end{DoxyParamCaption})}
 
 
 
-Compute forward kinematics and return position and orientation separately. 
-
-
-\begin{DoxyParams}{Parameters}
-{\em q} & Joint angles vector \\
-\hline
-{\em position} & Output position vector (x, y, z) \\
-\hline
-{\em orientation} & Output orientation quaternion (x, y, z, w) \\
-\hline
-\end{DoxyParams}
-\mbox{\Hypertarget{classIKModel_a5f54c45d540f5e654fcf73323d4f1b01}\label{classIKModel_a5f54c45d540f5e654fcf73323d4f1b01}} 
-\index{IKModel@{IKModel}!computeGradient@{computeGradient}}
-\index{computeGradient@{computeGradient}!IKModel@{IKModel}}
-\doxysubsubsection{\texorpdfstring{computeGradient()}{computeGradient()}}
-{\footnotesize\ttfamily Eigen\+::\+Vector\+Xd IKModel\+::compute\+Gradient (\begin{DoxyParamCaption}\item[{const Eigen\+::\+Vector\+Xd \&}]{q,  }\item[{const Eigen\+::\+Vector3d \&}]{target\+\_\+position,  }\item[{const Eigen\+::\+Vector4d \&}]{target\+\_\+orientation,  }\item[{double}]{weight\+\_\+position = {\ttfamily 1.0},  }\item[{double}]{weight\+\_\+orientation = {\ttfamily 1.0},  }\item[{double}]{weight\+\_\+collision = {\ttfamily 10.0} }\end{DoxyParamCaption})}
-
-
-
-Compute gradient of cost function. 
+Compute forward kinematics for a specific frame using current joint configuration. 
 
 
 \begin{DoxyParams}{Parameters}
-{\em q} & Joint angles vector \\
-\hline
-{\em target\+\_\+position} & Target end effector position \\
-\hline
-{\em target\+\_\+orientation} & Target end effector orientation (quaternion) \\
-\hline
-{\em weight\+\_\+position} & Weight for position error \\
-\hline
-{\em weight\+\_\+orientation} & Weight for orientation error \\
-\hline
-{\em weight\+\_\+collision} & Weight for collision penalty \\
+{\em frame\+\_\+id} & ID of the frame to compute pose for \\
 \hline
 \end{DoxyParams}
 \begin{DoxyReturn}{Returns}
-Gradient vector 
+XYZQuat representation of the frame pose \mbox{[}x, y, z, qx, qy, qz, qw\mbox{]} 
 \end{DoxyReturn}
-\mbox{\Hypertarget{classIKModel_a270aa488dba69db3cdac517e0e2c4cea}\label{classIKModel_a270aa488dba69db3cdac517e0e2c4cea}} 
-\index{IKModel@{IKModel}!computeHessian@{computeHessian}}
-\index{computeHessian@{computeHessian}!IKModel@{IKModel}}
-\doxysubsubsection{\texorpdfstring{computeHessian()}{computeHessian()}}
-{\footnotesize\ttfamily Eigen\+::\+Matrix\+Xd IKModel\+::compute\+Hessian (\begin{DoxyParamCaption}\item[{const Eigen\+::\+Vector\+Xd \&}]{q,  }\item[{const Eigen\+::\+Vector3d \&}]{target\+\_\+position,  }\item[{const Eigen\+::\+Vector4d \&}]{target\+\_\+orientation,  }\item[{double}]{weight\+\_\+position = {\ttfamily 1.0},  }\item[{double}]{weight\+\_\+orientation = {\ttfamily 1.0},  }\item[{double}]{weight\+\_\+collision = {\ttfamily 10.0} }\end{DoxyParamCaption})}
+\mbox{\Hypertarget{classIKModel_a47a761d0d92b0e3e21e45ca8560fdc6c}\label{classIKModel_a47a761d0d92b0e3e21e45ca8560fdc6c}} 
+\index{IKModel@{IKModel}!computeGeometricJacobian@{computeGeometricJacobian}}
+\index{computeGeometricJacobian@{computeGeometricJacobian}!IKModel@{IKModel}}
+\doxysubsubsection{\texorpdfstring{computeGeometricJacobian()}{computeGeometricJacobian()}}
+{\footnotesize\ttfamily Eigen\+::\+Matrix$<$ double, 6, 6 $>$ IKModel\+::compute\+Geometric\+Jacobian (\begin{DoxyParamCaption}\item[{const Joint\+Config \&}]{q }\end{DoxyParamCaption})}
 
 
 
-Compute Hessian matrix of cost function. 
+Compute the geometric Jacobian of the end effector. 
 
 
 \begin{DoxyParams}{Parameters}
-{\em q} & Joint angles vector \\
-\hline
-{\em target\+\_\+position} & Target end effector position \\
-\hline
-{\em target\+\_\+orientation} & Target end effector orientation (quaternion) \\
-\hline
-{\em weight\+\_\+position} & Weight for position error \\
-\hline
-{\em weight\+\_\+orientation} & Weight for orientation error \\
-\hline
-{\em weight\+\_\+collision} & Weight for collision penalty \\
+{\em q} & Joint configuration vector \\
 \hline
 \end{DoxyParams}
 \begin{DoxyReturn}{Returns}
-Hessian matrix 
+6x6 geometric Jacobian matrix (linear and angular velocities) 
 \end{DoxyReturn}
-\mbox{\Hypertarget{classIKModel_a59b4de32eb7a7570d9538789c0f39dc4}\label{classIKModel_a59b4de32eb7a7570d9538789c0f39dc4}} 
-\index{IKModel@{IKModel}!computeJacobian@{computeJacobian}}
-\index{computeJacobian@{computeJacobian}!IKModel@{IKModel}}
-\doxysubsubsection{\texorpdfstring{computeJacobian()}{computeJacobian()}}
-{\footnotesize\ttfamily Eigen\+::\+Matrix\+Xd IKModel\+::compute\+Jacobian (\begin{DoxyParamCaption}\item[{const Eigen\+::\+Vector\+Xd \&}]{q }\end{DoxyParamCaption})}
+\mbox{\Hypertarget{classIKModel_ac85dca1f93da459bc5b7948f02ef6e54}\label{classIKModel_ac85dca1f93da459bc5b7948f02ef6e54}} 
+\index{IKModel@{IKModel}!cost@{cost}}
+\index{cost@{cost}!IKModel@{IKModel}}
+\doxysubsubsection{\texorpdfstring{cost()}{cost()}}
+{\footnotesize\ttfamily double IKModel\+::cost (\begin{DoxyParamCaption}\item[{const Joint\+Config \&}]{q,  }\item[{const pinocchio\+::\+SE3 \&}]{target\+\_\+pose }\end{DoxyParamCaption})}
 
 
 
-Compute Jacobian matrix for the end effector. 
+Compute the cost between a joint configuration and a target pose (XYZQuat) 
 
 
 \begin{DoxyParams}{Parameters}
-{\em q} & Joint angles vector \\
+{\em q} & Joint configuration \\
+\hline
+{\em target\+\_\+pose} & Target pose in XYZQuat \mbox{[}x, y, z, qx, qy, qz, qw\mbox{]} \\
 \hline
 \end{DoxyParams}
 \begin{DoxyReturn}{Returns}
-6xN Jacobian matrix (linear and angular velocities) 
+The cost (double) 
 \end{DoxyReturn}
-\mbox{\Hypertarget{classIKModel_a5fbeddf5f46c82a77f0f6e8227e378ac}\label{classIKModel_a5fbeddf5f46c82a77f0f6e8227e378ac}} 
-\index{IKModel@{IKModel}!getCollisionDistance@{getCollisionDistance}}
-\index{getCollisionDistance@{getCollisionDistance}!IKModel@{IKModel}}
-\doxysubsubsection{\texorpdfstring{getCollisionDistance()}{getCollisionDistance()}}
-{\footnotesize\ttfamily double IKModel\+::get\+Collision\+Distance (\begin{DoxyParamCaption}\item[{const Eigen\+::\+Vector\+Xd \&}]{q }\end{DoxyParamCaption})}
+\mbox{\Hypertarget{classIKModel_a5669f51a3d7ff6317aa5aba260f5cbef}\label{classIKModel_a5669f51a3d7ff6317aa5aba260f5cbef}} 
+\index{IKModel@{IKModel}!cost\_grad@{cost\_grad}}
+\index{cost\_grad@{cost\_grad}!IKModel@{IKModel}}
+\doxysubsubsection{\texorpdfstring{cost\_grad()}{cost\_grad()}}
+{\footnotesize\ttfamily Joint\+Config IKModel\+::cost\+\_\+grad (\begin{DoxyParamCaption}\item[{const Joint\+Config \&}]{q,  }\item[{const pinocchio\+::\+SE3 \&}]{target\+\_\+pose }\end{DoxyParamCaption})}
 
 
 
-Get collision distance (negative if in collision) 
+Compute the gradient of the cost function with respect to joint configuration. 
 
 
 \begin{DoxyParams}{Parameters}
-{\em q} & Joint angles vector \\
+{\em q} & Joint configuration \\
+\hline
+{\em target\+\_\+pose} & Target pose in XYZQuat \mbox{[}x, y, z, qx, qy, qz, qw\mbox{]} \\
 \hline
 \end{DoxyParams}
 \begin{DoxyReturn}{Returns}
-Minimum distance to obstacles (negative if in collision) 
+The gradient vector (7×1) 
 \end{DoxyReturn}
-\mbox{\Hypertarget{classIKModel_afd0c08a2152c993e2e01293e3780dd09}\label{classIKModel_afd0c08a2152c993e2e01293e3780dd09}} 
-\index{IKModel@{IKModel}!getCollisionGradient@{getCollisionGradient}}
-\index{getCollisionGradient@{getCollisionGradient}!IKModel@{IKModel}}
-\doxysubsubsection{\texorpdfstring{getCollisionGradient()}{getCollisionGradient()}}
-{\footnotesize\ttfamily Eigen\+::\+Vector\+Xd IKModel\+::get\+Collision\+Gradient (\begin{DoxyParamCaption}\item[{const Eigen\+::\+Vector\+Xd \&}]{q }\end{DoxyParamCaption})}
+\mbox{\Hypertarget{classIKModel_a78711f2580217a0aaadd90b431253038}\label{classIKModel_a78711f2580217a0aaadd90b431253038}} 
+\index{IKModel@{IKModel}!cost\_hess@{cost\_hess}}
+\index{cost\_hess@{cost\_hess}!IKModel@{IKModel}}
+\doxysubsubsection{\texorpdfstring{cost\_hess()}{cost\_hess()}}
+{\footnotesize\ttfamily Eigen\+::\+Matrix$<$ double, 6, 6 $>$ IKModel\+::cost\+\_\+hess (\begin{DoxyParamCaption}\item[{const Joint\+Config \&}]{q }\end{DoxyParamCaption})}
 
 
 
-Get collision gradient (derivative of collision distance w.\+r.\+t. joint angles) 
+Compute the Gauss-\/\+Newton approximation of the Hessian of the cost function. 
 
 
 \begin{DoxyParams}{Parameters}
-{\em q} & Joint angles vector \\
+{\em q} & Joint configuration \\
 \hline
 \end{DoxyParams}
 \begin{DoxyReturn}{Returns}
-Gradient vector 
+6x6 Hessian matrix approximation 
 \end{DoxyReturn}
-\mbox{\Hypertarget{classIKModel_a65c3a40f1734f6d778c0707510700e8a}\label{classIKModel_a65c3a40f1734f6d778c0707510700e8a}} 
-\index{IKModel@{IKModel}!getEndEffectorFrameId@{getEndEffectorFrameId}}
-\index{getEndEffectorFrameId@{getEndEffectorFrameId}!IKModel@{IKModel}}
-\doxysubsubsection{\texorpdfstring{getEndEffectorFrameId()}{getEndEffectorFrameId()}}
-{\footnotesize\ttfamily int IKModel\+::get\+End\+Effector\+Frame\+Id (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+\mbox{\Hypertarget{classIKModel_a363ffa1dc25a9b7871439d899d9be045}\label{classIKModel_a363ffa1dc25a9b7871439d899d9be045}} 
+\index{IKModel@{IKModel}!findAndPrintFrame@{findAndPrintFrame}}
+\index{findAndPrintFrame@{findAndPrintFrame}!IKModel@{IKModel}}
+\doxysubsubsection{\texorpdfstring{findAndPrintFrame()}{findAndPrintFrame()}}
+{\footnotesize\ttfamily void IKModel\+::find\+And\+Print\+Frame (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{frame\+\_\+name }\end{DoxyParamCaption})}
 
 
 
-Get the end effector frame ID. 
-
-\begin{DoxyReturn}{Returns}
-Frame ID 
-\end{DoxyReturn}
-\mbox{\Hypertarget{classIKModel_a22661c110503b9d5537842bfd583ba81}\label{classIKModel_a22661c110503b9d5537842bfd583ba81}} 
-\index{IKModel@{IKModel}!getJointLimits@{getJointLimits}}
-\index{getJointLimits@{getJointLimits}!IKModel@{IKModel}}
-\doxysubsubsection{\texorpdfstring{getJointLimits()}{getJointLimits()}}
-{\footnotesize\ttfamily Eigen\+::\+Matrix\+Xd IKModel\+::get\+Joint\+Limits (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+Find a frame by name and print its information. 
 
 
-
-Get joint limits. 
-
-\begin{DoxyReturn}{Returns}
-Matrix with lower and upper joint limits \mbox{[}lower, upper\mbox{]} 
-\end{DoxyReturn}
-\mbox{\Hypertarget{classIKModel_a91481c421eb73ceaf74f7914fc3fbcea}\label{classIKModel_a91481c421eb73ceaf74f7914fc3fbcea}} 
-\index{IKModel@{IKModel}!getNumDOFs@{getNumDOFs}}
-\index{getNumDOFs@{getNumDOFs}!IKModel@{IKModel}}
-\doxysubsubsection{\texorpdfstring{getNumDOFs()}{getNumDOFs()}}
-{\footnotesize\ttfamily int IKModel\+::get\+Num\+DOFs (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
-
-
-
-Get the number of degrees of freedom. 
-
-\begin{DoxyReturn}{Returns}
-Number of DOFs 
-\end{DoxyReturn}
+\begin{DoxyParams}{Parameters}
+{\em frame\+\_\+name} & Name of the frame to find \\
+\hline
+\end{DoxyParams}
 \mbox{\Hypertarget{classIKModel_ad3b547de8e6da6455129ba82f0b688aa}\label{classIKModel_ad3b547de8e6da6455129ba82f0b688aa}} 
 \index{IKModel@{IKModel}!getNumJoints@{getNumJoints}}
 \index{getNumJoints@{getNumJoints}!IKModel@{IKModel}}
@@ -337,82 +225,59 @@ Number of DOFs
 
 
 
-Get the number of joints in the robot model. 
+Get the number of joints in the model. 
 
 \begin{DoxyReturn}{Returns}
 Number of joints 
 \end{DoxyReturn}
-\mbox{\Hypertarget{classIKModel_a483f154501b3b0b61d687e37c832e850}\label{classIKModel_a483f154501b3b0b61d687e37c832e850}} 
-\index{IKModel@{IKModel}!isCollisionFree@{isCollisionFree}}
-\index{isCollisionFree@{isCollisionFree}!IKModel@{IKModel}}
-\doxysubsubsection{\texorpdfstring{isCollisionFree()}{isCollisionFree()}}
-{\footnotesize\ttfamily bool IKModel\+::is\+Collision\+Free (\begin{DoxyParamCaption}\item[{const Eigen\+::\+Vector\+Xd \&}]{q }\end{DoxyParamCaption})}
+\mbox{\Hypertarget{classIKModel_ae41d15fbe9866641c925fc73f90e94a9}\label{classIKModel_ae41d15fbe9866641c925fc73f90e94a9}} 
+\index{IKModel@{IKModel}!getNumVelocityVariables@{getNumVelocityVariables}}
+\index{getNumVelocityVariables@{getNumVelocityVariables}!IKModel@{IKModel}}
+\doxysubsubsection{\texorpdfstring{getNumVelocityVariables()}{getNumVelocityVariables()}}
+{\footnotesize\ttfamily int IKModel\+::get\+Num\+Velocity\+Variables (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
 
 
 
-Check if a configuration is collision-\/free. 
+Get the number of velocity variables in the model. 
 
-
-\begin{DoxyParams}{Parameters}
-{\em q} & Joint angles vector \\
-\hline
-\end{DoxyParams}
 \begin{DoxyReturn}{Returns}
-True if collision-\/free, false otherwise 
+Number of velocity variables 
 \end{DoxyReturn}
-\mbox{\Hypertarget{classIKModel_a2a54de4cdd238e1b4bdbfbccd3b7af38}\label{classIKModel_a2a54de4cdd238e1b4bdbfbccd3b7af38}} 
-\index{IKModel@{IKModel}!isWithinJointLimits@{isWithinJointLimits}}
-\index{isWithinJointLimits@{isWithinJointLimits}!IKModel@{IKModel}}
-\doxysubsubsection{\texorpdfstring{isWithinJointLimits()}{isWithinJointLimits()}}
-{\footnotesize\ttfamily bool IKModel\+::is\+Within\+Joint\+Limits (\begin{DoxyParamCaption}\item[{const Eigen\+::\+Vector\+Xd \&}]{q }\end{DoxyParamCaption}) const}
+\mbox{\Hypertarget{classIKModel_a8b96fe0c0419d5754cdfbe1355055a81}\label{classIKModel_a8b96fe0c0419d5754cdfbe1355055a81}} 
+\index{IKModel@{IKModel}!homogeneousToXYZQuat@{homogeneousToXYZQuat}}
+\index{homogeneousToXYZQuat@{homogeneousToXYZQuat}!IKModel@{IKModel}}
+\doxysubsubsection{\texorpdfstring{homogeneousToXYZQuat()}{homogeneousToXYZQuat()}}
+{\footnotesize\ttfamily XYZQuat IKModel\+::homogeneous\+To\+XYZQuat (\begin{DoxyParamCaption}\item[{const pinocchio\+::\+SE3 \&}]{homogeneous\+\_\+transform }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
 
 
 
-Check if joint angles are within limits. 
+Convert homogeneous transform to XYZQuat representation. 
 
 
 \begin{DoxyParams}{Parameters}
-{\em q} & Joint angles vector \\
+{\em homogeneous\+\_\+transform} & 4x4 homogeneous transformation matrix \\
 \hline
 \end{DoxyParams}
 \begin{DoxyReturn}{Returns}
-True if within limits, false otherwise 
+XYZQuat vector \mbox{[}x, y, z, qx, qy, qz, qw\mbox{]} 
 \end{DoxyReturn}
-\mbox{\Hypertarget{classIKModel_a40aa3bc6f56d62aab55b8e1a7c9abe3e}\label{classIKModel_a40aa3bc6f56d62aab55b8e1a7c9abe3e}} 
-\index{IKModel@{IKModel}!quaternionToRotationMatrix@{quaternionToRotationMatrix}}
-\index{quaternionToRotationMatrix@{quaternionToRotationMatrix}!IKModel@{IKModel}}
-\doxysubsubsection{\texorpdfstring{quaternionToRotationMatrix()}{quaternionToRotationMatrix()}}
-{\footnotesize\ttfamily Eigen\+::\+Matrix3d IKModel\+::quaternion\+To\+Rotation\+Matrix (\begin{DoxyParamCaption}\item[{const Eigen\+::\+Vector4d \&}]{quat }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+\mbox{\Hypertarget{classIKModel_ab6cdb13dacf7ca5c94f385aa733d4f74}\label{classIKModel_ab6cdb13dacf7ca5c94f385aa733d4f74}} 
+\index{IKModel@{IKModel}!xyzQuatToHomogeneous@{xyzQuatToHomogeneous}}
+\index{xyzQuatToHomogeneous@{xyzQuatToHomogeneous}!IKModel@{IKModel}}
+\doxysubsubsection{\texorpdfstring{xyzQuatToHomogeneous()}{xyzQuatToHomogeneous()}}
+{\footnotesize\ttfamily pinocchio\+::\+SE3 IKModel\+::xyz\+Quat\+To\+Homogeneous (\begin{DoxyParamCaption}\item[{const XYZQuat \&}]{xyzquat }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
 
 
 
-Convert quaternion to rotation matrix. 
-
-
-\begin{DoxyParams}{Parameters}
-{\em quat} & Quaternion (x, y, z, w) \\
-\hline
-\end{DoxyParams}
-\begin{DoxyReturn}{Returns}
-3x3 rotation matrix 
-\end{DoxyReturn}
-\mbox{\Hypertarget{classIKModel_a6d6f7103348f137a84f2fccc02a7aff8}\label{classIKModel_a6d6f7103348f137a84f2fccc02a7aff8}} 
-\index{IKModel@{IKModel}!rotationMatrixToQuaternion@{rotationMatrixToQuaternion}}
-\index{rotationMatrixToQuaternion@{rotationMatrixToQuaternion}!IKModel@{IKModel}}
-\doxysubsubsection{\texorpdfstring{rotationMatrixToQuaternion()}{rotationMatrixToQuaternion()}}
-{\footnotesize\ttfamily Eigen\+::\+Vector4d IKModel\+::rotation\+Matrix\+To\+Quaternion (\begin{DoxyParamCaption}\item[{const Eigen\+::\+Matrix3d \&}]{rot }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
-
-
-
-Convert rotation matrix to quaternion. 
+Convert XYZQuat representation to homogeneous transform. 
 
 
 \begin{DoxyParams}{Parameters}
-{\em rot} & 3x3 rotation matrix \\
+{\em xyzquat} & Vector \mbox{[}x, y, z, qx, qy, qz, qw\mbox{]} \\
 \hline
 \end{DoxyParams}
 \begin{DoxyReturn}{Returns}
-Quaternion (x, y, z, w) 
+4x4 homogeneous transformation matrix 
 \end{DoxyReturn}
 
 

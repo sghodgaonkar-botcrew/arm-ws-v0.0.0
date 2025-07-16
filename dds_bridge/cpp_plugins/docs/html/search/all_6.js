@@ -1,5 +1,4 @@
 var searchData=
 [
-  ['setarmpose_22',['SetArmPose',['../classMotorController.html#a477521a554c2f58b8ec81ab8afbeccd1',1,'MotorController']]],
-  ['setposition_23',['SetPosition',['../classMotorController.html#acfaac8eeb10f06da87ddd8bbd8222500',1,'MotorController']]]
+  ['motorcontroller_18',['MotorController',['../classMotorController.html',1,'MotorController'],['../classMotorController.html#a1c32db157ba4b6dba1f2d6bc8891f16d',1,'MotorController::MotorController()'],['../classMotorController.html#a3eec9a8e9b7621eb1fbb90724ce987fd',1,'MotorController::MotorController(const std::array&lt; double, MOTORS &gt; &amp;max_torque)']]]
 ];

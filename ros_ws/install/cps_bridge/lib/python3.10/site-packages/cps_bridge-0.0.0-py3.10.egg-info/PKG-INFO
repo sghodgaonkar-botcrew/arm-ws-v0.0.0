@@ -1,0 +1,15 @@
+Metadata-Version: 2.4
+Name: cps_bridge
+Version: 0.0.0
+Summary: TODO: Package description
+Maintainer: shanto
+Maintainer-email: sghodgaonkar@botcrew.com
+License: Apache-2.0
+License-File: LICENSE
+Requires-Dist: setuptools
+Dynamic: license
+Dynamic: license-file
+Dynamic: maintainer
+Dynamic: maintainer-email
+Dynamic: requires-dist
+Dynamic: summary

@@ -4,6 +4,10 @@ project(cpp_plugins CXX)
 # Enable debug symbols
 set(CMAKE_BUILD_TYPE Debug)
 set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -g -O0")
+set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+# set(CMAKE_POSITION_INDEPENDENT_CODE ON)   # if you need PIC
+
 
 # # Function to find and install package if not found
 # function(find_and_install_package package_name)
@@ -111,7 +115,7 @@ find_package(CycloneDDS-CXX)
 find_package(PkgConfig)
 
 # Find Ceres
-find_package(Ceres REQUIRED)
+# find_package(Ceres REQUIRED)
 
 # Find Pinocchio
 find_package(pinocchio REQUIRED)
@@ -306,6 +310,8 @@ target_include_directories(test_ik_solver_v2 PRIVATE
   ${CMAKE_CURRENT_SOURCE_DIR}/include
   ${IPOPT_INCLUDE_DIRS}
 )
+
+target_compile_definitions(test_ik_solver_v2 PRIVATE HAVE_STDDEF_H)
 
 target_link_libraries(test_ik_solver_v2 PUBLIC
   pinocchio::pinocchio

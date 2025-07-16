@@ -1,0 +1,30 @@
+[0.430s] Invoking command in '/home/shanto/Documents/arm-ws-v0.0.0/ros_ws/src/cps_bridge': PYTHONPATH=/home/shanto/Documents/arm-ws-v0.0.0/ros_ws/build/cps_bridge/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/shanto/Documents/arm-ws-v0.0.0/ros_ws/install/cps_bridge/lib/python3.10/site-packages:${PYTHONPATH} VIRTUAL_ENV_PROMPT=(.venv) /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py egg_info --egg-base ../../build/cps_bridge build --build-base /home/shanto/Documents/arm-ws-v0.0.0/ros_ws/build/cps_bridge/build install --record /home/shanto/Documents/arm-ws-v0.0.0/ros_ws/build/cps_bridge/install.log --single-version-externally-managed install_data
+[0.526s] /home/shanto/.local/lib/python3.10/site-packages/setuptools/_distutils/dist.py:289: UserWarning: Unknown distribution option: 'tests_require'
+[0.526s]   warnings.warn(msg)
+[0.584s] running egg_info
+[0.594s] writing ../../build/cps_bridge/cps_bridge.egg-info/PKG-INFO
+[0.594s] writing dependency_links to ../../build/cps_bridge/cps_bridge.egg-info/dependency_links.txt
+[0.594s] writing entry points to ../../build/cps_bridge/cps_bridge.egg-info/entry_points.txt
+[0.594s] writing requirements to ../../build/cps_bridge/cps_bridge.egg-info/requires.txt
+[0.594s] writing top-level names to ../../build/cps_bridge/cps_bridge.egg-info/top_level.txt
+[0.614s] reading manifest file '../../build/cps_bridge/cps_bridge.egg-info/SOURCES.txt'
+[0.615s] adding license file 'LICENSE'
+[0.615s] writing manifest file '../../build/cps_bridge/cps_bridge.egg-info/SOURCES.txt'
+[0.615s] running build
+[0.615s] running build_py
+[0.615s] copying cps_bridge/cps_pub.py -> /home/shanto/Documents/arm-ws-v0.0.0/ros_ws/build/cps_bridge/build/lib/cps_bridge
+[0.615s] copying cps_bridge/__init__.py -> /home/shanto/Documents/arm-ws-v0.0.0/ros_ws/build/cps_bridge/build/lib/cps_bridge
+[0.615s] running install
+[0.618s] running install_lib
+[0.628s] copying /home/shanto/Documents/arm-ws-v0.0.0/ros_ws/build/cps_bridge/build/lib/cps_bridge/cps_pub.py -> /home/shanto/Documents/arm-ws-v0.0.0/ros_ws/install/cps_bridge/lib/python3.10/site-packages/cps_bridge
+[0.628s] byte-compiling /home/shanto/Documents/arm-ws-v0.0.0/ros_ws/install/cps_bridge/lib/python3.10/site-packages/cps_bridge/cps_pub.py to cps_pub.cpython-310.pyc
+[0.628s] running install_data
+[0.628s] copying resource/cps_bridge -> /home/shanto/Documents/arm-ws-v0.0.0/ros_ws/install/cps_bridge/share/ament_index/resource_index/packages
+[0.628s] copying package.xml -> /home/shanto/Documents/arm-ws-v0.0.0/ros_ws/install/cps_bridge/share/cps_bridge
+[0.628s] running install_egg_info
+[0.639s] removing '/home/shanto/Documents/arm-ws-v0.0.0/ros_ws/install/cps_bridge/lib/python3.10/site-packages/cps_bridge-0.0.0-py3.10.egg-info' (and everything under it)
+[0.639s] Copying ../../build/cps_bridge/cps_bridge.egg-info to /home/shanto/Documents/arm-ws-v0.0.0/ros_ws/install/cps_bridge/lib/python3.10/site-packages/cps_bridge-0.0.0-py3.10.egg-info
+[0.639s] running install_scripts
+[0.659s] Installing cps_pub script to /home/shanto/Documents/arm-ws-v0.0.0/ros_ws/install/cps_bridge/lib/cps_bridge
+[0.660s] writing list of installed files to '/home/shanto/Documents/arm-ws-v0.0.0/ros_ws/build/cps_bridge/install.log'
+[0.672s] Invoked command in '/home/shanto/Documents/arm-ws-v0.0.0/ros_ws/src/cps_bridge' returned '0': PYTHONPATH=/home/shanto/Documents/arm-ws-v0.0.0/ros_ws/build/cps_bridge/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/shanto/Documents/arm-ws-v0.0.0/ros_ws/install/cps_bridge/lib/python3.10/site-packages:${PYTHONPATH} VIRTUAL_ENV_PROMPT=(.venv) /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py egg_info --egg-base ../../build/cps_bridge build --build-base /home/shanto/Documents/arm-ws-v0.0.0/ros_ws/build/cps_bridge/build install --record /home/shanto/Documents/arm-ws-v0.0.0/ros_ws/build/cps_bridge/install.log --single-version-externally-managed install_data

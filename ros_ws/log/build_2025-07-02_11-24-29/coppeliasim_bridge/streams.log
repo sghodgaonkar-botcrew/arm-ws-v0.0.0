@@ -1,0 +1,9 @@
+[0.015s] Invoking command in '/home/shanto/Documents/arm-ws-v0.0.0/ros_ws/build/coppeliasim_bridge': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/opt/ros/humble /usr/bin/cmake --build /home/shanto/Documents/arm-ws-v0.0.0/ros_ws/build/coppeliasim_bridge -- -j22 -l22
+[0.073s] [ 50%] Built target RemoteAPIClient
+[0.102s] [ 75%] [32m[1mLinking CXX executable zmq_pub[0m
+[0.124s] /usr/bin/ld: cannot find -lcppzmq: No such file or directory
+[0.136s] collect2: error: ld returned 1 exit status
+[0.137s] gmake[2]: *** [CMakeFiles/zmq_pub.dir/build.make:98: zmq_pub] Error 1
+[0.137s] gmake[1]: *** [CMakeFiles/Makefile2:165: CMakeFiles/zmq_pub.dir/all] Error 2
+[0.138s] gmake: *** [Makefile:146: all] Error 2
+[0.140s] Invoked command in '/home/shanto/Documents/arm-ws-v0.0.0/ros_ws/build/coppeliasim_bridge' returned '2': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/opt/ros/humble /usr/bin/cmake --build /home/shanto/Documents/arm-ws-v0.0.0/ros_ws/build/coppeliasim_bridge -- -j22 -l22

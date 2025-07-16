@@ -1,4 +1,8 @@
 var searchData=
 [
-  ['motorcontroller_44',['MotorController',['../classMotorController.html#a1c32db157ba4b6dba1f2d6bc8891f16d',1,'MotorController::MotorController()'],['../classMotorController.html#a3eec9a8e9b7621eb1fbb90724ce987fd',1,'MotorController::MotorController(const std::array&lt; double, MOTORS &gt; &amp;max_torque)']]]
+  ['getcurrentjointconfig_42',['getCurrentJointConfig',['../classIKModel.html#a71484e6eee2abbf72f4a42bdf7f3a970',1,'IKModel']]],
+  ['getendeffectorframe_43',['getEndEffectorFrame',['../classIKModel.html#ae3041a2d238feaee2173bc87b98c8901',1,'IKModel']]],
+  ['getmotors_44',['getMOTORS',['../classMotorController.html#a338de7ec3d9b85e259833ce098b8ac77',1,'MotorController']]],
+  ['getnumjoints_45',['getNumJoints',['../classIKModel.html#ad3b547de8e6da6455129ba82f0b688aa',1,'IKModel']]],
+  ['getnumvelocityvariables_46',['getNumVelocityVariables',['../classIKModel.html#ae41d15fbe9866641c925fc73f90e94a9',1,'IKModel']]]
 ];

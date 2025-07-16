@@ -1,0 +1,22 @@
+[0.013s] Invoking command in '/home/shanto/Documents/arm-ws-v0.0.0/ros_ws/build/coppeliasim_bridge': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/opt/ros/humble /usr/bin/cmake --build /home/shanto/Documents/arm-ws-v0.0.0/ros_ws/build/coppeliasim_bridge -- -j22 -l22
+[0.043s] [31mCMake Error at CMakeLists.txt:10 (find_package):
+[0.043s]   By not providing "Findjsoncons.cmake" in CMAKE_MODULE_PATH this project has
+[0.043s]   asked CMake to find a package configuration file provided by "jsoncons",
+[0.043s]   but CMake did not find one.
+[0.043s] 
+[0.043s]   Could not find a package configuration file provided by "jsoncons" with any
+[0.043s]   of the following names:
+[0.043s] 
+[0.043s]     jsonconsConfig.cmake
+[0.043s]     jsoncons-config.cmake
+[0.044s] 
+[0.044s]   Add the installation prefix of "jsoncons" to CMAKE_PREFIX_PATH or set
+[0.044s]   "jsoncons_DIR" to a directory containing one of the above files.  If
+[0.044s]   "jsoncons" provides a separate development package or SDK, be sure it has
+[0.044s]   been installed.
+[0.044s] 
+[0.044s] [0m
+[0.044s] -- Configuring incomplete, errors occurred!
+[0.044s] See also "/home/shanto/Documents/arm-ws-v0.0.0/ros_ws/build/coppeliasim_bridge/CMakeFiles/CMakeOutput.log".
+[0.044s] gmake: *** [Makefile:673: cmake_check_build_system] Error 1
+[0.047s] Invoked command in '/home/shanto/Documents/arm-ws-v0.0.0/ros_ws/build/coppeliasim_bridge' returned '2': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/opt/ros/humble /usr/bin/cmake --build /home/shanto/Documents/arm-ws-v0.0.0/ros_ws/build/coppeliasim_bridge -- -j22 -l22

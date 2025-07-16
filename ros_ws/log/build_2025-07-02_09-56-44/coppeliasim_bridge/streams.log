@@ -1,0 +1,27 @@
+[0.017s] Invoking command in '/home/shanto/Documents/arm-ws-v0.0.0/ros_ws/build/coppeliasim_bridge': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/opt/ros/humble /usr/bin/cmake /home/shanto/Documents/arm-ws-v0.0.0/ros_ws/src/coppeliasim_bridge -DCMAKE_INSTALL_PREFIX=/home/shanto/Documents/arm-ws-v0.0.0/ros_ws/install/coppeliasim_bridge
+[0.030s] -- Found ament_cmake: 1.3.11 (/opt/ros/humble/share/ament_cmake/cmake)
+[0.123s] -- Found PkgConfig: /usr/bin/pkg-config (found version "0.29.2") 
+[0.123s] -- Checking for module 'cppzmq'
+[0.139s] --   Found cppzmq, version 4.11.0
+[0.187s] -- Found ament_lint_auto: 0.12.12 (/opt/ros/humble/share/ament_lint_auto/cmake)
+[0.255s] -- Added test 'cppcheck' to perform static code analysis on C / C++ code
+[0.255s] -- Configured cppcheck include dirs: 
+[0.255s] -- Configured cppcheck exclude dirs and/or files: 
+[0.255s] -- Added test 'lint_cmake' to check CMake code style
+[0.256s] -- Added test 'uncrustify' to check C / C++ code style
+[0.256s] -- Configured uncrustify additional arguments: 
+[0.256s] -- Added test 'xmllint' to check XML markup files
+[0.257s] -- Configuring done
+[0.259s] -- Generating done
+[0.260s] -- Build files have been written to: /home/shanto/Documents/arm-ws-v0.0.0/ros_ws/build/coppeliasim_bridge
+[0.262s] Invoked command in '/home/shanto/Documents/arm-ws-v0.0.0/ros_ws/build/coppeliasim_bridge' returned '0': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/opt/ros/humble /usr/bin/cmake /home/shanto/Documents/arm-ws-v0.0.0/ros_ws/src/coppeliasim_bridge -DCMAKE_INSTALL_PREFIX=/home/shanto/Documents/arm-ws-v0.0.0/ros_ws/install/coppeliasim_bridge
+[0.264s] Invoking command in '/home/shanto/Documents/arm-ws-v0.0.0/ros_ws/build/coppeliasim_bridge': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/opt/ros/humble /usr/bin/cmake --build /home/shanto/Documents/arm-ws-v0.0.0/ros_ws/build/coppeliasim_bridge -- -j22 -l22
+[0.319s] [ 50%] [32mBuilding CXX object CMakeFiles/zmq_pub.dir/src/zmq_pub.cpp.o[0m
+[0.342s] [100%] [32m[1mLinking CXX executable zmq_pub[0m
+[0.374s] /usr/bin/ld: /usr/lib/gcc/x86_64-linux-gnu/11/../../../x86_64-linux-gnu/Scrt1.o: in function `_start':
+[0.374s] (.text+0x1b): undefined reference to `main'
+[0.374s] collect2: error: ld returned 1 exit status
+[0.376s] gmake[2]: *** [CMakeFiles/zmq_pub.dir/build.make:97: zmq_pub] Error 1
+[0.376s] gmake[1]: *** [CMakeFiles/Makefile2:137: CMakeFiles/zmq_pub.dir/all] Error 2
+[0.376s] gmake: *** [Makefile:146: all] Error 2
+[0.378s] Invoked command in '/home/shanto/Documents/arm-ws-v0.0.0/ros_ws/build/coppeliasim_bridge' returned '2': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/opt/ros/humble /usr/bin/cmake --build /home/shanto/Documents/arm-ws-v0.0.0/ros_ws/build/coppeliasim_bridge -- -j22 -l22

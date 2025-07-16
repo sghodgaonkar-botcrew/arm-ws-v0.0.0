@@ -64,104 +64,79 @@ $(function() {
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="#pub-static-methods">Static Public Member Functions</a> &#124;
+<a href="#pub-static-attribs">Static Public Attributes</a> &#124;
 <a href="classIKModel-members.html">List of all members</a>  </div>
   <div class="headertitle">
 <div class="title">IKModel Class Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
-
-<p>Inverse Kinematics Model class for robotic arm control.  
- <a href="classIKModel.html#details">More...</a></p>
-
-<p><code>#include &lt;<a class="el" href="ik__model_8h_source.html">ik_model.h</a>&gt;</code></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a92e3e28a9013f4cddbea1aa42577265c"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classIKModel.html#a92e3e28a9013f4cddbea1aa42577265c">IKModel</a> (const std::string &amp;urdf_path)</td></tr>
-<tr class="memdesc:a92e3e28a9013f4cddbea1aa42577265c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor.  <a href="classIKModel.html#a92e3e28a9013f4cddbea1aa42577265c">More...</a><br /></td></tr>
-<tr class="separator:a92e3e28a9013f4cddbea1aa42577265c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a559813c73d212d9cebaa62f6916856f9"><td class="memItemLeft" align="right" valign="top"><a id="a559813c73d212d9cebaa62f6916856f9"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classIKModel.html#a559813c73d212d9cebaa62f6916856f9">~IKModel</a> ()=default</td></tr>
-<tr class="memdesc:a559813c73d212d9cebaa62f6916856f9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Destructor. <br /></td></tr>
-<tr class="separator:a559813c73d212d9cebaa62f6916856f9"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab48541d3bf0163df180b3e07b62c4179"><td class="memItemLeft" align="right" valign="top"><a id="ab48541d3bf0163df180b3e07b62c4179"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>IKModel</b> (const <a class="el" href="classIKModel.html">IKModel</a> &amp;)=delete</td></tr>
-<tr class="separator:ab48541d3bf0163df180b3e07b62c4179"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a369c9a1eeddaaebbf35bf3db3089c414"><td class="memItemLeft" align="right" valign="top"><a id="a369c9a1eeddaaebbf35bf3db3089c414"></a>
-<a class="el" href="classIKModel.html">IKModel</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>operator=</b> (const <a class="el" href="classIKModel.html">IKModel</a> &amp;)=delete</td></tr>
-<tr class="separator:a369c9a1eeddaaebbf35bf3db3089c414"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0365dc21d793facea120ae5015e36426"><td class="memItemLeft" align="right" valign="top"><a id="a0365dc21d793facea120ae5015e36426"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>IKModel</b> (<a class="el" href="classIKModel.html">IKModel</a> &amp;&amp;)=default</td></tr>
-<tr class="separator:a0365dc21d793facea120ae5015e36426"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9c4b133836ab20b12cb41b93d7d9f3a8"><td class="memItemLeft" align="right" valign="top"><a id="a9c4b133836ab20b12cb41b93d7d9f3a8"></a>
-<a class="el" href="classIKModel.html">IKModel</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>operator=</b> (<a class="el" href="classIKModel.html">IKModel</a> &amp;&amp;)=default</td></tr>
-<tr class="separator:a9c4b133836ab20b12cb41b93d7d9f3a8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a30cabb37e69b0a41f42a0e434d80344d"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classIKModel.html#a30cabb37e69b0a41f42a0e434d80344d">IKModel</a> (const std::string &amp;urdf_path, const std::string &amp;end_effector_name, const Eigen::Vector&lt; double, 6 &gt; &amp;pose_weights)</td></tr>
+<tr class="memdesc:a30cabb37e69b0a41f42a0e434d80344d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor to load a URDF file.  <a href="classIKModel.html#a30cabb37e69b0a41f42a0e434d80344d">More...</a><br /></td></tr>
+<tr class="separator:a30cabb37e69b0a41f42a0e434d80344d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afe190131c5bd76c9bb4a4b7dd8741570"><td class="memItemLeft" align="right" valign="top"><a id="afe190131c5bd76c9bb4a4b7dd8741570"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classIKModel.html#afe190131c5bd76c9bb4a4b7dd8741570">printAllFrames</a> () const</td></tr>
+<tr class="memdesc:afe190131c5bd76c9bb4a4b7dd8741570"><td class="mdescLeft">&#160;</td><td class="mdescRight">Print all loaded frames. <br /></td></tr>
+<tr class="separator:afe190131c5bd76c9bb4a4b7dd8741570"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a363ffa1dc25a9b7871439d899d9be045"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classIKModel.html#a363ffa1dc25a9b7871439d899d9be045">findAndPrintFrame</a> (const std::string &amp;frame_name)</td></tr>
+<tr class="memdesc:a363ffa1dc25a9b7871439d899d9be045"><td class="mdescLeft">&#160;</td><td class="mdescRight">Find a frame by name and print its information.  <a href="classIKModel.html#a363ffa1dc25a9b7871439d899d9be045">More...</a><br /></td></tr>
+<tr class="separator:a363ffa1dc25a9b7871439d899d9be045"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a122e8f1befe4a1b5a0cd14593fad42da"><td class="memItemLeft" align="right" valign="top">pinocchio::SE3&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classIKModel.html#a122e8f1befe4a1b5a0cd14593fad42da">computeForwardKinematics</a> (const JointConfig &amp;q)</td></tr>
+<tr class="memdesc:a122e8f1befe4a1b5a0cd14593fad42da"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compute forward kinematics for given joint configuration.  <a href="classIKModel.html#a122e8f1befe4a1b5a0cd14593fad42da">More...</a><br /></td></tr>
+<tr class="separator:a122e8f1befe4a1b5a0cd14593fad42da"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af1be0b6adebffbe0cd07c8af631c2343"><td class="memItemLeft" align="right" valign="top">XYZQuat&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classIKModel.html#af1be0b6adebffbe0cd07c8af631c2343">computeForwardKinematics</a> (pinocchio::FrameIndex frame_id)</td></tr>
+<tr class="memdesc:af1be0b6adebffbe0cd07c8af631c2343"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compute forward kinematics for a specific frame using current joint configuration.  <a href="classIKModel.html#af1be0b6adebffbe0cd07c8af631c2343">More...</a><br /></td></tr>
+<tr class="separator:af1be0b6adebffbe0cd07c8af631c2343"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad3b547de8e6da6455129ba82f0b688aa"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classIKModel.html#ad3b547de8e6da6455129ba82f0b688aa">getNumJoints</a> () const</td></tr>
-<tr class="memdesc:ad3b547de8e6da6455129ba82f0b688aa"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the number of joints in the robot model.  <a href="classIKModel.html#ad3b547de8e6da6455129ba82f0b688aa">More...</a><br /></td></tr>
+<tr class="memdesc:ad3b547de8e6da6455129ba82f0b688aa"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the number of joints in the model.  <a href="classIKModel.html#ad3b547de8e6da6455129ba82f0b688aa">More...</a><br /></td></tr>
 <tr class="separator:ad3b547de8e6da6455129ba82f0b688aa"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a91481c421eb73ceaf74f7914fc3fbcea"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classIKModel.html#a91481c421eb73ceaf74f7914fc3fbcea">getNumDOFs</a> () const</td></tr>
-<tr class="memdesc:a91481c421eb73ceaf74f7914fc3fbcea"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the number of degrees of freedom.  <a href="classIKModel.html#a91481c421eb73ceaf74f7914fc3fbcea">More...</a><br /></td></tr>
-<tr class="separator:a91481c421eb73ceaf74f7914fc3fbcea"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a22661c110503b9d5537842bfd583ba81"><td class="memItemLeft" align="right" valign="top">Eigen::MatrixXd&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classIKModel.html#a22661c110503b9d5537842bfd583ba81">getJointLimits</a> () const</td></tr>
-<tr class="memdesc:a22661c110503b9d5537842bfd583ba81"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get joint limits.  <a href="classIKModel.html#a22661c110503b9d5537842bfd583ba81">More...</a><br /></td></tr>
-<tr class="separator:a22661c110503b9d5537842bfd583ba81"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a65c3a40f1734f6d778c0707510700e8a"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classIKModel.html#a65c3a40f1734f6d778c0707510700e8a">getEndEffectorFrameId</a> () const</td></tr>
-<tr class="memdesc:a65c3a40f1734f6d778c0707510700e8a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the end effector frame ID.  <a href="classIKModel.html#a65c3a40f1734f6d778c0707510700e8a">More...</a><br /></td></tr>
-<tr class="separator:a65c3a40f1734f6d778c0707510700e8a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aacee090df1a582296c45c15c5e8010e2"><td class="memItemLeft" align="right" valign="top">Eigen::Matrix4d&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classIKModel.html#aacee090df1a582296c45c15c5e8010e2">computeForwardKinematics</a> (const Eigen::VectorXd &amp;q)</td></tr>
-<tr class="memdesc:aacee090df1a582296c45c15c5e8010e2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compute forward kinematics for given joint angles.  <a href="classIKModel.html#aacee090df1a582296c45c15c5e8010e2">More...</a><br /></td></tr>
-<tr class="separator:aacee090df1a582296c45c15c5e8010e2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a483b102d76da2f86deff5ae0a2955124"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classIKModel.html#a483b102d76da2f86deff5ae0a2955124">computeForwardKinematics</a> (const Eigen::VectorXd &amp;q, Eigen::Vector3d &amp;position, Eigen::Vector4d &amp;orientation)</td></tr>
-<tr class="memdesc:a483b102d76da2f86deff5ae0a2955124"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compute forward kinematics and return position and orientation separately.  <a href="classIKModel.html#a483b102d76da2f86deff5ae0a2955124">More...</a><br /></td></tr>
-<tr class="separator:a483b102d76da2f86deff5ae0a2955124"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a59b4de32eb7a7570d9538789c0f39dc4"><td class="memItemLeft" align="right" valign="top">Eigen::MatrixXd&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classIKModel.html#a59b4de32eb7a7570d9538789c0f39dc4">computeJacobian</a> (const Eigen::VectorXd &amp;q)</td></tr>
-<tr class="memdesc:a59b4de32eb7a7570d9538789c0f39dc4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compute Jacobian matrix for the end effector.  <a href="classIKModel.html#a59b4de32eb7a7570d9538789c0f39dc4">More...</a><br /></td></tr>
-<tr class="separator:a59b4de32eb7a7570d9538789c0f39dc4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a483f154501b3b0b61d687e37c832e850"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classIKModel.html#a483f154501b3b0b61d687e37c832e850">isCollisionFree</a> (const Eigen::VectorXd &amp;q)</td></tr>
-<tr class="memdesc:a483f154501b3b0b61d687e37c832e850"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check if a configuration is collision-free.  <a href="classIKModel.html#a483f154501b3b0b61d687e37c832e850">More...</a><br /></td></tr>
-<tr class="separator:a483f154501b3b0b61d687e37c832e850"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5fbeddf5f46c82a77f0f6e8227e378ac"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classIKModel.html#a5fbeddf5f46c82a77f0f6e8227e378ac">getCollisionDistance</a> (const Eigen::VectorXd &amp;q)</td></tr>
-<tr class="memdesc:a5fbeddf5f46c82a77f0f6e8227e378ac"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get collision distance (negative if in collision)  <a href="classIKModel.html#a5fbeddf5f46c82a77f0f6e8227e378ac">More...</a><br /></td></tr>
-<tr class="separator:a5fbeddf5f46c82a77f0f6e8227e378ac"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:afd0c08a2152c993e2e01293e3780dd09"><td class="memItemLeft" align="right" valign="top">Eigen::VectorXd&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classIKModel.html#afd0c08a2152c993e2e01293e3780dd09">getCollisionGradient</a> (const Eigen::VectorXd &amp;q)</td></tr>
-<tr class="memdesc:afd0c08a2152c993e2e01293e3780dd09"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get collision gradient (derivative of collision distance w.r.t. joint angles)  <a href="classIKModel.html#afd0c08a2152c993e2e01293e3780dd09">More...</a><br /></td></tr>
-<tr class="separator:afd0c08a2152c993e2e01293e3780dd09"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a125306b2d71e926c87ce50bbdd4c3209"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classIKModel.html#a125306b2d71e926c87ce50bbdd4c3209">computeCost</a> (const Eigen::VectorXd &amp;q, const Eigen::Vector3d &amp;target_position, const Eigen::Vector4d &amp;target_orientation, double weight_position=1.0, double weight_orientation=1.0, double weight_collision=10.0)</td></tr>
-<tr class="memdesc:a125306b2d71e926c87ce50bbdd4c3209"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compute cost function for IK optimization.  <a href="classIKModel.html#a125306b2d71e926c87ce50bbdd4c3209">More...</a><br /></td></tr>
-<tr class="separator:a125306b2d71e926c87ce50bbdd4c3209"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5f54c45d540f5e654fcf73323d4f1b01"><td class="memItemLeft" align="right" valign="top">Eigen::VectorXd&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classIKModel.html#a5f54c45d540f5e654fcf73323d4f1b01">computeGradient</a> (const Eigen::VectorXd &amp;q, const Eigen::Vector3d &amp;target_position, const Eigen::Vector4d &amp;target_orientation, double weight_position=1.0, double weight_orientation=1.0, double weight_collision=10.0)</td></tr>
-<tr class="memdesc:a5f54c45d540f5e654fcf73323d4f1b01"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compute gradient of cost function.  <a href="classIKModel.html#a5f54c45d540f5e654fcf73323d4f1b01">More...</a><br /></td></tr>
-<tr class="separator:a5f54c45d540f5e654fcf73323d4f1b01"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a270aa488dba69db3cdac517e0e2c4cea"><td class="memItemLeft" align="right" valign="top">Eigen::MatrixXd&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classIKModel.html#a270aa488dba69db3cdac517e0e2c4cea">computeHessian</a> (const Eigen::VectorXd &amp;q, const Eigen::Vector3d &amp;target_position, const Eigen::Vector4d &amp;target_orientation, double weight_position=1.0, double weight_orientation=1.0, double weight_collision=10.0)</td></tr>
-<tr class="memdesc:a270aa488dba69db3cdac517e0e2c4cea"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compute Hessian matrix of cost function.  <a href="classIKModel.html#a270aa488dba69db3cdac517e0e2c4cea">More...</a><br /></td></tr>
-<tr class="separator:a270aa488dba69db3cdac517e0e2c4cea"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2a54de4cdd238e1b4bdbfbccd3b7af38"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classIKModel.html#a2a54de4cdd238e1b4bdbfbccd3b7af38">isWithinJointLimits</a> (const Eigen::VectorXd &amp;q) const</td></tr>
-<tr class="memdesc:a2a54de4cdd238e1b4bdbfbccd3b7af38"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check if joint angles are within limits.  <a href="classIKModel.html#a2a54de4cdd238e1b4bdbfbccd3b7af38">More...</a><br /></td></tr>
-<tr class="separator:a2a54de4cdd238e1b4bdbfbccd3b7af38"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5903ea08c8958226c8e88899ea8f2ed8"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classIKModel.html#a5903ea08c8958226c8e88899ea8f2ed8">clampToJointLimits</a> (Eigen::VectorXd &amp;q) const</td></tr>
-<tr class="memdesc:a5903ea08c8958226c8e88899ea8f2ed8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Clamp joint angles to limits.  <a href="classIKModel.html#a5903ea08c8958226c8e88899ea8f2ed8">More...</a><br /></td></tr>
-<tr class="separator:a5903ea08c8958226c8e88899ea8f2ed8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae41d15fbe9866641c925fc73f90e94a9"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classIKModel.html#ae41d15fbe9866641c925fc73f90e94a9">getNumVelocityVariables</a> () const</td></tr>
+<tr class="memdesc:ae41d15fbe9866641c925fc73f90e94a9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the number of velocity variables in the model.  <a href="classIKModel.html#ae41d15fbe9866641c925fc73f90e94a9">More...</a><br /></td></tr>
+<tr class="separator:ae41d15fbe9866641c925fc73f90e94a9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac85dca1f93da459bc5b7948f02ef6e54"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classIKModel.html#ac85dca1f93da459bc5b7948f02ef6e54">cost</a> (const JointConfig &amp;q, const pinocchio::SE3 &amp;target_pose)</td></tr>
+<tr class="memdesc:ac85dca1f93da459bc5b7948f02ef6e54"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compute the cost between a joint configuration and a target pose (XYZQuat)  <a href="classIKModel.html#ac85dca1f93da459bc5b7948f02ef6e54">More...</a><br /></td></tr>
+<tr class="separator:ac85dca1f93da459bc5b7948f02ef6e54"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5669f51a3d7ff6317aa5aba260f5cbef"><td class="memItemLeft" align="right" valign="top">JointConfig&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classIKModel.html#a5669f51a3d7ff6317aa5aba260f5cbef">cost_grad</a> (const JointConfig &amp;q, const pinocchio::SE3 &amp;target_pose)</td></tr>
+<tr class="memdesc:a5669f51a3d7ff6317aa5aba260f5cbef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compute the gradient of the cost function with respect to joint configuration.  <a href="classIKModel.html#a5669f51a3d7ff6317aa5aba260f5cbef">More...</a><br /></td></tr>
+<tr class="separator:a5669f51a3d7ff6317aa5aba260f5cbef"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a78711f2580217a0aaadd90b431253038"><td class="memItemLeft" align="right" valign="top">Eigen::Matrix&lt; double, 6, 6 &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classIKModel.html#a78711f2580217a0aaadd90b431253038">cost_hess</a> (const JointConfig &amp;q)</td></tr>
+<tr class="memdesc:a78711f2580217a0aaadd90b431253038"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compute the Gauss-Newton approximation of the Hessian of the cost function.  <a href="classIKModel.html#a78711f2580217a0aaadd90b431253038">More...</a><br /></td></tr>
+<tr class="separator:a78711f2580217a0aaadd90b431253038"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a71484e6eee2abbf72f4a42bdf7f3a970"><td class="memItemLeft" align="right" valign="top"><a id="a71484e6eee2abbf72f4a42bdf7f3a970"></a>
+const JointConfig &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classIKModel.html#a71484e6eee2abbf72f4a42bdf7f3a970">getCurrentJointConfig</a> () const</td></tr>
+<tr class="memdesc:a71484e6eee2abbf72f4a42bdf7f3a970"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the current joint configuration. <br /></td></tr>
+<tr class="separator:a71484e6eee2abbf72f4a42bdf7f3a970"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae3041a2d238feaee2173bc87b98c8901"><td class="memItemLeft" align="right" valign="top"><a id="ae3041a2d238feaee2173bc87b98c8901"></a>
+const pinocchio::SE3 &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classIKModel.html#ae3041a2d238feaee2173bc87b98c8901">getEndEffectorFrame</a> () const</td></tr>
+<tr class="memdesc:ae3041a2d238feaee2173bc87b98c8901"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the current end effector pose in XYZQuat format. <br /></td></tr>
+<tr class="separator:ae3041a2d238feaee2173bc87b98c8901"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a47a761d0d92b0e3e21e45ca8560fdc6c"><td class="memItemLeft" align="right" valign="top">Eigen::Matrix&lt; double, 6, 6 &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classIKModel.html#a47a761d0d92b0e3e21e45ca8560fdc6c">computeGeometricJacobian</a> (const JointConfig &amp;q)</td></tr>
+<tr class="memdesc:a47a761d0d92b0e3e21e45ca8560fdc6c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compute the geometric Jacobian of the end effector.  <a href="classIKModel.html#a47a761d0d92b0e3e21e45ca8560fdc6c">More...</a><br /></td></tr>
+<tr class="separator:a47a761d0d92b0e3e21e45ca8560fdc6c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aad7403e8b92da351790933359781e67e"><td class="memItemLeft" align="right" valign="top">Eigen::Matrix&lt; double, 7, 6 &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classIKModel.html#aad7403e8b92da351790933359781e67e">computeEndEffectorFullJacobian</a> (const Eigen::VectorXd &amp;q)</td></tr>
+<tr class="memdesc:aad7403e8b92da351790933359781e67e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compute the full 7×nv Jacobian mapping joint velocities to end-effector pose rates.  <a href="classIKModel.html#aad7403e8b92da351790933359781e67e">More...</a><br /></td></tr>
+<tr class="separator:aad7403e8b92da351790933359781e67e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
-<tr class="memitem:a40aa3bc6f56d62aab55b8e1a7c9abe3e"><td class="memItemLeft" align="right" valign="top">static Eigen::Matrix3d&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classIKModel.html#a40aa3bc6f56d62aab55b8e1a7c9abe3e">quaternionToRotationMatrix</a> (const Eigen::Vector4d &amp;quat)</td></tr>
-<tr class="memdesc:a40aa3bc6f56d62aab55b8e1a7c9abe3e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Convert quaternion to rotation matrix.  <a href="classIKModel.html#a40aa3bc6f56d62aab55b8e1a7c9abe3e">More...</a><br /></td></tr>
-<tr class="separator:a40aa3bc6f56d62aab55b8e1a7c9abe3e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6d6f7103348f137a84f2fccc02a7aff8"><td class="memItemLeft" align="right" valign="top">static Eigen::Vector4d&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classIKModel.html#a6d6f7103348f137a84f2fccc02a7aff8">rotationMatrixToQuaternion</a> (const Eigen::Matrix3d &amp;rot)</td></tr>
-<tr class="memdesc:a6d6f7103348f137a84f2fccc02a7aff8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Convert rotation matrix to quaternion.  <a href="classIKModel.html#a6d6f7103348f137a84f2fccc02a7aff8">More...</a><br /></td></tr>
-<tr class="separator:a6d6f7103348f137a84f2fccc02a7aff8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8b96fe0c0419d5754cdfbe1355055a81"><td class="memItemLeft" align="right" valign="top">static XYZQuat&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classIKModel.html#a8b96fe0c0419d5754cdfbe1355055a81">homogeneousToXYZQuat</a> (const pinocchio::SE3 &amp;homogeneous_transform)</td></tr>
+<tr class="memdesc:a8b96fe0c0419d5754cdfbe1355055a81"><td class="mdescLeft">&#160;</td><td class="mdescRight">Convert homogeneous transform to XYZQuat representation.  <a href="classIKModel.html#a8b96fe0c0419d5754cdfbe1355055a81">More...</a><br /></td></tr>
+<tr class="separator:a8b96fe0c0419d5754cdfbe1355055a81"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab6cdb13dacf7ca5c94f385aa733d4f74"><td class="memItemLeft" align="right" valign="top">static pinocchio::SE3&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classIKModel.html#ab6cdb13dacf7ca5c94f385aa733d4f74">xyzQuatToHomogeneous</a> (const XYZQuat &amp;xyzquat)</td></tr>
+<tr class="memdesc:ab6cdb13dacf7ca5c94f385aa733d4f74"><td class="mdescLeft">&#160;</td><td class="mdescRight">Convert XYZQuat representation to homogeneous transform.  <a href="classIKModel.html#ab6cdb13dacf7ca5c94f385aa733d4f74">More...</a><br /></td></tr>
+<tr class="separator:ab6cdb13dacf7ca5c94f385aa733d4f74"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-attribs"></a>
+Static Public Attributes</h2></td></tr>
+<tr class="memitem:a42eb83836121edae0082981a4c8ca597"><td class="memItemLeft" align="right" valign="top"><a id="a42eb83836121edae0082981a4c8ca597"></a>
+static const JointConfig&#160;</td><td class="memItemRight" valign="bottom"><b>NEUTRAL_JOINT_CONFIG</b> = JointConfig::Zero()</td></tr>
+<tr class="separator:a42eb83836121edae0082981a4c8ca597"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>Inverse Kinematics Model class for robotic arm control. </p>
-<p>This class provides functionality for:</p><ul>
-<li>Loading and storing robot model from URDF</li>
-<li>Forward kinematics using Pinocchio</li>
-<li>Collision checking</li>
-<li>Cost function, gradient, and Hessian computation for IK optimization </li>
-</ul>
-</div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a id="a92e3e28a9013f4cddbea1aa42577265c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a92e3e28a9013f4cddbea1aa42577265c">&#9670;&nbsp;</a></span>IKModel()</h2>
+<h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
+<a id="a30cabb37e69b0a41f42a0e434d80344d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a30cabb37e69b0a41f42a0e434d80344d">&#9670;&nbsp;</a></span>IKModel()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -173,8 +148,24 @@ Static Public Member Functions</h2></td></tr>
           <td class="memname">IKModel::IKModel </td>
           <td>(</td>
           <td class="paramtype">const std::string &amp;&#160;</td>
-          <td class="paramname"><em>urdf_path</em></td><td>)</td>
+          <td class="paramname"><em>urdf_path</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
           <td></td>
+          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramname"><em>end_effector_name</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const Eigen::Vector&lt; double, 6 &gt; &amp;&#160;</td>
+          <td class="paramname"><em>pose_weights</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
         </tr>
       </table>
   </td>
@@ -184,11 +175,12 @@ Static Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Constructor. </p>
+<p>Constructor to load a URDF file. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">urdf_path</td><td>Path to the URDF file describing the robot </td></tr>
-    <tr><td class="paramname">end_effector_frame</td><td>Name of the end effector frame </td></tr>
+    <tr><td class="paramname">end_effector_name</td><td>Name of the end effector frame in the URDF </td></tr>
+    <tr><td class="paramname">pose_weights</td><td>6D vector for pose weights [x, y, z, ωx, ωy, ωz] </td></tr>
   </table>
   </dd>
 </dl>
@@ -196,73 +188,131 @@ Static Public Member Functions</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
-<a id="a5903ea08c8958226c8e88899ea8f2ed8"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a5903ea08c8958226c8e88899ea8f2ed8">&#9670;&nbsp;</a></span>clampToJointLimits()</h2>
+<a id="aad7403e8b92da351790933359781e67e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aad7403e8b92da351790933359781e67e">&#9670;&nbsp;</a></span>computeEndEffectorFullJacobian()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">void IKModel::clampToJointLimits </td>
+          <td class="memname">Eigen::Matrix&lt; double, 7, 6 &gt; IKModel::computeEndEffectorFullJacobian </td>
           <td>(</td>
-          <td class="paramtype">Eigen::VectorXd &amp;&#160;</td>
+          <td class="paramtype">const Eigen::VectorXd &amp;&#160;</td>
           <td class="paramname"><em>q</em></td><td>)</td>
-          <td> const</td>
+          <td></td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p>Clamp joint angles to limits. </p>
+<p>Compute the full 7×nv Jacobian mapping joint velocities to end-effector pose rates. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">q</td><td>Joint angles vector (modified in place) </td></tr>
+    <tr><td class="paramname">q</td><td>Joint configuration vector (can be dynamic size) </td></tr>
   </table>
   </dd>
 </dl>
+<dl class="section return"><dt>Returns</dt><dd>7×nv Jacobian matrix (position + quaternion rates) </dd></dl>
 
 </div>
 </div>
-<a id="a125306b2d71e926c87ce50bbdd4c3209"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a125306b2d71e926c87ce50bbdd4c3209">&#9670;&nbsp;</a></span>computeCost()</h2>
+<a id="a122e8f1befe4a1b5a0cd14593fad42da"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a122e8f1befe4a1b5a0cd14593fad42da">&#9670;&nbsp;</a></span>computeForwardKinematics() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">double IKModel::computeCost </td>
+          <td class="memname">pinocchio::SE3 IKModel::computeForwardKinematics </td>
           <td>(</td>
-          <td class="paramtype">const Eigen::VectorXd &amp;&#160;</td>
+          <td class="paramtype">const JointConfig &amp;&#160;</td>
+          <td class="paramname"><em>q</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Compute forward kinematics for given joint configuration. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">q</td><td>Joint configuration vector </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>4x4 homogeneous transformation matrix of the end effector pose </dd></dl>
+
+</div>
+</div>
+<a id="af1be0b6adebffbe0cd07c8af631c2343"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af1be0b6adebffbe0cd07c8af631c2343">&#9670;&nbsp;</a></span>computeForwardKinematics() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">XYZQuat IKModel::computeForwardKinematics </td>
+          <td>(</td>
+          <td class="paramtype">pinocchio::FrameIndex&#160;</td>
+          <td class="paramname"><em>frame_id</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Compute forward kinematics for a specific frame using current joint configuration. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">frame_id</td><td>ID of the frame to compute pose for </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>XYZQuat representation of the frame pose [x, y, z, qx, qy, qz, qw] </dd></dl>
+
+</div>
+</div>
+<a id="a47a761d0d92b0e3e21e45ca8560fdc6c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a47a761d0d92b0e3e21e45ca8560fdc6c">&#9670;&nbsp;</a></span>computeGeometricJacobian()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">Eigen::Matrix&lt; double, 6, 6 &gt; IKModel::computeGeometricJacobian </td>
+          <td>(</td>
+          <td class="paramtype">const JointConfig &amp;&#160;</td>
+          <td class="paramname"><em>q</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Compute the geometric Jacobian of the end effector. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">q</td><td>Joint configuration vector </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>6x6 geometric Jacobian matrix (linear and angular velocities) </dd></dl>
+
+</div>
+</div>
+<a id="ac85dca1f93da459bc5b7948f02ef6e54"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac85dca1f93da459bc5b7948f02ef6e54">&#9670;&nbsp;</a></span>cost()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">double IKModel::cost </td>
+          <td>(</td>
+          <td class="paramtype">const JointConfig &amp;&#160;</td>
           <td class="paramname"><em>q</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const Eigen::Vector3d &amp;&#160;</td>
-          <td class="paramname"><em>target_position</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const Eigen::Vector4d &amp;&#160;</td>
-          <td class="paramname"><em>target_orientation</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">double&#160;</td>
-          <td class="paramname"><em>weight_position</em> = <code>1.0</code>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">double&#160;</td>
-          <td class="paramname"><em>weight_orientation</em> = <code>1.0</code>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">double&#160;</td>
-          <td class="paramname"><em>weight_collision</em> = <code>10.0</code>&#160;</td>
+          <td class="paramtype">const pinocchio::SE3 &amp;&#160;</td>
+          <td class="paramname"><em>target_pose</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -272,72 +322,35 @@ Static Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Compute cost function for IK optimization. </p>
+<p>Compute the cost between a joint configuration and a target pose (XYZQuat) </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">q</td><td>Joint angles vector </td></tr>
-    <tr><td class="paramname">target_position</td><td>Target end effector position </td></tr>
-    <tr><td class="paramname">target_orientation</td><td>Target end effector orientation (quaternion) </td></tr>
-    <tr><td class="paramname">weight_position</td><td>Weight for position error </td></tr>
-    <tr><td class="paramname">weight_orientation</td><td>Weight for orientation error </td></tr>
-    <tr><td class="paramname">weight_collision</td><td>Weight for collision penalty </td></tr>
+    <tr><td class="paramname">q</td><td>Joint configuration </td></tr>
+    <tr><td class="paramname">target_pose</td><td>Target pose in XYZQuat [x, y, z, qx, qy, qz, qw] </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>Total cost value </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>The cost (double) </dd></dl>
 
 </div>
 </div>
-<a id="aacee090df1a582296c45c15c5e8010e2"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aacee090df1a582296c45c15c5e8010e2">&#9670;&nbsp;</a></span>computeForwardKinematics() <span class="overload">[1/2]</span></h2>
+<a id="a5669f51a3d7ff6317aa5aba260f5cbef"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5669f51a3d7ff6317aa5aba260f5cbef">&#9670;&nbsp;</a></span>cost_grad()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">Eigen::Matrix4d IKModel::computeForwardKinematics </td>
+          <td class="memname">JointConfig IKModel::cost_grad </td>
           <td>(</td>
-          <td class="paramtype">const Eigen::VectorXd &amp;&#160;</td>
-          <td class="paramname"><em>q</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Compute forward kinematics for given joint angles. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">q</td><td>Joint angles vector </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>4x4 transformation matrix of end effector pose </dd></dl>
-
-</div>
-</div>
-<a id="a483b102d76da2f86deff5ae0a2955124"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a483b102d76da2f86deff5ae0a2955124">&#9670;&nbsp;</a></span>computeForwardKinematics() <span class="overload">[2/2]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void IKModel::computeForwardKinematics </td>
-          <td>(</td>
-          <td class="paramtype">const Eigen::VectorXd &amp;&#160;</td>
+          <td class="paramtype">const JointConfig &amp;&#160;</td>
           <td class="paramname"><em>q</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">Eigen::Vector3d &amp;&#160;</td>
-          <td class="paramname"><em>position</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">Eigen::Vector4d &amp;&#160;</td>
-          <td class="paramname"><em>orientation</em>&#160;</td>
+          <td class="paramtype">const pinocchio::SE3 &amp;&#160;</td>
+          <td class="paramname"><em>target_pose</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -347,288 +360,68 @@ Static Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Compute forward kinematics and return position and orientation separately. </p>
+<p>Compute the gradient of the cost function with respect to joint configuration. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">q</td><td>Joint angles vector </td></tr>
-    <tr><td class="paramname">position</td><td>Output position vector (x, y, z) </td></tr>
-    <tr><td class="paramname">orientation</td><td>Output orientation quaternion (x, y, z, w) </td></tr>
+    <tr><td class="paramname">q</td><td>Joint configuration </td></tr>
+    <tr><td class="paramname">target_pose</td><td>Target pose in XYZQuat [x, y, z, qx, qy, qz, qw] </td></tr>
   </table>
   </dd>
 </dl>
+<dl class="section return"><dt>Returns</dt><dd>The gradient vector (7×1) </dd></dl>
 
 </div>
 </div>
-<a id="a5f54c45d540f5e654fcf73323d4f1b01"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a5f54c45d540f5e654fcf73323d4f1b01">&#9670;&nbsp;</a></span>computeGradient()</h2>
+<a id="a78711f2580217a0aaadd90b431253038"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a78711f2580217a0aaadd90b431253038">&#9670;&nbsp;</a></span>cost_hess()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">Eigen::VectorXd IKModel::computeGradient </td>
+          <td class="memname">Eigen::Matrix&lt; double, 6, 6 &gt; IKModel::cost_hess </td>
           <td>(</td>
-          <td class="paramtype">const Eigen::VectorXd &amp;&#160;</td>
-          <td class="paramname"><em>q</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const Eigen::Vector3d &amp;&#160;</td>
-          <td class="paramname"><em>target_position</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const Eigen::Vector4d &amp;&#160;</td>
-          <td class="paramname"><em>target_orientation</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">double&#160;</td>
-          <td class="paramname"><em>weight_position</em> = <code>1.0</code>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">double&#160;</td>
-          <td class="paramname"><em>weight_orientation</em> = <code>1.0</code>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">double&#160;</td>
-          <td class="paramname"><em>weight_collision</em> = <code>10.0</code>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Compute gradient of cost function. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">q</td><td>Joint angles vector </td></tr>
-    <tr><td class="paramname">target_position</td><td>Target end effector position </td></tr>
-    <tr><td class="paramname">target_orientation</td><td>Target end effector orientation (quaternion) </td></tr>
-    <tr><td class="paramname">weight_position</td><td>Weight for position error </td></tr>
-    <tr><td class="paramname">weight_orientation</td><td>Weight for orientation error </td></tr>
-    <tr><td class="paramname">weight_collision</td><td>Weight for collision penalty </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>Gradient vector </dd></dl>
-
-</div>
-</div>
-<a id="a270aa488dba69db3cdac517e0e2c4cea"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a270aa488dba69db3cdac517e0e2c4cea">&#9670;&nbsp;</a></span>computeHessian()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">Eigen::MatrixXd IKModel::computeHessian </td>
-          <td>(</td>
-          <td class="paramtype">const Eigen::VectorXd &amp;&#160;</td>
-          <td class="paramname"><em>q</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const Eigen::Vector3d &amp;&#160;</td>
-          <td class="paramname"><em>target_position</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const Eigen::Vector4d &amp;&#160;</td>
-          <td class="paramname"><em>target_orientation</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">double&#160;</td>
-          <td class="paramname"><em>weight_position</em> = <code>1.0</code>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">double&#160;</td>
-          <td class="paramname"><em>weight_orientation</em> = <code>1.0</code>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">double&#160;</td>
-          <td class="paramname"><em>weight_collision</em> = <code>10.0</code>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Compute Hessian matrix of cost function. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">q</td><td>Joint angles vector </td></tr>
-    <tr><td class="paramname">target_position</td><td>Target end effector position </td></tr>
-    <tr><td class="paramname">target_orientation</td><td>Target end effector orientation (quaternion) </td></tr>
-    <tr><td class="paramname">weight_position</td><td>Weight for position error </td></tr>
-    <tr><td class="paramname">weight_orientation</td><td>Weight for orientation error </td></tr>
-    <tr><td class="paramname">weight_collision</td><td>Weight for collision penalty </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>Hessian matrix </dd></dl>
-
-</div>
-</div>
-<a id="a59b4de32eb7a7570d9538789c0f39dc4"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a59b4de32eb7a7570d9538789c0f39dc4">&#9670;&nbsp;</a></span>computeJacobian()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">Eigen::MatrixXd IKModel::computeJacobian </td>
-          <td>(</td>
-          <td class="paramtype">const Eigen::VectorXd &amp;&#160;</td>
+          <td class="paramtype">const JointConfig &amp;&#160;</td>
           <td class="paramname"><em>q</em></td><td>)</td>
           <td></td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p>Compute Jacobian matrix for the end effector. </p>
+<p>Compute the Gauss-Newton approximation of the Hessian of the cost function. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">q</td><td>Joint angles vector </td></tr>
+    <tr><td class="paramname">q</td><td>Joint configuration </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>6xN Jacobian matrix (linear and angular velocities) </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>6x6 Hessian matrix approximation </dd></dl>
 
 </div>
 </div>
-<a id="a5fbeddf5f46c82a77f0f6e8227e378ac"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a5fbeddf5f46c82a77f0f6e8227e378ac">&#9670;&nbsp;</a></span>getCollisionDistance()</h2>
+<a id="a363ffa1dc25a9b7871439d899d9be045"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a363ffa1dc25a9b7871439d899d9be045">&#9670;&nbsp;</a></span>findAndPrintFrame()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">double IKModel::getCollisionDistance </td>
+          <td class="memname">void IKModel::findAndPrintFrame </td>
           <td>(</td>
-          <td class="paramtype">const Eigen::VectorXd &amp;&#160;</td>
-          <td class="paramname"><em>q</em></td><td>)</td>
+          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramname"><em>frame_name</em></td><td>)</td>
           <td></td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p>Get collision distance (negative if in collision) </p>
+<p>Find a frame by name and print its information. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">q</td><td>Joint angles vector </td></tr>
+    <tr><td class="paramname">frame_name</td><td>Name of the frame to find </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>Minimum distance to obstacles (negative if in collision) </dd></dl>
-
-</div>
-</div>
-<a id="afd0c08a2152c993e2e01293e3780dd09"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#afd0c08a2152c993e2e01293e3780dd09">&#9670;&nbsp;</a></span>getCollisionGradient()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">Eigen::VectorXd IKModel::getCollisionGradient </td>
-          <td>(</td>
-          <td class="paramtype">const Eigen::VectorXd &amp;&#160;</td>
-          <td class="paramname"><em>q</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Get collision gradient (derivative of collision distance w.r.t. joint angles) </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">q</td><td>Joint angles vector </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>Gradient vector </dd></dl>
-
-</div>
-</div>
-<a id="a65c3a40f1734f6d778c0707510700e8a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a65c3a40f1734f6d778c0707510700e8a">&#9670;&nbsp;</a></span>getEndEffectorFrameId()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">int IKModel::getEndEffectorFrameId </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td> const</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Get the end effector frame ID. </p>
-<dl class="section return"><dt>Returns</dt><dd>Frame ID </dd></dl>
-
-</div>
-</div>
-<a id="a22661c110503b9d5537842bfd583ba81"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a22661c110503b9d5537842bfd583ba81">&#9670;&nbsp;</a></span>getJointLimits()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">Eigen::MatrixXd IKModel::getJointLimits </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td> const</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Get joint limits. </p>
-<dl class="section return"><dt>Returns</dt><dd>Matrix with lower and upper joint limits [lower, upper] </dd></dl>
-
-</div>
-</div>
-<a id="a91481c421eb73ceaf74f7914fc3fbcea"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a91481c421eb73ceaf74f7914fc3fbcea">&#9670;&nbsp;</a></span>getNumDOFs()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">int IKModel::getNumDOFs </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td> const</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Get the number of degrees of freedom. </p>
-<dl class="section return"><dt>Returns</dt><dd>Number of DOFs </dd></dl>
 
 </div>
 </div>
@@ -647,67 +440,33 @@ Static Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Get the number of joints in the robot model. </p>
+<p>Get the number of joints in the model. </p>
 <dl class="section return"><dt>Returns</dt><dd>Number of joints </dd></dl>
 
 </div>
 </div>
-<a id="a483f154501b3b0b61d687e37c832e850"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a483f154501b3b0b61d687e37c832e850">&#9670;&nbsp;</a></span>isCollisionFree()</h2>
+<a id="ae41d15fbe9866641c925fc73f90e94a9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae41d15fbe9866641c925fc73f90e94a9">&#9670;&nbsp;</a></span>getNumVelocityVariables()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">bool IKModel::isCollisionFree </td>
+          <td class="memname">int IKModel::getNumVelocityVariables </td>
           <td>(</td>
-          <td class="paramtype">const Eigen::VectorXd &amp;&#160;</td>
-          <td class="paramname"><em>q</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Check if a configuration is collision-free. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">q</td><td>Joint angles vector </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>True if collision-free, false otherwise </dd></dl>
-
-</div>
-</div>
-<a id="a2a54de4cdd238e1b4bdbfbccd3b7af38"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a2a54de4cdd238e1b4bdbfbccd3b7af38">&#9670;&nbsp;</a></span>isWithinJointLimits()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">bool IKModel::isWithinJointLimits </td>
-          <td>(</td>
-          <td class="paramtype">const Eigen::VectorXd &amp;&#160;</td>
-          <td class="paramname"><em>q</em></td><td>)</td>
+          <td class="paramname"></td><td>)</td>
           <td> const</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p>Check if joint angles are within limits. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">q</td><td>Joint angles vector </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>True if within limits, false otherwise </dd></dl>
+<p>Get the number of velocity variables in the model. </p>
+<dl class="section return"><dt>Returns</dt><dd>Number of velocity variables </dd></dl>
 
 </div>
 </div>
-<a id="a40aa3bc6f56d62aab55b8e1a7c9abe3e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a40aa3bc6f56d62aab55b8e1a7c9abe3e">&#9670;&nbsp;</a></span>quaternionToRotationMatrix()</h2>
+<a id="a8b96fe0c0419d5754cdfbe1355055a81"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8b96fe0c0419d5754cdfbe1355055a81">&#9670;&nbsp;</a></span>homogeneousToXYZQuat()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -716,10 +475,10 @@ Static Public Member Functions</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">Eigen::Matrix3d IKModel::quaternionToRotationMatrix </td>
+          <td class="memname">XYZQuat IKModel::homogeneousToXYZQuat </td>
           <td>(</td>
-          <td class="paramtype">const Eigen::Vector4d &amp;&#160;</td>
-          <td class="paramname"><em>quat</em></td><td>)</td>
+          <td class="paramtype">const pinocchio::SE3 &amp;&#160;</td>
+          <td class="paramname"><em>homogeneous_transform</em></td><td>)</td>
           <td></td>
         </tr>
       </table>
@@ -730,19 +489,19 @@ Static Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Convert quaternion to rotation matrix. </p>
+<p>Convert homogeneous transform to XYZQuat representation. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">quat</td><td>Quaternion (x, y, z, w) </td></tr>
+    <tr><td class="paramname">homogeneous_transform</td><td>4x4 homogeneous transformation matrix </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>3x3 rotation matrix </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>XYZQuat vector [x, y, z, qx, qy, qz, qw] </dd></dl>
 
 </div>
 </div>
-<a id="a6d6f7103348f137a84f2fccc02a7aff8"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a6d6f7103348f137a84f2fccc02a7aff8">&#9670;&nbsp;</a></span>rotationMatrixToQuaternion()</h2>
+<a id="ab6cdb13dacf7ca5c94f385aa733d4f74"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab6cdb13dacf7ca5c94f385aa733d4f74">&#9670;&nbsp;</a></span>xyzQuatToHomogeneous()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -751,10 +510,10 @@ Static Public Member Functions</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">Eigen::Vector4d IKModel::rotationMatrixToQuaternion </td>
+          <td class="memname">pinocchio::SE3 IKModel::xyzQuatToHomogeneous </td>
           <td>(</td>
-          <td class="paramtype">const Eigen::Matrix3d &amp;&#160;</td>
-          <td class="paramname"><em>rot</em></td><td>)</td>
+          <td class="paramtype">const XYZQuat &amp;&#160;</td>
+          <td class="paramname"><em>xyzquat</em></td><td>)</td>
           <td></td>
         </tr>
       </table>
@@ -765,14 +524,14 @@ Static Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Convert rotation matrix to quaternion. </p>
+<p>Convert XYZQuat representation to homogeneous transform. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">rot</td><td>3x3 rotation matrix </td></tr>
+    <tr><td class="paramname">xyzquat</td><td>Vector [x, y, z, qx, qy, qz, qw] </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>Quaternion (x, y, z, w) </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>4x4 homogeneous transformation matrix </dd></dl>
 
 </div>
 </div>

@@ -1,0 +1,6 @@
+[31mCMake Error at CMakeLists.txt:24 (message):
+  CoppeliaSim not found at .  Please install CoppeliaSim or set
+  COPPELIASIM_DIR to the correct path.
+
+[0m
+gmake: *** [Makefile:673: cmake_check_build_system] Error 1

@@ -1,0 +1,29 @@
+[0.013s] Invoking command in '/home/shanto/Documents/arm-ws-v0.0.0/ros_ws/build/coppeliasim_bridge': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/opt/ros/humble /usr/bin/cmake --build /home/shanto/Documents/arm-ws-v0.0.0/ros_ws/build/coppeliasim_bridge -- -j22 -l22
+[0.059s] [35m[1mConsolidate compiler generated dependencies of target zmq_pub[0m
+[0.076s] [ 50%] [32mBuilding CXX object CMakeFiles/zmq_pub.dir/src/zmq_pub.cpp.o[0m
+[0.721s] [01m[K/home/shanto/Documents/arm-ws-v0.0.0/ros_ws/src/coppeliasim_bridge/src/zmq_pub.cpp:[m[K In function ‘[01m[Kint main(int, char**)[m[K’:
+[0.721s] [01m[K/home/shanto/Documents/arm-ws-v0.0.0/ros_ws/src/coppeliasim_bridge/src/zmq_pub.cpp:9:9:[m[K [01;31m[Kerror: [m[K‘[01m[Kclass jsoncons::basic_json<char, jsoncons::sorted_policy, std::allocator<char> >[m[K’ has no member named ‘[01m[KsetStepping[m[K’
+[0.721s]     9 |     sim.[01;31m[KsetStepping[m[K(true);
+[0.721s]       |         [01;31m[K^~~~~~~~~~~[m[K
+[0.721s] [01m[K/home/shanto/Documents/arm-ws-v0.0.0/ros_ws/src/coppeliasim_bridge/src/zmq_pub.cpp:11:9:[m[K [01;31m[Kerror: [m[K‘[01m[Kclass jsoncons::basic_json<char, jsoncons::sorted_policy, std::allocator<char> >[m[K’ has no member named ‘[01m[KstartSimulation[m[K’
+[0.721s]    11 |     sim.[01;31m[KstartSimulation[m[K();
+[0.721s]       |         [01;31m[K^~~~~~~~~~~~~~~[m[K
+[0.722s] [01m[K/home/shanto/Documents/arm-ws-v0.0.0/ros_ws/src/coppeliasim_bridge/src/zmq_pub.cpp:15:17:[m[K [01;31m[Kerror: [m[K‘[01m[Kclass jsoncons::basic_json<char, jsoncons::sorted_policy, std::allocator<char> >[m[K’ has no member named ‘[01m[KgetSimulationTime[m[K’
+[0.722s]    15 |         t = sim.[01;31m[KgetSimulationTime[m[K();
+[0.722s]       |                 [01;31m[K^~~~~~~~~~~~~~~~~[m[K
+[0.722s] [01m[K/home/shanto/Documents/arm-ws-v0.0.0/ros_ws/src/coppeliasim_bridge/src/zmq_pub.cpp:17:13:[m[K [01;31m[Kerror: [m[K‘[01m[Kclass jsoncons::basic_json<char, jsoncons::sorted_policy, std::allocator<char> >[m[K’ has no member named ‘[01m[Kstep[m[K’
+[0.722s]    17 |         sim.[01;31m[Kstep[m[K();
+[0.722s]       |             [01;31m[K^~~~[m[K
+[0.722s] [01m[K/home/shanto/Documents/arm-ws-v0.0.0/ros_ws/src/coppeliasim_bridge/src/zmq_pub.cpp:19:9:[m[K [01;31m[Kerror: [m[K‘[01m[Kclass jsoncons::basic_json<char, jsoncons::sorted_policy, std::allocator<char> >[m[K’ has no member named ‘[01m[KstopSimulation[m[K’
+[0.722s]    19 |     sim.[01;31m[KstopSimulation[m[K();
+[0.722s]       |         [01;31m[K^~~~~~~~~~~~~~[m[K
+[0.722s] [01m[K/home/shanto/Documents/arm-ws-v0.0.0/ros_ws/src/coppeliasim_bridge/src/zmq_pub.cpp:3:14:[m[K [01;35m[Kwarning: [m[Kunused parameter ‘[01m[Kargc[m[K’ [[01;35m[K]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wunused-parameter-Wunused-parameter]8;;[m[K]
+[0.722s]     3 | int main([01;35m[Kint argc[m[K,char* argv[])
+[0.723s]       |          [01;35m[K~~~~^~~~[m[K
+[0.723s] [01m[K/home/shanto/Documents/arm-ws-v0.0.0/ros_ws/src/coppeliasim_bridge/src/zmq_pub.cpp:3:25:[m[K [01;35m[Kwarning: [m[Kunused parameter ‘[01m[Kargv[m[K’ [[01;35m[K]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wunused-parameter-Wunused-parameter]8;;[m[K]
+[0.723s]     3 | int main(int argc,[01;35m[Kchar* argv[][m[K)
+[0.723s]       |                   [01;35m[K~~~~~~^~~~~~[m[K
+[1.115s] gmake[2]: *** [CMakeFiles/zmq_pub.dir/build.make:76: CMakeFiles/zmq_pub.dir/src/zmq_pub.cpp.o] Error 1
+[1.115s] gmake[1]: *** [CMakeFiles/Makefile2:137: CMakeFiles/zmq_pub.dir/all] Error 2
+[1.115s] gmake: *** [Makefile:146: all] Error 2
+[1.119s] Invoked command in '/home/shanto/Documents/arm-ws-v0.0.0/ros_ws/build/coppeliasim_bridge' returned '2': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/opt/ros/humble /usr/bin/cmake --build /home/shanto/Documents/arm-ws-v0.0.0/ros_ws/build/coppeliasim_bridge -- -j22 -l22

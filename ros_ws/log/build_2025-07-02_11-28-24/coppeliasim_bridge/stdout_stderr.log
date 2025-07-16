@@ -1,0 +1,55 @@
+-- CoppeliaSim: COPPELIASIM_INCLUDE_DIR: /home/shanto/CoppeliaSim_Pro_V4_10_0_rev0_Ubuntu22_04/programming/include
+-- CoppeliaSim: COPPELIASIM_ROOT_DIR: /home/shanto/CoppeliaSim_Pro_V4_10_0_rev0_Ubuntu22_04
+-- Checking CoppeliaSim header version...
+-- CoppeliaSim headers version 4.10.0 rev0
+-- CoppeliaSim: COPPELIASIM_RESOURCES_DIR: /home/shanto/CoppeliaSim_Pro_V4_10_0_rev0_Ubuntu22_04
+-- CoppeliaSim: COPPELIASIM_PLUGINS_DIR: /home/shanto/CoppeliaSim_Pro_V4_10_0_rev0_Ubuntu22_04
+-- CoppeliaSim: COPPELIASIM_EXECUTABLES_DIR: /home/shanto/CoppeliaSim_Pro_V4_10_0_rev0_Ubuntu22_04
+-- CoppeliaSim: COPPELIASIM_LIBRARIES_DIR: /home/shanto/CoppeliaSim_Pro_V4_10_0_rev0_Ubuntu22_04
+-- CoppeliaSim: COPPELIASIM_ADDONS_DIR: /home/shanto/CoppeliaSim_Pro_V4_10_0_rev0_Ubuntu22_04/addOns
+-- CoppeliaSim: COPPELIASIM_MANUAL_DIR: /home/shanto/CoppeliaSim_Pro_V4_10_0_rev0_Ubuntu22_04/manual
+-- CoppeliaSim: COPPELIASIM_MODELS_DIR: /home/shanto/CoppeliaSim_Pro_V4_10_0_rev0_Ubuntu22_04/models
+-- CoppeliaSim: COPPELIASIM_SCENES_DIR: /home/shanto/CoppeliaSim_Pro_V4_10_0_rev0_Ubuntu22_04/scenes
+-- CoppeliaSim: COPPELIASIM_LUA_DIR: /home/shanto/CoppeliaSim_Pro_V4_10_0_rev0_Ubuntu22_04/lua
+-- CoppeliaSim: COPPELIASIM_PYTHON_DIR: /home/shanto/CoppeliaSim_Pro_V4_10_0_rev0_Ubuntu22_04/python
+-- CoppeliaSim: COPPELIASIM_EXECUTABLE: /home/shanto/CoppeliaSim_Pro_V4_10_0_rev0_Ubuntu22_04/coppeliaSim
+-- Found Boost: /usr/lib/x86_64-linux-gnu/cmake/Boost-1.74.0/BoostConfig.cmake (found version "1.74.0") found components: regex 
+[0mgmake[1]: Entering directory '/home/shanto/Documents/arm-ws-v0.0.0/ros_ws/build/coppeliasim_bridge/_deps/jsoncons-subbuild'
+gmake[2]: Entering directory '/home/shanto/Documents/arm-ws-v0.0.0/ros_ws/build/coppeliasim_bridge/_deps/jsoncons-subbuild'
+gmake[3]: Entering directory '/home/shanto/Documents/arm-ws-v0.0.0/ros_ws/build/coppeliasim_bridge/_deps/jsoncons-subbuild'
+gmake[3]: Leaving directory '/home/shanto/Documents/arm-ws-v0.0.0/ros_ws/build/coppeliasim_bridge/_deps/jsoncons-subbuild'
+gmake[3]: Entering directory '/home/shanto/Documents/arm-ws-v0.0.0/ros_ws/build/coppeliasim_bridge/_deps/jsoncons-subbuild'
+[ 11%] [34m[1mCreating directories for 'jsoncons-populate'[0m
+[ 22%] [34m[1mPerforming download step (git clone) for 'jsoncons-populate'[0m
+-- Avoiding repeated git clone, stamp file is up to date: '/home/shanto/Documents/arm-ws-v0.0.0/ros_ws/build/coppeliasim_bridge/_deps/jsoncons-subbuild/jsoncons-populate-prefix/src/jsoncons-populate-stamp/jsoncons-populate-gitclone-lastrun.txt'
+[ 33%] [34m[1mPerforming update step for 'jsoncons-populate'[0m
+fatal: 'origin' does not appear to be a git repository
+fatal: Could not read from remote repository.
+
+Please make sure you have the correct access rights
+and the repository exists.
+[31mCMake Error at /home/shanto/Documents/arm-ws-v0.0.0/ros_ws/build/coppeliasim_bridge/_deps/jsoncons-subbuild/jsoncons-populate-prefix/tmp/jsoncons-populate-gitupdate.cmake:97 (execute_process):
+  execute_process failed command indexes:
+
+    1: "Child return code: 128"
+
+
+[0m
+gmake[3]: *** [CMakeFiles/jsoncons-populate.dir/build.make:136: jsoncons-populate-prefix/src/jsoncons-populate-stamp/jsoncons-populate-update] Error 1
+gmake[3]: Leaving directory '/home/shanto/Documents/arm-ws-v0.0.0/ros_ws/build/coppeliasim_bridge/_deps/jsoncons-subbuild'
+gmake[2]: *** [CMakeFiles/Makefile2:83: CMakeFiles/jsoncons-populate.dir/all] Error 2
+gmake[2]: Leaving directory '/home/shanto/Documents/arm-ws-v0.0.0/ros_ws/build/coppeliasim_bridge/_deps/jsoncons-subbuild'
+gmake[1]: *** [Makefile:91: all] Error 2
+gmake[1]: Leaving directory '/home/shanto/Documents/arm-ws-v0.0.0/ros_ws/build/coppeliasim_bridge/_deps/jsoncons-subbuild'
+[0m
+[31mCMake Error at /usr/share/cmake-3.22/Modules/FetchContent.cmake:1087 (message):
+  Build step for jsoncons failed: 2
+Call Stack (most recent call first):
+  /usr/share/cmake-3.22/Modules/FetchContent.cmake:1216:EVAL:2 (__FetchContent_directPopulate)
+  /usr/share/cmake-3.22/Modules/FetchContent.cmake:1216 (cmake_language)
+  CMakeLists.txt:34 (FetchContent_Populate)
+
+[0m
+-- Configuring incomplete, errors occurred!
+See also "/home/shanto/Documents/arm-ws-v0.0.0/ros_ws/build/coppeliasim_bridge/CMakeFiles/CMakeOutput.log".
+gmake: *** [Makefile:308: cmake_check_build_system] Error 1

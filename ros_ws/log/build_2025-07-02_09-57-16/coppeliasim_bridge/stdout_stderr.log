@@ -1,0 +1,27 @@
+[35m[1mConsolidate compiler generated dependencies of target zmq_pub[0m
+[ 50%] [32mBuilding CXX object CMakeFiles/zmq_pub.dir/src/zmq_pub.cpp.o[0m
+[01m[K/home/shanto/Documents/arm-ws-v0.0.0/ros_ws/src/coppeliasim_bridge/src/zmq_pub.cpp:[m[K In function ‘[01m[Kint main(int, char**)[m[K’:
+[01m[K/home/shanto/Documents/arm-ws-v0.0.0/ros_ws/src/coppeliasim_bridge/src/zmq_pub.cpp:3:14:[m[K [01;35m[Kwarning: [m[Kunused parameter ‘[01m[Kargc[m[K’ [[01;35m[K]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wunused-parameter-Wunused-parameter]8;;[m[K]
+    3 | int main([01;35m[Kint argc[m[K, char **argv)
+      |          [01;35m[K~~~~^~~~[m[K
+[01m[K/home/shanto/Documents/arm-ws-v0.0.0/ros_ws/src/coppeliasim_bridge/src/zmq_pub.cpp:3:27:[m[K [01;35m[Kwarning: [m[Kunused parameter ‘[01m[Kargv[m[K’ [[01;35m[K]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wunused-parameter-Wunused-parameter]8;;[m[K]
+    3 | int main(int argc, [01;35m[Kchar **argv[m[K)
+      |                    [01;35m[K~~~~~~~^~~~[m[K
+[100%] [32m[1mLinking CXX executable zmq_pub[0m
+[100%] Built target zmq_pub
+-- Install configuration: ""
+-- Installing: /home/shanto/Documents/arm-ws-v0.0.0/ros_ws/install/coppeliasim_bridge/share/ament_index/resource_index/package_run_dependencies/coppeliasim_bridge
+-- Installing: /home/shanto/Documents/arm-ws-v0.0.0/ros_ws/install/coppeliasim_bridge/share/ament_index/resource_index/parent_prefix_path/coppeliasim_bridge
+-- Installing: /home/shanto/Documents/arm-ws-v0.0.0/ros_ws/install/coppeliasim_bridge/share/coppeliasim_bridge/environment/ament_prefix_path.sh
+-- Installing: /home/shanto/Documents/arm-ws-v0.0.0/ros_ws/install/coppeliasim_bridge/share/coppeliasim_bridge/environment/ament_prefix_path.dsv
+-- Installing: /home/shanto/Documents/arm-ws-v0.0.0/ros_ws/install/coppeliasim_bridge/share/coppeliasim_bridge/environment/path.sh
+-- Installing: /home/shanto/Documents/arm-ws-v0.0.0/ros_ws/install/coppeliasim_bridge/share/coppeliasim_bridge/environment/path.dsv
+-- Installing: /home/shanto/Documents/arm-ws-v0.0.0/ros_ws/install/coppeliasim_bridge/share/coppeliasim_bridge/local_setup.bash
+-- Installing: /home/shanto/Documents/arm-ws-v0.0.0/ros_ws/install/coppeliasim_bridge/share/coppeliasim_bridge/local_setup.sh
+-- Installing: /home/shanto/Documents/arm-ws-v0.0.0/ros_ws/install/coppeliasim_bridge/share/coppeliasim_bridge/local_setup.zsh
+-- Installing: /home/shanto/Documents/arm-ws-v0.0.0/ros_ws/install/coppeliasim_bridge/share/coppeliasim_bridge/local_setup.dsv
+-- Up-to-date: /home/shanto/Documents/arm-ws-v0.0.0/ros_ws/install/coppeliasim_bridge/share/coppeliasim_bridge/package.dsv
+-- Installing: /home/shanto/Documents/arm-ws-v0.0.0/ros_ws/install/coppeliasim_bridge/share/ament_index/resource_index/packages/coppeliasim_bridge
+-- Installing: /home/shanto/Documents/arm-ws-v0.0.0/ros_ws/install/coppeliasim_bridge/share/coppeliasim_bridge/cmake/coppeliasim_bridgeConfig.cmake
+-- Installing: /home/shanto/Documents/arm-ws-v0.0.0/ros_ws/install/coppeliasim_bridge/share/coppeliasim_bridge/cmake/coppeliasim_bridgeConfig-version.cmake
+-- Installing: /home/shanto/Documents/arm-ws-v0.0.0/ros_ws/install/coppeliasim_bridge/share/coppeliasim_bridge/package.xml

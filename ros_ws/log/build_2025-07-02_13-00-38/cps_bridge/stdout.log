@@ -1,0 +1,29 @@
+running egg_info
+creating ../../build/cps_bridge/cps_bridge.egg-info
+writing ../../build/cps_bridge/cps_bridge.egg-info/PKG-INFO
+writing dependency_links to ../../build/cps_bridge/cps_bridge.egg-info/dependency_links.txt
+writing entry points to ../../build/cps_bridge/cps_bridge.egg-info/entry_points.txt
+writing requirements to ../../build/cps_bridge/cps_bridge.egg-info/requires.txt
+writing top-level names to ../../build/cps_bridge/cps_bridge.egg-info/top_level.txt
+writing manifest file '../../build/cps_bridge/cps_bridge.egg-info/SOURCES.txt'
+reading manifest file '../../build/cps_bridge/cps_bridge.egg-info/SOURCES.txt'
+adding license file 'LICENSE'
+writing manifest file '../../build/cps_bridge/cps_bridge.egg-info/SOURCES.txt'
+running build
+running build_py
+creating /home/shanto/Documents/arm-ws-v0.0.0/ros_ws/build/cps_bridge/build/lib/src
+copying src/cps_pub.py -> /home/shanto/Documents/arm-ws-v0.0.0/ros_ws/build/cps_bridge/build/lib/src
+copying src/__init__.py -> /home/shanto/Documents/arm-ws-v0.0.0/ros_ws/build/cps_bridge/build/lib/src
+running install
+running install_lib
+copying /home/shanto/Documents/arm-ws-v0.0.0/ros_ws/build/cps_bridge/build/lib/src/cps_pub.py -> /home/shanto/Documents/arm-ws-v0.0.0/ros_ws/install/cps_bridge/lib/python3.10/site-packages/src
+byte-compiling /home/shanto/Documents/arm-ws-v0.0.0/ros_ws/install/cps_bridge/lib/python3.10/site-packages/src/cps_pub.py to cps_pub.cpython-310.pyc
+running install_data
+copying resource/cps_bridge -> /home/shanto/Documents/arm-ws-v0.0.0/ros_ws/install/cps_bridge/share/ament_index/resource_index/packages
+copying package.xml -> /home/shanto/Documents/arm-ws-v0.0.0/ros_ws/install/cps_bridge/share/cps_bridge
+running install_egg_info
+removing '/home/shanto/Documents/arm-ws-v0.0.0/ros_ws/install/cps_bridge/lib/python3.10/site-packages/cps_bridge-0.0.0-py3.10.egg-info' (and everything under it)
+Copying ../../build/cps_bridge/cps_bridge.egg-info to /home/shanto/Documents/arm-ws-v0.0.0/ros_ws/install/cps_bridge/lib/python3.10/site-packages/cps_bridge-0.0.0-py3.10.egg-info
+running install_scripts
+Installing cps_pub script to /home/shanto/Documents/arm-ws-v0.0.0/ros_ws/install/cps_bridge/lib/cps_bridge
+writing list of installed files to '/home/shanto/Documents/arm-ws-v0.0.0/ros_ws/build/cps_bridge/install.log'

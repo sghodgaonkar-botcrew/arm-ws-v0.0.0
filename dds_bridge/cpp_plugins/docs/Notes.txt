@@ -1,0 +1,154 @@
+Great—let’s go for sub-millisecond. Below are concrete C++ changes you can apply; most center on eliminating dynamic allocations, exploiting fixed-size Eigen/Pinocchio types, inlining hot loops, and lightening IPOPT’s Hessian work.
+
+---
+
+## 1. Switch to fixed-size, pre-allocated buffers
+
+In **`ik_model.h`**, change all dynamic-size Eigen/Pinocchio data to fixed 6-DOF types and add member caches:
+
+```diff
+--- ik_model.h
++++ ik_model.h
+@@ class IKModel {
+-  pinocchio::Model     model_;
+-  pinocchio::Data      data_;
++  // Use compile-time 6-DOF model for maximal speed
++  pinocchio::ModelTpl<double,6,6>    model_;
++  pinocchio::DataTpl<double,6,6>     data_;
+
++  // Pre-allocated caches to avoid per-call allocations
++  Eigen::Matrix<double,6,6>           J_cache_;
++  Eigen::Matrix<double,6,1>           grad_cache_;
++  Eigen::Matrix<double,6,6>           hess_cache_;
+```
+
+---
+
+## 2. Inline and reuse buffers in Jacobian & cost
+
+In **`ik_model.cpp`**, mark critical routines `inline`, and write into the pre-allocated caches:
+
+```diff
+--- ik_model.cpp
++++ ik_model.cpp
+@@
+-inline void IKModel::computeJacobian(const VectorXd& q, MatrixXd& J_out) {
+-  pinocchio::computeJointJacobians(model_, data_, q);
+-  pinocchio::getFrameJacobian(model_, data_, ee_frame_, LOCAL, J_out);
+-}
++inline void IKModel::computeJacobian(const Vector6d& q) {
++  // Reuse J_cache_ for speed
++  pinocchio::computeJointJacobians(model_, data_, q);
++  pinocchio::getFrameJacobian<6>(model_, data_, ee_frame_, LOCAL, J_cache_);
++}
+
+-inline double IKModel::cost(const VectorXd& q) {
+-  // dynamic SE3 log, dynamic allocations…
+-  SE3 M = forwardKinematics(q);
+-  SE3 err = reference_.actInv(M);
+-  return err.log().squaredNorm();
+-}
++inline double IKModel::cost(const Vector6d& q) {
++  // no temporaries beyond fixed 6-vector
++  pinocchio::forwardKinematics(model_, data_, q);
++  pinocchio::updateFramePlacement(model_, data_, ee_frame_);
++  const SE3& M = data_.oMf[ee_frame_];
++  Eigen::Matrix<double,6,1> err6;
++  // SE3::log mapped into fixed 6-vector
++  pinocchio::log(reference_.actInv(M), err6);
++  return err6.squaredNorm();
++}
+```
+
+Do the same for your gradient/hessian functions, writing directly into `grad_cache_` and `hess_cache_`, all annotated `inline`.
+
+---
+
+## 3. Turn off full Hessian in IPOPT
+
+Computing a 6×6 Hessian every iteration is costly. Switch IPOPT to limited-memory L-BFGS or Gauss-Newton:
+
+In **`ik_solver_v2.cpp`**, when you configure the solver:
+
+```cpp
+// Before solve():
+options.set_string_value("hessian_approximation", "limited-memory");
+// Or, to use Gauss-Newton (JᵀJ) only:
+options.set_string_value("hessian_approximation", "exact");
+options.set_string_value("nlp_scaling_method","none");
+// And skip your get_nlp_hessian callback:
+useHessianCallback = false;
+```
+
+Alternatively, implement `get_hessian` as `H ≈ J_cache_.transpose()*J_cache_` (cheap 6×6 multiply) rather than true second derivatives.
+
+---
+
+## 4. Pre-allocate and inline IPOPT vectors
+
+In your **`IkIpoptSolver`** class, move all `Ipopt::Number*` and index arrays into member buffers so IPOPT reuses them:
+
+```diff
+--- ik_solver_v2.hpp
++++ ik_solver_v2.hpp
+ private:
+- Ipopt::Number* x_;
+- Index* ix_row_;
+- Index* ix_col_;
++ // Pre-allocate for 6 vars, Hessian nnz up to 36
++ std::array<Ipopt::Number,6>     x_;
++ std::array<Index,36>            ix_row_;
++ std::array<Index,36>            ix_col_;
+```
+
+Then in each callback, write into these arrays instead of `new[]`.
+
+---
+
+## 5. Compiler & build flags
+
+In your CMakeLists (or Makefile) for Jetson Orin Nano (ARMv8.2-A + NEON):
+
+```cmake
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS}
+  -O3
+  -march=armv8.2-a+simd+fp+crypto
+  -ffast-math
+  -funroll-loops
+  -flto
+  -fomit-frame-pointer
+")
+```
+
+Enable **Link-Time Optimization** and **Profile-Guided Optimization** (PGO) if possible.
+
+---
+
+## 6. (Optional) Custom Gauss-Newton instead of IPOPT
+
+For a 6 × 6 problem, a tiny Gauss-Newton loop with 2–3 steps and LLᵀ solves can be faster than IPOPT:
+
+```cpp
+Eigen::LLT<Matrix6> llt;
+for(int iter=0; iter<3; ++iter){
+  model.computeJacobian(q);
+  Vector6 e = model.error6(q);
+  Matrix6 JtJ = model.J_cache_.transpose()*model.J_cache_;
+  Vector6 g   = model.J_cache_.transpose()*e;
+  llt.compute(JtJ);
+  q -= llt.solve(g);
+  if(e.norm()<1e-6) break;
+}
+```
+
+This avoids NLP overhead entirely and often finishes in a few hundred microseconds.
+
+---
+
+### Next steps
+
+1. **Profile** the modified code (e.g. `std::chrono` around `computeJacobian` & solver loop).
+2. **Measure** each stage’s time.
+3. **Tune** the number of GN iterations or IPOPT tolerances (`tol=1e-4`) for a speed/accuracy tradeoff.
+
+Let me know your profiling numbers once you’ve applied these, and we can zero in on any remaining hotspots!

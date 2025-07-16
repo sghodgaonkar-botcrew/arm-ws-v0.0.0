@@ -1,0 +1,2 @@
+[console_scripts]
+cps_pub = cps_bridge.cps_pub:main

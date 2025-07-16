@@ -1,0 +1,21 @@
+[0.014s] Invoking command in '/home/shanto/Documents/arm-ws-v0.0.0/ros_ws/build/coppeliasim_bridge': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/opt/ros/humble /usr/bin/cmake --build /home/shanto/Documents/arm-ws-v0.0.0/ros_ws/build/coppeliasim_bridge -- -j22 -l22
+[0.069s] [100%] Built target zmq_pub
+[0.079s] Invoked command in '/home/shanto/Documents/arm-ws-v0.0.0/ros_ws/build/coppeliasim_bridge' returned '0': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/opt/ros/humble /usr/bin/cmake --build /home/shanto/Documents/arm-ws-v0.0.0/ros_ws/build/coppeliasim_bridge -- -j22 -l22
+[0.091s] Invoking command in '/home/shanto/Documents/arm-ws-v0.0.0/ros_ws/build/coppeliasim_bridge': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/opt/ros/humble /usr/bin/cmake --install /home/shanto/Documents/arm-ws-v0.0.0/ros_ws/build/coppeliasim_bridge
+[0.097s] -- Install configuration: "Release"
+[0.097s] -- Up-to-date: /home/shanto/Documents/arm-ws-v0.0.0/ros_ws/install/coppeliasim_bridge/share/ament_index/resource_index/package_run_dependencies/coppeliasim_bridge
+[0.097s] -- Up-to-date: /home/shanto/Documents/arm-ws-v0.0.0/ros_ws/install/coppeliasim_bridge/share/ament_index/resource_index/parent_prefix_path/coppeliasim_bridge
+[0.098s] -- Up-to-date: /home/shanto/Documents/arm-ws-v0.0.0/ros_ws/install/coppeliasim_bridge/share/coppeliasim_bridge/environment/ament_prefix_path.sh
+[0.098s] -- Up-to-date: /home/shanto/Documents/arm-ws-v0.0.0/ros_ws/install/coppeliasim_bridge/share/coppeliasim_bridge/environment/ament_prefix_path.dsv
+[0.098s] -- Up-to-date: /home/shanto/Documents/arm-ws-v0.0.0/ros_ws/install/coppeliasim_bridge/share/coppeliasim_bridge/environment/path.sh
+[0.098s] -- Up-to-date: /home/shanto/Documents/arm-ws-v0.0.0/ros_ws/install/coppeliasim_bridge/share/coppeliasim_bridge/environment/path.dsv
+[0.098s] -- Up-to-date: /home/shanto/Documents/arm-ws-v0.0.0/ros_ws/install/coppeliasim_bridge/share/coppeliasim_bridge/local_setup.bash
+[0.098s] -- Up-to-date: /home/shanto/Documents/arm-ws-v0.0.0/ros_ws/install/coppeliasim_bridge/share/coppeliasim_bridge/local_setup.sh
+[0.098s] -- Up-to-date: /home/shanto/Documents/arm-ws-v0.0.0/ros_ws/install/coppeliasim_bridge/share/coppeliasim_bridge/local_setup.zsh
+[0.098s] -- Up-to-date: /home/shanto/Documents/arm-ws-v0.0.0/ros_ws/install/coppeliasim_bridge/share/coppeliasim_bridge/local_setup.dsv
+[0.098s] -- Installing: /home/shanto/Documents/arm-ws-v0.0.0/ros_ws/install/coppeliasim_bridge/share/coppeliasim_bridge/package.dsv
+[0.098s] -- Up-to-date: /home/shanto/Documents/arm-ws-v0.0.0/ros_ws/install/coppeliasim_bridge/share/ament_index/resource_index/packages/coppeliasim_bridge
+[0.098s] -- Up-to-date: /home/shanto/Documents/arm-ws-v0.0.0/ros_ws/install/coppeliasim_bridge/share/coppeliasim_bridge/cmake/coppeliasim_bridgeConfig.cmake
+[0.098s] -- Up-to-date: /home/shanto/Documents/arm-ws-v0.0.0/ros_ws/install/coppeliasim_bridge/share/coppeliasim_bridge/cmake/coppeliasim_bridgeConfig-version.cmake
+[0.098s] -- Up-to-date: /home/shanto/Documents/arm-ws-v0.0.0/ros_ws/install/coppeliasim_bridge/share/coppeliasim_bridge/package.xml
+[0.099s] Invoked command in '/home/shanto/Documents/arm-ws-v0.0.0/ros_ws/build/coppeliasim_bridge' returned '0': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/opt/ros/humble /usr/bin/cmake --install /home/shanto/Documents/arm-ws-v0.0.0/ros_ws/build/coppeliasim_bridge

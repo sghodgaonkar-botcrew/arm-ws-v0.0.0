@@ -1,0 +1,22 @@
+[01m[K/home/shanto/Documents/arm-ws-v0.0.0/ros_ws/src/coppeliasim_bridge/src/zmq_pub.cpp:[m[K In function ‘[01m[Kint main(int, char**)[m[K’:
+[01m[K/home/shanto/Documents/arm-ws-v0.0.0/ros_ws/src/coppeliasim_bridge/src/zmq_pub.cpp:4:14:[m[K [01;35m[Kwarning: [m[Kunused parameter ‘[01m[Kargc[m[K’ [[01;35m[K]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wunused-parameter-Wunused-parameter]8;;[m[K]
+    4 | int main([01;35m[Kint argc[m[K,char* argv[])
+      |          [01;35m[K~~~~^~~~[m[K
+[01m[K/home/shanto/Documents/arm-ws-v0.0.0/ros_ws/src/coppeliasim_bridge/src/zmq_pub.cpp:4:25:[m[K [01;35m[Kwarning: [m[Kunused parameter ‘[01m[Kargv[m[K’ [[01;35m[K]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wunused-parameter-Wunused-parameter]8;;[m[K]
+    4 | int main(int argc,[01;35m[Kchar* argv[][m[K)
+      |                   [01;35m[K~~~~~~^~~~~~[m[K
+/usr/bin/ld: CMakeFiles/zmq_pub.dir/src/zmq_pub.cpp.o: in function `main.cold':
+zmq_pub.cpp:(.text.unlikely+0x4): undefined reference to `RemoteAPIClient::~RemoteAPIClient()'
+/usr/bin/ld: CMakeFiles/zmq_pub.dir/src/zmq_pub.cpp.o: in function `main':
+zmq_pub.cpp:(.text.startup+0x90): undefined reference to `RemoteAPIClient::RemoteAPIClient(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, int, int, int)'
+/usr/bin/ld: zmq_pub.cpp:(.text.startup+0xbe): undefined reference to `RemoteAPIObjects::sim()'
+/usr/bin/ld: zmq_pub.cpp:(.text.startup+0xcb): undefined reference to `RemoteAPIObject::sim::setStepping(bool)'
+/usr/bin/ld: zmq_pub.cpp:(.text.startup+0xd3): undefined reference to `RemoteAPIObject::sim::startSimulation()'
+/usr/bin/ld: zmq_pub.cpp:(.text.startup+0xe4): undefined reference to `RemoteAPIObject::sim::getSimulationTime()'
+/usr/bin/ld: zmq_pub.cpp:(.text.startup+0x104): undefined reference to `RemoteAPIObject::sim::step()'
+/usr/bin/ld: zmq_pub.cpp:(.text.startup+0x122): undefined reference to `RemoteAPIObject::sim::stopSimulation(std::optional<bool>)'
+/usr/bin/ld: zmq_pub.cpp:(.text.startup+0x12a): undefined reference to `RemoteAPIClient::~RemoteAPIClient()'
+collect2: error: ld returned 1 exit status
+gmake[2]: *** [CMakeFiles/zmq_pub.dir/build.make:100: zmq_pub] Error 1
+gmake[1]: *** [CMakeFiles/Makefile2:137: CMakeFiles/zmq_pub.dir/all] Error 2
+gmake: *** [Makefile:146: all] Error 2

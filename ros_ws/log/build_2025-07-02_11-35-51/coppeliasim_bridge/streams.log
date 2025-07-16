@@ -1,0 +1,27 @@
+[0.012s] Invoking command in '/home/shanto/Documents/arm-ws-v0.0.0/ros_ws/build/coppeliasim_bridge': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/opt/ros/humble /usr/bin/cmake --build /home/shanto/Documents/arm-ws-v0.0.0/ros_ws/build/coppeliasim_bridge -- -j22 -l22
+[0.037s] -- Found ament_cmake: 1.3.11 (/opt/ros/humble/share/ament_cmake/cmake)
+[0.144s] -- CoppeliaSim: COPPELIASIM_INCLUDE_DIR: /home/shanto/CoppeliaSim_Pro_V4_10_0_rev0_Ubuntu22_04/programming/include
+[0.144s] -- CoppeliaSim: COPPELIASIM_ROOT_DIR: /home/shanto/CoppeliaSim_Pro_V4_10_0_rev0_Ubuntu22_04
+[0.144s] -- Checking CoppeliaSim header version...
+[0.364s] -- CoppeliaSim headers version 4.10.0 rev0
+[0.364s] -- CoppeliaSim: COPPELIASIM_RESOURCES_DIR: /home/shanto/CoppeliaSim_Pro_V4_10_0_rev0_Ubuntu22_04
+[0.364s] -- CoppeliaSim: COPPELIASIM_PLUGINS_DIR: /home/shanto/CoppeliaSim_Pro_V4_10_0_rev0_Ubuntu22_04
+[0.364s] -- CoppeliaSim: COPPELIASIM_EXECUTABLES_DIR: /home/shanto/CoppeliaSim_Pro_V4_10_0_rev0_Ubuntu22_04
+[0.364s] -- CoppeliaSim: COPPELIASIM_LIBRARIES_DIR: /home/shanto/CoppeliaSim_Pro_V4_10_0_rev0_Ubuntu22_04
+[0.364s] -- CoppeliaSim: COPPELIASIM_ADDONS_DIR: /home/shanto/CoppeliaSim_Pro_V4_10_0_rev0_Ubuntu22_04/addOns
+[0.364s] -- CoppeliaSim: COPPELIASIM_MANUAL_DIR: /home/shanto/CoppeliaSim_Pro_V4_10_0_rev0_Ubuntu22_04/manual
+[0.364s] -- CoppeliaSim: COPPELIASIM_MODELS_DIR: /home/shanto/CoppeliaSim_Pro_V4_10_0_rev0_Ubuntu22_04/models
+[0.364s] -- CoppeliaSim: COPPELIASIM_SCENES_DIR: /home/shanto/CoppeliaSim_Pro_V4_10_0_rev0_Ubuntu22_04/scenes
+[0.364s] -- CoppeliaSim: COPPELIASIM_LUA_DIR: /home/shanto/CoppeliaSim_Pro_V4_10_0_rev0_Ubuntu22_04/lua
+[0.364s] -- CoppeliaSim: COPPELIASIM_PYTHON_DIR: /home/shanto/CoppeliaSim_Pro_V4_10_0_rev0_Ubuntu22_04/python
+[0.364s] -- CoppeliaSim: COPPELIASIM_EXECUTABLE: /home/shanto/CoppeliaSim_Pro_V4_10_0_rev0_Ubuntu22_04/coppeliaSim
+[0.435s] -- Checking for module 'jsoncons'
+[0.438s] --   No package 'jsoncons' found
+[0.439s] -- Configuring incomplete, errors occurred!
+[0.439s] See also "/home/shanto/Documents/arm-ws-v0.0.0/ros_ws/build/coppeliasim_bridge/CMakeFiles/CMakeOutput.log".
+[0.439s] [31mCMake Error at CMakeLists.txt:45 (message):
+[0.440s]   jsoncons not found.  Please install it: sudo apt install libjsoncons-dev
+[0.440s] 
+[0.440s] [0m
+[0.442s] gmake: *** [Makefile:308: cmake_check_build_system] Error 1
+[0.445s] Invoked command in '/home/shanto/Documents/arm-ws-v0.0.0/ros_ws/build/coppeliasim_bridge' returned '2': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/opt/ros/humble /usr/bin/cmake --build /home/shanto/Documents/arm-ws-v0.0.0/ros_ws/build/coppeliasim_bridge -- -j22 -l22

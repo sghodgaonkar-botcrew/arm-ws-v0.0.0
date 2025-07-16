@@ -1,10 +1,7 @@
 #include "ik_model.h"
-#include <Eigen/src/Core/MatrixBase.h>
-#include <iomanip>
+#include <algorithm>
+#include <cstring> // for strncmp
 #include <iostream>
-#include <pinocchio/algorithm/frames.hpp>
-#include <pinocchio/algorithm/kinematics.hpp>
-#include <pinocchio/parsers/urdf.hpp>
 
 // Define static member
 const JointConfig IKModel::NEUTRAL_JOINT_CONFIG = JointConfig::Zero();
@@ -14,7 +11,10 @@ IKModel::IKModel(const std::string &urdf_path,
                  const Eigen::Vector<double, 6> &pose_weights)
     : urdf_path_(urdf_path), end_effector_name_(end_effector_name),
       current_joint_config_(NEUTRAL_JOINT_CONFIG),
-      pose_weights_(pose_weights.asDiagonal()) {
+      pose_weights_(Eigen::Matrix<double, 6, 6>::Zero()),
+      joint_limits_initialized_(false) {
+    // Initialize pose_weights_ as diagonal matrix
+    pose_weights_ = pose_weights.asDiagonal();
     try {
         // Load the URDF model
         pinocchio::urdf::buildModel(urdf_path, model_);
@@ -39,6 +39,15 @@ IKModel::IKModel(const std::string &urdf_path,
                   << std::endl;
         std::cout << "End effector frame: '" << end_effector_name
                   << "' (ID: " << end_effector_id_ << ")" << std::endl;
+        // Initialize joint limits from the URDF model
+        joint_limits_lower_ = model_.lowerPositionLimit.cast<double>();
+        joint_limits_upper_ = model_.upperPositionLimit.cast<double>();
+        joint_limits_initialized_ = true;
+        std::cout << "Joint limits loaded:" << std::endl;
+        for (int i = 0; i < joint_limits_lower_.size(); ++i) {
+            std::cout << "  Joint " << i << ": [" << joint_limits_lower_(i)
+                      << ", " << joint_limits_upper_(i) << "]" << std::endl;
+        }
         // Compute and print the end effector pose in neutral configuration
         computeForwardKinematics(NEUTRAL_JOINT_CONFIG);
         std::cout << "End effector pose (neutral config): ["
@@ -167,28 +176,8 @@ pinocchio::SE3 IKModel::computeForwardKinematics(const JointConfig &q) {
     pinocchio::updateFramePlacements(model_, data_);
 
     // Get the end effector transformation
-    // const pinocchio::SE3 &end_effector_pose =
     return data_.oMf[end_effector_id_];
-
-    // // Create the XYZQuat representation directly
-    // XYZQuat xyzquat;
-    // xyzquat.head<3>() = end_effector_pose.translation();
-
-    // // Convert rotation matrix to quaternion (x, y, z, w)
-    // Eigen::Quaterniond quat(end_effector_pose.rotation());
-    // xyzquat.segment<4>(3) =
-    //     Eigen::Vector4d(quat.x(), quat.y(), quat.z(), quat.w());
-
-    // // Update the stored XYZQuat representation and current joint config
-    // end_effector_xyzquat_ = xyzquat;
-    // current_joint_config_ = q;
-
-    // return xyzquat;
 }
-
-int IKModel::getNumJoints() const { return model_.nq; }
-
-int IKModel::getNumVelocityVariables() const { return model_.nv; }
 
 XYZQuat IKModel::homogeneousToXYZQuat(const pinocchio::SE3 &se3_transform) {
     XYZQuat xyzquat;
@@ -197,8 +186,7 @@ XYZQuat IKModel::homogeneousToXYZQuat(const pinocchio::SE3 &se3_transform) {
     xyzquat.head<3>() = se3_transform.translation();
 
     // Extract rotation matrix and convert to quaternion
-    Eigen::Matrix3d rotation_matrix = se3_transform.rotation();
-    Eigen::Quaterniond quat(rotation_matrix);
+    Eigen::Quaterniond quat(se3_transform.rotation());
 
     // Store quaternion as [qx, qy, qz, qw]
     xyzquat.segment<4>(3) =
@@ -220,113 +208,145 @@ pinocchio::SE3 IKModel::xyzQuatToHomogeneous(const XYZQuat &xyzquat) {
     return pinocchio::SE3(rotation_matrix, translation);
 }
 
-double IKModel::cost(const JointConfig &q, const pinocchio::SE3 &target_pose) {
-    // 1. Forward kinematics for the given joint config
-    const pinocchio::SE3 fk_pose = computeForwardKinematics(q);
-
-    // 2. Compute the 6D pose error using SE3 logarithm: log(T_target^-1 *
-    // T_current)
-    Eigen::Matrix<double, 6, 1> error =
-        (pinocchio::log6(target_pose.inverse() * fk_pose)).toVector();
-
-    // 3. Return cost
-    return 0.5 * error.transpose() * pose_weights_ * error;
-}
-
 JointConfig IKModel::cost_grad(const JointConfig &q,
                                const pinocchio::SE3 &target_pose) {
-    // 1. Compute the pose error, in the same way that it was done in cost()
-    const pinocchio::SE3 fk_pose = computeForwardKinematics(q);
+    // 1) FK & error as before
+    pinocchio::SE3 fk_pose = computeForwardKinematics(q);
+    // 1) compute the error transform
+    pinocchio::SE3 T_err = target_pose.inverse() * fk_pose;
 
-    // 2. Compute the 6D pose error using SE3 logarithm: log(T_target^-1 *
-    // T_current)
-    Eigen::Matrix<double, 6, 1> error =
-        (pinocchio::log6(target_pose.inverse() * fk_pose)).toVector();
+    // 2) 6-vector error
+    auto err6 = pinocchio::log6(T_err);
+    Eigen::Matrix<double, 6, 1> e = err6.toVector();
 
-    // 3. Jacobian
+    // 3) 6×n frame Jacobian at fk_pose
     Eigen::Matrix<double, 6, Eigen::Dynamic> J6(6, q.size());
     pinocchio::computeFrameJacobian(model_, data_, q, end_effector_id_,
                                     pinocchio::ReferenceFrame::LOCAL, J6);
 
-    // 4. Return gradient
-    return J6.transpose() * pose_weights_ * error;
-}
+    // 4) **inverse left‐Jacobian** Jₗ⁻¹ of the log‐map, built from T_err
+    Eigen::Matrix<double, 6, 6> Jl_inv = pinocchio::Jlog6(T_err);
 
-Eigen::Matrix<double, 6, 6> IKModel::cost_hess(const JointConfig &q) {
-    // 1. Compute Jacobian
-    Eigen::Matrix<double, 6, Eigen::Dynamic> J6(6, q.size());
-    pinocchio::computeFrameJacobian(model_, data_, q, end_effector_id_,
-                                    pinocchio::ReferenceFrame::LOCAL, J6);
+    // 5) total error‐Jacobian Je = Jₗ⁻¹ · J₆
+    Eigen::Matrix<double, 6, Eigen::Dynamic> Je = Jl_inv * J6;
 
-    // 2. Return the Gauss-Newton approximation: J^T * W * J
-    return J6.transpose() * pose_weights_ * J6;
+    // 6) gradient and Gauss–Newton Hessian
+    return Je.transpose() * pose_weights_ * e;
+    // Eigen::MatrixXd hess = Je.transpose() * pose_weights_ * Je;
 }
 
 Eigen::Matrix<double, 6, 6>
-IKModel::computeGeometricJacobian(const JointConfig &q) {
-    // Compute forward kinematics first
-    pinocchio::forwardKinematics(model_, data_, q);
+IKModel::cost_hess(const JointConfig &q, const pinocchio::SE3 &target_pose) {
+    // 1) FK & error as before
+    pinocchio::SE3 fk_pose = computeForwardKinematics(q);
+    // 1) compute the error transform
+    pinocchio::SE3 T_err = target_pose.inverse() * fk_pose;
 
-    // Compute the geometric Jacobian for the end effector frame
+    // 2) 6-vector error
+    auto err6 = pinocchio::log6(T_err);
+    Eigen::Matrix<double, 6, 1> e = err6.toVector();
+
+    // 3) 6×n frame Jacobian at fk_pose
+    Eigen::Matrix<double, 6, Eigen::Dynamic> J6(6, q.size());
     pinocchio::computeFrameJacobian(model_, data_, q, end_effector_id_,
-                                    pinocchio::ReferenceFrame::LOCAL, data_.J);
+                                    pinocchio::ReferenceFrame::LOCAL, J6);
 
-    // Return the 6x6 Jacobian matrix
-    return data_.J;
+    // 4) **inverse left‐Jacobian** Jₗ⁻¹ of the log‐map, built from T_err
+    Eigen::Matrix<double, 6, 6> Jl_inv = pinocchio::Jlog6(T_err);
+
+    // 5) total error‐Jacobian Je = Jₗ⁻¹ · J₆
+    Eigen::Matrix<double, 6, Eigen::Dynamic> Je = Jl_inv * J6;
+
+    // 6) gradient and Gauss–Newton Hessian
+    return Je.transpose() * pose_weights_ * Je;
 }
 
-Eigen::Matrix<double, 7, 6>
-IKModel::computeEndEffectorFullJacobian(const Eigen::VectorXd &q) {
-    // Ensure the input vector has the correct size (nq degrees of freedom)
-    if (q.size() != model_.nq)
-        throw std::invalid_argument(
-            "computeEndEffectorFullJacobian: expected q.size()=" +
-            std::to_string(model_.nq) + ", got " + std::to_string(q.size()));
+void IKModel::jacobianIK(const pinocchio::SE3 &target_pose, int its,
+                         double lambda_damping) {
+    const double eps = 0.001; // 1mm tolerance
+    const double gain = 1.0;
+    const double alpha = 0.1;
+    const double epsilon = 1e-4; // damping for pseudo-inverse
 
-    // 1) Perform forward kinematics to compute joint placements and velocities
-    pinocchio::forwardKinematics(model_, data_, q);
-    //    Compute joint Jacobians ∂oMi/∂q for each joint
-    pinocchio::computeJointJacobians(model_, data_, q);
-    //    Update frame placements so data_.oMf is valid for all frames
-    pinocchio::updateFramePlacements(model_, data_);
+    std::cout << "Position-only warm start optimization started!" << std::endl;
 
-    // 2) Extract the standard 6×nv geometric Jacobian for the end-effector
-    //    Rows 0–2: linear part (∂p/∂q), Rows 3–5: angular part (∂ω/∂q)
-    Eigen::Matrix<double, 6, 6> J6;
-    pinocchio::getFrameJacobian(model_, data_, end_effector_id_,
-                                pinocchio::ReferenceFrame::LOCAL_WORLD_ALIGNED,
-                                J6);
+    // Use current joint configuration as starting point
+    JointConfig q = current_joint_config_;
 
-    // Split J6 into translational (Jv) and rotational (Jw) components
-    Eigen::Matrix<double, 3, 6> Jv = J6.topRows<3>();    // 3×6
-    Eigen::Matrix<double, 3, 6> Jw = J6.bottomRows<3>(); // 3×6
+    // Extract desired end effector position from target pose
+    Eigen::Vector3d end_eff_desired = target_pose.translation();
 
-    // 3) Build the 4×3 mapping B(q) that relates angular velocity ω to
-    // quaternion rates q̇:
-    //      q̇ = ½·B(q)·ω, where ω = Jw * q̇
-    //    First, extract the current end-effector quaternion in (w, x, y, z)
-    //    order
-    const auto &M = data_.oMf[end_effector_id_];
-    Eigen::Quaterniond qr(M.rotation()); // normalize if needed: qr.normalize();
+    bool success = false;
 
-    //    Populate B matrix (4×3) according to quaternion kinematics
-    Eigen::Matrix<double, 4, 3> B;
-    B << -qr.x(), -qr.y(), -qr.z(), // q̇x terms
-        qr.w(), -qr.z(), qr.y(),    // q̇y terms
-        qr.z(), qr.w(), -qr.x(),    // q̇z terms
-        -qr.y(), qr.x(), qr.w();    // q̇w terms
-    B *= 0.5;                       // apply ½ factor
+    for (int i = 0; i < its; ++i) {
+        // Compute forward kinematics
+        pinocchio::forwardKinematics(model_, data_, q);
+        pinocchio::updateFramePlacements(model_, data_);
 
-    // 4) Compute the quaternion portion of the Jacobian (4×6)
-    //    Each column maps q̇ → quaternion time derivative
-    Eigen::Matrix<double, 4, 6> Jq = B * Jw;
+        // Get the current end effector pose
+        const pinocchio::SE3 &T_S_F = data_.oMf[end_effector_id_];
 
-    // 5) Stack the translational and quaternion Jacobians into a full 7×6
-    // matrix
-    Eigen::Matrix<double, 7, 6> J7;
-    J7.topRows<3>() = Jv;    // [ ẋ; ẏ; ż ]
-    J7.bottomRows<4>() = Jq; // [ q̇x; q̇y; q̇z; q̇w ]
+        // Compute position error
+        Eigen::Vector3d err = gain * (end_eff_desired - T_S_F.translation());
 
-    // Return the full Jacobian (7×6 for 6-DOF robot)
-    return J7;
+        // Check convergence
+        double err_norm = err.norm();
+        if (err_norm < eps) {
+            success = true;
+            std::cout << "Position-only IK converged in " << i << " steps"
+                      << std::endl;
+            std::cout << "Found joint positions: [" << q.transpose() << "]"
+                      << std::endl;
+            std::cout << "End effector position: ["
+                      << T_S_F.translation().transpose() << "]" << std::endl;
+            std::cout << "Desired position: [" << end_eff_desired.transpose()
+                      << "]" << std::endl;
+            break;
+        }
+
+        if (i == its - 1) {
+            std::cout << "Position-only IK: no good solution found"
+                      << std::endl;
+            std::cout << "Current joint positions: [" << q.transpose() << "]"
+                      << std::endl;
+            std::cout << "End effector position: ["
+                      << T_S_F.translation().transpose() << "]" << std::endl;
+            std::cout << "Desired position: [" << end_eff_desired.transpose()
+                      << "]" << std::endl;
+        }
+
+        // Compute frame Jacobian
+        Eigen::Matrix<double, 6, Eigen::Dynamic> J(6, q.size());
+        pinocchio::computeFrameJacobian(model_, data_, q, end_effector_id_,
+                                        pinocchio::ReferenceFrame::LOCAL, J);
+
+        // Extract position Jacobian (first 3 rows) and transform to spatial
+        // frame
+        Eigen::Matrix<double, 3, Eigen::Dynamic> J_pos =
+            T_S_F.rotation() * J.topRows<3>();
+
+        // Compute damped pseudo-inverse
+        Eigen::Matrix<double, 3, 3> JJt = J_pos * J_pos.transpose();
+        JJt.diagonal().array() += epsilon;
+        Eigen::Matrix<double, Eigen::Dynamic, 3> pinv =
+            J_pos.transpose() * JJt.inverse();
+
+        // Compute joint update
+        Eigen::VectorXd dq = pinv * err;
+
+        // Update joint configuration
+        q = q + alpha * dq;
+
+        // Clamp to joint limits
+        q = q.cwiseMax(joint_limits_lower_).cwiseMin(joint_limits_upper_);
+    }
+
+    // Update current joint configuration with the result
+    current_joint_config_ = q;
+
+    if (!success) {
+        std::cout << "Position-only warm start optimization completed (max "
+                     "iterations reached)"
+                  << std::endl;
+    }
 }

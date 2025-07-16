@@ -1,0 +1,9 @@
+[ 25%] [32mBuilding CXX object CMakeFiles/RemoteAPIClient.dir/src/RemoteAPIClient.cpp.o[0m
+In file included from [01m[K/home/shanto/Documents/arm-ws-v0.0.0/ros_ws/src/coppeliasim_bridge/src/RemoteAPIClient.cpp:251[m[K:
+[01m[K/home/shanto/Documents/arm-ws-v0.0.0/ros_ws/src/coppeliasim_bridge/src/RemoteAPIObjects.cpp:9:10:[m[K [01;31m[Kfatal error: [m[Ksim-deprecated.cpp: No such file or directory
+    9 | #include [01;31m[K"sim-deprecated.cpp"[m[K
+      |          [01;31m[K^~~~~~~~~~~~~~~~~~~~[m[K
+compilation terminated.
+gmake[2]: *** [CMakeFiles/RemoteAPIClient.dir/build.make:76: CMakeFiles/RemoteAPIClient.dir/src/RemoteAPIClient.cpp.o] Error 1
+gmake[1]: *** [CMakeFiles/Makefile2:139: CMakeFiles/RemoteAPIClient.dir/all] Error 2
+gmake: *** [Makefile:146: all] Error 2

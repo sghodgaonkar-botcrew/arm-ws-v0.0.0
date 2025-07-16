@@ -1,0 +1,92 @@
+\hypertarget{classIKSolverCeres}{}\doxysection{IKSolver\+Ceres Class Reference}
+\label{classIKSolverCeres}\index{IKSolverCeres@{IKSolverCeres}}
+
+
+Ceres-\/based IK solver.  
+
+
+
+
+{\ttfamily \#include $<$ik\+\_\+solver.\+h$>$}
+
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classIKSolverCeres_a8e4866cd52b4492d5f7b535ab215e70a}{IKSolver\+Ceres}} (std\+::shared\+\_\+ptr$<$ \mbox{\hyperlink{classIKModel}{IKModel}} $>$ ik\+\_\+model)
+\begin{DoxyCompactList}\small\item\em Constructor. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classIKSolverCeres_a009399a85f0e34b99eca6cd4800b940c}\label{classIKSolverCeres_a009399a85f0e34b99eca6cd4800b940c}} 
+\mbox{\hyperlink{classIKSolverCeres_a009399a85f0e34b99eca6cd4800b940c}{$\sim$\+IKSolver\+Ceres}} ()=default
+\begin{DoxyCompactList}\small\item\em Destructor. \end{DoxyCompactList}\item 
+Joint\+Config \mbox{\hyperlink{classIKSolverCeres_a5d5c7faddcc499a21ebfa491d21fa628}{solve}} (const pinocchio\+::\+SE3 \&target\+\_\+pose, const Joint\+Config \&initial\+\_\+guess=Joint\+Config())
+\begin{DoxyCompactList}\small\item\em Solve the inverse kinematics problem. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classIKSolverCeres_ad4af6ab21286ba7916621c39aa0131fe}{set\+Solver\+Options}} (int max\+\_\+iterations=1000, double function\+\_\+tolerance=0.\+0, double gradient\+\_\+tolerance=1e-\/10, double parameter\+\_\+tolerance=1e-\/12)
+\begin{DoxyCompactList}\small\item\em Set solver options. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Ceres-\/based IK solver. 
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classIKSolverCeres_a8e4866cd52b4492d5f7b535ab215e70a}\label{classIKSolverCeres_a8e4866cd52b4492d5f7b535ab215e70a}} 
+\index{IKSolverCeres@{IKSolverCeres}!IKSolverCeres@{IKSolverCeres}}
+\index{IKSolverCeres@{IKSolverCeres}!IKSolverCeres@{IKSolverCeres}}
+\doxysubsubsection{\texorpdfstring{IKSolverCeres()}{IKSolverCeres()}}
+{\footnotesize\ttfamily IKSolver\+Ceres\+::\+IKSolver\+Ceres (\begin{DoxyParamCaption}\item[{std\+::shared\+\_\+ptr$<$ \mbox{\hyperlink{classIKModel}{IKModel}} $>$}]{ik\+\_\+model }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [explicit]}}
+
+
+
+Constructor. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em ik\+\_\+model} & Pointer to the \mbox{\hyperlink{classIKModel}{IKModel}} instance \\
+\hline
+\end{DoxyParams}
+
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classIKSolverCeres_ad4af6ab21286ba7916621c39aa0131fe}\label{classIKSolverCeres_ad4af6ab21286ba7916621c39aa0131fe}} 
+\index{IKSolverCeres@{IKSolverCeres}!setSolverOptions@{setSolverOptions}}
+\index{setSolverOptions@{setSolverOptions}!IKSolverCeres@{IKSolverCeres}}
+\doxysubsubsection{\texorpdfstring{setSolverOptions()}{setSolverOptions()}}
+{\footnotesize\ttfamily void IKSolver\+Ceres\+::set\+Solver\+Options (\begin{DoxyParamCaption}\item[{int}]{max\+\_\+iterations = {\ttfamily 1000},  }\item[{double}]{function\+\_\+tolerance = {\ttfamily 0.0},  }\item[{double}]{gradient\+\_\+tolerance = {\ttfamily 1e-\/10},  }\item[{double}]{parameter\+\_\+tolerance = {\ttfamily 1e-\/12} }\end{DoxyParamCaption})}
+
+
+
+Set solver options. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em max\+\_\+iterations} & Maximum number of iterations \\
+\hline
+{\em function\+\_\+tolerance} & Function tolerance for convergence \\
+\hline
+{\em gradient\+\_\+tolerance} & Gradient tolerance for convergence \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classIKSolverCeres_a5d5c7faddcc499a21ebfa491d21fa628}\label{classIKSolverCeres_a5d5c7faddcc499a21ebfa491d21fa628}} 
+\index{IKSolverCeres@{IKSolverCeres}!solve@{solve}}
+\index{solve@{solve}!IKSolverCeres@{IKSolverCeres}}
+\doxysubsubsection{\texorpdfstring{solve()}{solve()}}
+{\footnotesize\ttfamily Joint\+Config IKSolver\+Ceres\+::solve (\begin{DoxyParamCaption}\item[{const pinocchio\+::\+SE3 \&}]{target\+\_\+pose,  }\item[{const Joint\+Config \&}]{initial\+\_\+guess = {\ttfamily JointConfig()} }\end{DoxyParamCaption})}
+
+
+
+Solve the inverse kinematics problem. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em target\+\_\+pose} & Target pose in SE3 format \\
+\hline
+{\em initial\+\_\+guess} & Initial joint configuration (optional, uses current if not provided) \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Joint configuration that minimizes the cost function 
+\end{DoxyReturn}
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+/home/shanto/\+Documents/arm-\/ws-\/v0.\+0.\+0/dds\+\_\+bridge/cpp\+\_\+plugins/include/ik\+\_\+solver.\+h\item 
+/home/shanto/\+Documents/arm-\/ws-\/v0.\+0.\+0/dds\+\_\+bridge/cpp\+\_\+plugins/src/ik\+\_\+solver.\+cpp\end{DoxyCompactItemize}

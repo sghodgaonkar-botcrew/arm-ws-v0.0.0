@@ -1,0 +1,9 @@
+[0.014s] Invoking command in '/home/shanto/Documents/arm-ws-v0.0.0/ros_ws/build/coppeliasim_bridge': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/opt/ros/humble /usr/bin/cmake --build /home/shanto/Documents/arm-ws-v0.0.0/ros_ws/build/coppeliasim_bridge -- -j22 -l22
+[0.038s] [31mCMake Error at CMakeLists.txt:12 (message):
+[0.039s]   Environment variable COPPELIASIM_ROOT_DIR is not set
+[0.039s] 
+[0.039s] [0m
+[0.039s] -- Configuring incomplete, errors occurred!
+[0.039s] See also "/home/shanto/Documents/arm-ws-v0.0.0/ros_ws/build/coppeliasim_bridge/CMakeFiles/CMakeOutput.log".
+[0.039s] gmake: *** [Makefile:308: cmake_check_build_system] Error 1
+[0.041s] Invoked command in '/home/shanto/Documents/arm-ws-v0.0.0/ros_ws/build/coppeliasim_bridge' returned '2': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/opt/ros/humble /usr/bin/cmake --build /home/shanto/Documents/arm-ws-v0.0.0/ros_ws/build/coppeliasim_bridge -- -j22 -l22

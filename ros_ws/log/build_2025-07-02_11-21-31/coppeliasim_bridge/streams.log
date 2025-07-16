@@ -1,0 +1,40 @@
+[0.014s] Invoking command in '/home/shanto/Documents/arm-ws-v0.0.0/ros_ws/build/coppeliasim_bridge': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/opt/ros/humble /usr/bin/cmake --build /home/shanto/Documents/arm-ws-v0.0.0/ros_ws/build/coppeliasim_bridge -- -j22 -l22
+[0.039s] -- Found ament_cmake: 1.3.11 (/opt/ros/humble/share/ament_cmake/cmake)
+[0.132s] -- CoppeliaSim: COPPELIASIM_INCLUDE_DIR: /home/shanto/CoppeliaSim_Pro_V4_10_0_rev0_Ubuntu22_04/programming/include
+[0.132s] -- CoppeliaSim: COPPELIASIM_ROOT_DIR: /home/shanto/CoppeliaSim_Pro_V4_10_0_rev0_Ubuntu22_04
+[0.132s] -- Checking CoppeliaSim header version...
+[0.355s] -- CoppeliaSim headers version 4.10.0 rev0
+[0.355s] -- CoppeliaSim: COPPELIASIM_RESOURCES_DIR: /home/shanto/CoppeliaSim_Pro_V4_10_0_rev0_Ubuntu22_04
+[0.355s] -- CoppeliaSim: COPPELIASIM_PLUGINS_DIR: /home/shanto/CoppeliaSim_Pro_V4_10_0_rev0_Ubuntu22_04
+[0.355s] -- CoppeliaSim: COPPELIASIM_EXECUTABLES_DIR: /home/shanto/CoppeliaSim_Pro_V4_10_0_rev0_Ubuntu22_04
+[0.355s] -- CoppeliaSim: COPPELIASIM_LIBRARIES_DIR: /home/shanto/CoppeliaSim_Pro_V4_10_0_rev0_Ubuntu22_04
+[0.355s] -- CoppeliaSim: COPPELIASIM_ADDONS_DIR: /home/shanto/CoppeliaSim_Pro_V4_10_0_rev0_Ubuntu22_04/addOns
+[0.355s] -- CoppeliaSim: COPPELIASIM_MANUAL_DIR: /home/shanto/CoppeliaSim_Pro_V4_10_0_rev0_Ubuntu22_04/manual
+[0.355s] -- CoppeliaSim: COPPELIASIM_MODELS_DIR: /home/shanto/CoppeliaSim_Pro_V4_10_0_rev0_Ubuntu22_04/models
+[0.355s] -- CoppeliaSim: COPPELIASIM_SCENES_DIR: /home/shanto/CoppeliaSim_Pro_V4_10_0_rev0_Ubuntu22_04/scenes
+[0.355s] -- CoppeliaSim: COPPELIASIM_LUA_DIR: /home/shanto/CoppeliaSim_Pro_V4_10_0_rev0_Ubuntu22_04/lua
+[0.356s] -- CoppeliaSim: COPPELIASIM_PYTHON_DIR: /home/shanto/CoppeliaSim_Pro_V4_10_0_rev0_Ubuntu22_04/python
+[0.356s] -- CoppeliaSim: COPPELIASIM_EXECUTABLE: /home/shanto/CoppeliaSim_Pro_V4_10_0_rev0_Ubuntu22_04/coppeliaSim
+[0.361s] -- Found Boost: /usr/lib/x86_64-linux-gnu/cmake/Boost-1.74.0/BoostConfig.cmake (found version "1.74.0") found components: regex 
+[0.367s] -- Found Git: /usr/bin/git (found version "2.34.1") 
+[0.433s] -- Found Boost: /usr/lib/x86_64-linux-gnu/cmake/Boost-1.74.0/BoostConfig.cmake (found version "1.74.0") found components: system thread 
+[0.434s] -- Found ament_lint_auto: 0.12.12 (/opt/ros/humble/share/ament_lint_auto/cmake)
+[0.488s] -- Added test 'cppcheck' to perform static code analysis on C / C++ code
+[0.488s] -- Configured cppcheck include dirs: 
+[0.488s] -- Configured cppcheck exclude dirs and/or files: 
+[0.488s] -- Added test 'lint_cmake' to check CMake code style
+[0.489s] -- Added test 'uncrustify' to check C / C++ code style
+[0.489s] -- Configured uncrustify additional arguments: 
+[0.489s] -- Added test 'xmllint' to check XML markup files
+[0.489s] -- Configuring done
+[0.492s] -- Generating done
+[0.493s] -- Build files have been written to: /home/shanto/Documents/arm-ws-v0.0.0/ros_ws/build/coppeliasim_bridge
+[0.536s] [ 25%] [32mBuilding CXX object CMakeFiles/RemoteAPIClient.dir/src/RemoteAPIClient.cpp.o[0m
+[0.545s] [01m[K/home/shanto/Documents/arm-ws-v0.0.0/ros_ws/src/coppeliasim_bridge/src/RemoteAPIClient.cpp:1:10:[m[K [01;31m[Kfatal error: [m[KRemoteAPIClient.h: No such file or directory
+[0.545s]     1 | #include [01;31m[K"RemoteAPIClient.h"[m[K
+[0.545s]       |          [01;31m[K^~~~~~~~~~~~~~~~~~~[m[K
+[0.545s] compilation terminated.
+[0.546s] gmake[2]: *** [CMakeFiles/RemoteAPIClient.dir/build.make:76: CMakeFiles/RemoteAPIClient.dir/src/RemoteAPIClient.cpp.o] Error 1
+[0.546s] gmake[1]: *** [CMakeFiles/Makefile2:139: CMakeFiles/RemoteAPIClient.dir/all] Error 2
+[0.546s] gmake: *** [Makefile:146: all] Error 2
+[0.549s] Invoked command in '/home/shanto/Documents/arm-ws-v0.0.0/ros_ws/build/coppeliasim_bridge' returned '2': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/opt/ros/humble /usr/bin/cmake --build /home/shanto/Documents/arm-ws-v0.0.0/ros_ws/build/coppeliasim_bridge -- -j22 -l22

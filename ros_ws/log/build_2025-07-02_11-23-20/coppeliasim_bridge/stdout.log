@@ -1,0 +1,6 @@
+[ 25%] [32mBuilding CXX object CMakeFiles/RemoteAPIClient.dir/src/RemoteAPIClient.cpp.o[0m
+[ 50%] [32m[1mLinking CXX static library libRemoteAPIClient.a[0m
+[ 50%] Built target RemoteAPIClient
+[35m[1mConsolidate compiler generated dependencies of target zmq_pub[0m
+[ 75%] [32mBuilding CXX object CMakeFiles/zmq_pub.dir/src/zmq_pub.cpp.o[0m
+[100%] [32m[1mLinking CXX executable zmq_pub[0m

@@ -1,0 +1,7 @@
+[ 50%] Built target RemoteAPIClient
+[ 75%] [32m[1mLinking CXX executable zmq_pub[0m
+/usr/bin/ld: cannot find -lcppzmq: No such file or directory
+collect2: error: ld returned 1 exit status
+gmake[2]: *** [CMakeFiles/zmq_pub.dir/build.make:98: zmq_pub] Error 1
+gmake[1]: *** [CMakeFiles/Makefile2:165: CMakeFiles/zmq_pub.dir/all] Error 2
+gmake: *** [Makefile:146: all] Error 2

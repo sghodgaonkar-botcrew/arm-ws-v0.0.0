@@ -1,9 +1,18 @@
 #ifndef IK_MODEL_H
 #define IK_MODEL_H
 
+#include "pinocchio/algorithm/jacobian.hpp"
+#include "pinocchio/algorithm/joint-configuration.hpp"
+#include "pinocchio/algorithm/kinematics.hpp"
+#include "pinocchio/spatial/explog.hpp"
 #include <Eigen/Dense>
+#include <Eigen/src/Core/MatrixBase.h>
+#include <iostream>
+#include <pinocchio/algorithm/frames.hpp>
 #include <pinocchio/multibody/data.hpp>
 #include <pinocchio/multibody/model.hpp>
+#include <pinocchio/parsers/urdf.hpp>
+#include <pinocchio/spatial/log.hpp> // for Jlog6
 #include <string>
 
 // Type aliases for fixed-size vectors
@@ -23,7 +32,8 @@ class IKModel {
      */
     explicit IKModel(const std::string &urdf_path,
                      const std::string &end_effector_name,
-                     const Eigen::Vector<double, 6> &pose_weights);
+                     const Eigen::Vector<double, 6> &pose_weights =
+                         Eigen::Vector<double, 6>::Ones());
 
     /**
      * @brief Print all loaded frames
@@ -56,13 +66,35 @@ class IKModel {
      * @brief Get the number of joints in the model
      * @return Number of joints
      */
-    int getNumJoints() const;
+    inline const int getNumJoints() const { return model_.nq; }
 
     /**
      * @brief Get the number of velocity variables in the model
      * @return Number of velocity variables
      */
-    int getNumVelocityVariables() const;
+    inline const int getNumVelocityVariables() const { return model_.nv; }
+
+    /**
+     * @brief Get the lower joint limits
+     * @return Vector of lower joint limits
+     */
+    const JointConfig &getJointLimitsLower() const {
+        return joint_limits_lower_;
+    }
+
+    /**
+     * @brief Get the upper joint limits
+     * @return Vector of upper joint limits
+     */
+    const JointConfig &getJointLimitsUpper() const {
+        return joint_limits_upper_;
+    }
+
+    /**
+     * @brief Check if joint limits are initialized
+     * @return True if joint limits are initialized
+     */
+    bool areJointLimitsInitialized() const { return joint_limits_initialized_; }
 
     /**
      * @brief Convert homogeneous transform to XYZQuat representation
@@ -86,7 +118,14 @@ class IKModel {
      * @param target_pose Target pose in XYZQuat [x, y, z, qx, qy, qz, qw]
      * @return The cost (double)
      */
-    double cost(const JointConfig &q, const pinocchio::SE3 &target_pose);
+    inline double cost(const JointConfig &q,
+                       const pinocchio::SE3 &target_pose) {
+        Eigen::Matrix<double, 6, 1> error =
+            (pinocchio::log6(target_pose.inverse() *
+                             computeForwardKinematics(q)))
+                .toVector();
+        return 0.5 * error.transpose() * pose_weights_ * error;
+    }
 
     /**
      * @brief Compute the gradient of the cost function with respect to joint
@@ -104,19 +143,28 @@ class IKModel {
      * @param q Joint configuration
      * @return 6x6 Hessian matrix approximation
      */
-    Eigen::Matrix<double, 6, 6> cost_hess(const JointConfig &q);
+    Eigen::Matrix<double, 6, 6> cost_hess(const JointConfig &q,
+                                          const pinocchio::SE3 &target_pose);
 
     /**
      * @brief Get the current joint configuration
      */
-    const JointConfig &getCurrentJointConfig() const {
+    inline const JointConfig &getCurrentJointConfig() const {
         return current_joint_config_;
+    }
+
+    /**
+     * @brief Set the current joint configuration
+     * @param config New joint configuration
+     */
+    inline void setCurrentJointConfig(const JointConfig &config) {
+        current_joint_config_ = config;
     }
 
     /**
      * @brief Get the current end effector pose in XYZQuat format
      */
-    const pinocchio::SE3 &getEndEffectorFrame() const {
+    inline const pinocchio::SE3 &getEndEffectorFrame() const {
         return data_.oMf[end_effector_id_];
     }
 
@@ -125,22 +173,31 @@ class IKModel {
      * @param q Joint configuration vector
      * @return 6x6 geometric Jacobian matrix (linear and angular velocities)
      */
-    Eigen::Matrix<double, 6, 6> computeGeometricJacobian(const JointConfig &q);
+    inline Eigen::Matrix<double, 6, 6>
+    computeGeometricJacobian(const JointConfig &q) {
+        // Compute forward kinematics first
+        pinocchio::forwardKinematics(model_, data_, q);
 
-    /**
-     * @brief Compute the full 7×nv Jacobian mapping joint velocities to
-     * end-effector pose rates
-     * @param q Joint configuration vector (can be dynamic size)
-     * @return 7×nv Jacobian matrix (position + quaternion rates)
-     */
-    Eigen::Matrix<double, 7, 6>
-    computeEndEffectorFullJacobian(const Eigen::VectorXd &q);
+        // Compute the geometric Jacobian for the end effector frame
+        pinocchio::computeFrameJacobian(model_, data_, q, end_effector_id_,
+                                        pinocchio::ReferenceFrame::LOCAL,
+                                        data_.J);
+        // Return the 6x6 Jacobian matrix
+        return data_.J;
+    }
+
+    void jacobianIK(const pinocchio::SE3 &target_pose, int its = 500,
+                    double lambda_damping = 1e-3);
 
   private:
-    pinocchio::Model model_;                ///< Robot model
-    pinocchio::Data data_;                  ///< Robot data
-    std::string urdf_path_;                 ///< URDF file path
-    std::string end_effector_name_;         ///< End effector frame name
+    JointConfig joint_limits_lower_; ///< Lower joint limits
+    JointConfig joint_limits_upper_; ///< Upper joint limits
+    bool joint_limits_initialized_;  ///< Flag to track if joint limits are
+                                     ///< initialized
+    pinocchio::Model model_;         ///< Robot model
+    pinocchio::Data data_;           ///< Robot data
+    std::string urdf_path_;          ///< URDF file path
+    std::string end_effector_name_;  ///< End effector frame name
     pinocchio::FrameIndex end_effector_id_; ///< End effector frame ID
     // XYZQuat end_effector_xyzquat_; ///< End effector pose as [x, y, z, qx,
     // qy,

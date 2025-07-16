@@ -5,6 +5,13 @@
     "version": "0.2.0",
     "configurations": [
         {
+            "name": "Python Debugger: Current File",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "${file}",
+            "console": "integratedTerminal"
+        },
+        {
             "name": "Debug mc_tester",
             "type": "cppdbg",
             "request": "launch",
@@ -25,12 +32,11 @@
             "preLaunchTask": "build mc_tester",
             "miDebuggerPath": "/usr/bin/gdb"
         },
-        
         {
-            "name": "Debug ik_solver_sub",
+            "name": "Debug ik_sub",
             "type": "cppdbg",
             "request": "launch",
-            "program": "${workspaceFolder}/dds_bridge/cpp_plugins/build/ik_solver_sub",
+            "program": "${workspaceFolder}/dds_bridge/cpp_plugins/build/ik_sub",
             "args": [],
             "stopAtEntry": false,
             "cwd": "${workspaceFolder}/dds_bridge/cpp_plugins",
@@ -46,7 +52,111 @@
             ],
             "preLaunchTask": "CMake Build",
             "miDebuggerPath": "/usr/bin/gdb"
+        },
+        {
+            "name": "Debug test_ik_model",
+            "type": "cppdbg",
+            "request": "launch",
+            "program": "${workspaceFolder}/dds_bridge/cpp_plugins/build/test_ik_model",
+            "args": [],
+            "stopAtEntry": false,
+            "cwd": "${workspaceFolder}/dds_bridge/cpp_plugins",
+            "environment": [],
+            "externalConsole": false,
+            "MIMode": "gdb",
+            "setupCommands": [
+                {
+                    "description": "Enable pretty-printing for gdb",
+                    "text": "-enable-pretty-printing",
+                    "ignoreFailures": true
+                }
+            ],
+            "preLaunchTask": "build test_ik_model",
+            "miDebuggerPath": "/usr/bin/gdb"
+        },
+        {
+            "name": "Debug test_ipopt_solver",
+            "type": "cppdbg",
+            "request": "launch",
+            "program": "${workspaceFolder}/dds_bridge/cpp_plugins/build/test_ipopt_solver",
+            "args": [],
+            "stopAtEntry": false,
+            "cwd": "${workspaceFolder}/dds_bridge/cpp_plugins",
+            "environment": [],
+            "externalConsole": false,
+            "MIMode": "gdb",
+            "setupCommands": [
+                {
+                    "description": "Enable pretty-printing for gdb",
+                    "text": "-enable-pretty-printing",
+                    "ignoreFailures": true
+                }
+            ],
+            "preLaunchTask": "build test_ipopt_solver",
+            "miDebuggerPath": "/usr/bin/gdb"
+        },
+        {
+            "name": "Debug test_ik_solver",
+            "type": "cppdbg",
+            "request": "launch",
+            "program": "${workspaceFolder}/dds_bridge/cpp_plugins/build/test_ik_solver",
+            "args": [],
+            "stopAtEntry": false,
+            "cwd": "${workspaceFolder}/dds_bridge/cpp_plugins",
+            "environment": [],
+            "externalConsole": false,
+            "MIMode": "gdb",
+            "setupCommands": [
+                {
+                    "description": "Enable pretty-printing for gdb",
+                    "text": "-enable-pretty-printing",
+                    "ignoreFailures": true
+                }
+            ],
+            "preLaunchTask": "build test_ik_solver",
+            "miDebuggerPath": "/usr/bin/gdb"
+        },
+        {
+            "name": "Debug test_ik_solver_v2",
+            "type": "cppdbg",
+            "request": "launch",
+            "program": "${workspaceFolder}/dds_bridge/cpp_plugins/build/test_ik_solver_v2",
+            "args": [],
+            "stopAtEntry": false,
+            "cwd": "${workspaceFolder}/dds_bridge/cpp_plugins",
+            "environment": [],
+            "externalConsole": false,
+            "MIMode": "gdb",
+            "setupCommands": [
+                {
+                    "description": "Enable pretty-printing for gdb",
+                    "text": "-enable-pretty-printing",
+                    "ignoreFailures": true
+                }
+            ],
+            "preLaunchTask": "CMake Build",
+            "miDebuggerPath": "/usr/bin/gdb"
+        },
+        {
+            "name": "Debug cps_bridge",
+            "type": "cppdbg",
+            "request": "launch",
+            "program": "${workspaceFolder}/dds_bridge/cpp_plugins/build/cps_bridge",
+            "args": [],
+            "stopAtEntry": false,
+            "cwd": "${workspaceFolder}/dds_bridge/cpp_plugins",
+            "environment": [],
+            "externalConsole": false,
+            "MIMode": "gdb",
+            "setupCommands": [
+                {
+                    "description": "Enable pretty-printing for gdb",
+                    "text": "-enable-pretty-printing",
+                    "ignoreFailures": true
+                }
+            ],
+            "preLaunchTask": "build cps_bridge",
+            "miDebuggerPath": "/usr/bin/gdb"
         }
-
     ]
 }

@@ -1,0 +1,57 @@
+[0.018s] Invoking command in '/home/shanto/Documents/arm-ws-v0.0.0/ros_ws/build/coppeliasim_bridge': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/opt/ros/humble /usr/bin/cmake --build /home/shanto/Documents/arm-ws-v0.0.0/ros_ws/build/coppeliasim_bridge -- -j22 -l22
+[0.042s] -- CoppeliaSim: COPPELIASIM_INCLUDE_DIR: /home/shanto/CoppeliaSim_Pro_V4_10_0_rev0_Ubuntu22_04/programming/include
+[0.042s] -- CoppeliaSim: COPPELIASIM_ROOT_DIR: /home/shanto/CoppeliaSim_Pro_V4_10_0_rev0_Ubuntu22_04
+[0.042s] -- Checking CoppeliaSim header version...
+[0.262s] -- CoppeliaSim headers version 4.10.0 rev0
+[0.262s] -- CoppeliaSim: COPPELIASIM_RESOURCES_DIR: /home/shanto/CoppeliaSim_Pro_V4_10_0_rev0_Ubuntu22_04
+[0.262s] -- CoppeliaSim: COPPELIASIM_PLUGINS_DIR: /home/shanto/CoppeliaSim_Pro_V4_10_0_rev0_Ubuntu22_04
+[0.262s] -- CoppeliaSim: COPPELIASIM_EXECUTABLES_DIR: /home/shanto/CoppeliaSim_Pro_V4_10_0_rev0_Ubuntu22_04
+[0.262s] -- CoppeliaSim: COPPELIASIM_LIBRARIES_DIR: /home/shanto/CoppeliaSim_Pro_V4_10_0_rev0_Ubuntu22_04
+[0.262s] -- CoppeliaSim: COPPELIASIM_ADDONS_DIR: /home/shanto/CoppeliaSim_Pro_V4_10_0_rev0_Ubuntu22_04/addOns
+[0.262s] -- CoppeliaSim: COPPELIASIM_MANUAL_DIR: /home/shanto/CoppeliaSim_Pro_V4_10_0_rev0_Ubuntu22_04/manual
+[0.263s] -- CoppeliaSim: COPPELIASIM_MODELS_DIR: /home/shanto/CoppeliaSim_Pro_V4_10_0_rev0_Ubuntu22_04/models
+[0.263s] -- CoppeliaSim: COPPELIASIM_SCENES_DIR: /home/shanto/CoppeliaSim_Pro_V4_10_0_rev0_Ubuntu22_04/scenes
+[0.263s] -- CoppeliaSim: COPPELIASIM_LUA_DIR: /home/shanto/CoppeliaSim_Pro_V4_10_0_rev0_Ubuntu22_04/lua
+[0.263s] -- CoppeliaSim: COPPELIASIM_PYTHON_DIR: /home/shanto/CoppeliaSim_Pro_V4_10_0_rev0_Ubuntu22_04/python
+[0.263s] -- CoppeliaSim: COPPELIASIM_EXECUTABLE: /home/shanto/CoppeliaSim_Pro_V4_10_0_rev0_Ubuntu22_04/coppeliaSim
+[0.267s] -- Found Boost: /usr/lib/x86_64-linux-gnu/cmake/Boost-1.74.0/BoostConfig.cmake (found version "1.74.0") found components: regex 
+[0.530s] [0mgmake[1]: Entering directory '/home/shanto/Documents/arm-ws-v0.0.0/ros_ws/build/coppeliasim_bridge/_deps/jsoncons-subbuild'
+[0.530s] gmake[2]: Entering directory '/home/shanto/Documents/arm-ws-v0.0.0/ros_ws/build/coppeliasim_bridge/_deps/jsoncons-subbuild'
+[0.530s] gmake[3]: Entering directory '/home/shanto/Documents/arm-ws-v0.0.0/ros_ws/build/coppeliasim_bridge/_deps/jsoncons-subbuild'
+[0.530s] gmake[3]: Leaving directory '/home/shanto/Documents/arm-ws-v0.0.0/ros_ws/build/coppeliasim_bridge/_deps/jsoncons-subbuild'
+[0.530s] gmake[3]: Entering directory '/home/shanto/Documents/arm-ws-v0.0.0/ros_ws/build/coppeliasim_bridge/_deps/jsoncons-subbuild'
+[0.530s] [ 11%] [34m[1mCreating directories for 'jsoncons-populate'[0m
+[0.530s] [ 22%] [34m[1mPerforming download step (git clone) for 'jsoncons-populate'[0m
+[0.530s] -- Avoiding repeated git clone, stamp file is up to date: '/home/shanto/Documents/arm-ws-v0.0.0/ros_ws/build/coppeliasim_bridge/_deps/jsoncons-subbuild/jsoncons-populate-prefix/src/jsoncons-populate-stamp/jsoncons-populate-gitclone-lastrun.txt'
+[0.530s] [ 33%] [34m[1mPerforming update step for 'jsoncons-populate'[0m
+[0.530s] fatal: 'origin' does not appear to be a git repository
+[0.530s] fatal: Could not read from remote repository.
+[0.530s] 
+[0.530s] Please make sure you have the correct access rights
+[0.530s] and the repository exists.
+[0.530s] [31mCMake Error at /home/shanto/Documents/arm-ws-v0.0.0/ros_ws/build/coppeliasim_bridge/_deps/jsoncons-subbuild/jsoncons-populate-prefix/tmp/jsoncons-populate-gitupdate.cmake:97 (execute_process):
+[0.530s]   execute_process failed command indexes:
+[0.530s] 
+[0.531s]     1: "Child return code: 128"
+[0.531s] 
+[0.531s] 
+[0.531s] [0m
+[0.531s] gmake[3]: *** [CMakeFiles/jsoncons-populate.dir/build.make:136: jsoncons-populate-prefix/src/jsoncons-populate-stamp/jsoncons-populate-update] Error 1
+[0.531s] gmake[3]: Leaving directory '/home/shanto/Documents/arm-ws-v0.0.0/ros_ws/build/coppeliasim_bridge/_deps/jsoncons-subbuild'
+[0.531s] gmake[2]: *** [CMakeFiles/Makefile2:83: CMakeFiles/jsoncons-populate.dir/all] Error 2
+[0.531s] gmake[2]: Leaving directory '/home/shanto/Documents/arm-ws-v0.0.0/ros_ws/build/coppeliasim_bridge/_deps/jsoncons-subbuild'
+[0.531s] gmake[1]: *** [Makefile:91: all] Error 2
+[0.531s] gmake[1]: Leaving directory '/home/shanto/Documents/arm-ws-v0.0.0/ros_ws/build/coppeliasim_bridge/_deps/jsoncons-subbuild'
+[0.531s] [0m
+[0.531s] [31mCMake Error at /usr/share/cmake-3.22/Modules/FetchContent.cmake:1087 (message):
+[0.531s]   Build step for jsoncons failed: 2
+[0.531s] Call Stack (most recent call first):
+[0.531s]   /usr/share/cmake-3.22/Modules/FetchContent.cmake:1216:EVAL:2 (__FetchContent_directPopulate)
+[0.531s]   /usr/share/cmake-3.22/Modules/FetchContent.cmake:1216 (cmake_language)
+[0.531s]   CMakeLists.txt:34 (FetchContent_Populate)
+[0.531s] 
+[0.531s] [0m
+[0.531s] -- Configuring incomplete, errors occurred!
+[0.531s] See also "/home/shanto/Documents/arm-ws-v0.0.0/ros_ws/build/coppeliasim_bridge/CMakeFiles/CMakeOutput.log".
+[0.532s] gmake: *** [Makefile:308: cmake_check_build_system] Error 1
+[0.534s] Invoked command in '/home/shanto/Documents/arm-ws-v0.0.0/ros_ws/build/coppeliasim_bridge' returned '2': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/opt/ros/humble /usr/bin/cmake --build /home/shanto/Documents/arm-ws-v0.0.0/ros_ws/build/coppeliasim_bridge -- -j22 -l22

@@ -1,0 +1,18 @@
+-- Found ament_cmake: 1.3.11 (/opt/ros/humble/share/ament_cmake/cmake)
+-- CoppeliaSim: COPPELIASIM_INCLUDE_DIR: /home/shanto/CoppeliaSim_Pro_V4_10_0_rev0_Ubuntu22_04/programming/include
+-- CoppeliaSim: COPPELIASIM_ROOT_DIR: /home/shanto/CoppeliaSim_Pro_V4_10_0_rev0_Ubuntu22_04
+-- Checking CoppeliaSim header version...
+-- CoppeliaSim headers version 4.10.0 rev0
+-- CoppeliaSim: COPPELIASIM_RESOURCES_DIR: /home/shanto/CoppeliaSim_Pro_V4_10_0_rev0_Ubuntu22_04
+-- CoppeliaSim: COPPELIASIM_PLUGINS_DIR: /home/shanto/CoppeliaSim_Pro_V4_10_0_rev0_Ubuntu22_04
+-- CoppeliaSim: COPPELIASIM_EXECUTABLES_DIR: /home/shanto/CoppeliaSim_Pro_V4_10_0_rev0_Ubuntu22_04
+-- CoppeliaSim: COPPELIASIM_LIBRARIES_DIR: /home/shanto/CoppeliaSim_Pro_V4_10_0_rev0_Ubuntu22_04
+-- CoppeliaSim: COPPELIASIM_ADDONS_DIR: /home/shanto/CoppeliaSim_Pro_V4_10_0_rev0_Ubuntu22_04/addOns
+-- CoppeliaSim: COPPELIASIM_MANUAL_DIR: /home/shanto/CoppeliaSim_Pro_V4_10_0_rev0_Ubuntu22_04/manual
+-- CoppeliaSim: COPPELIASIM_MODELS_DIR: /home/shanto/CoppeliaSim_Pro_V4_10_0_rev0_Ubuntu22_04/models
+-- CoppeliaSim: COPPELIASIM_SCENES_DIR: /home/shanto/CoppeliaSim_Pro_V4_10_0_rev0_Ubuntu22_04/scenes
+-- CoppeliaSim: COPPELIASIM_LUA_DIR: /home/shanto/CoppeliaSim_Pro_V4_10_0_rev0_Ubuntu22_04/lua
+-- CoppeliaSim: COPPELIASIM_PYTHON_DIR: /home/shanto/CoppeliaSim_Pro_V4_10_0_rev0_Ubuntu22_04/python
+-- CoppeliaSim: COPPELIASIM_EXECUTABLE: /home/shanto/CoppeliaSim_Pro_V4_10_0_rev0_Ubuntu22_04/coppeliaSim
+-- Configuring incomplete, errors occurred!
+See also "/home/shanto/Documents/arm-ws-v0.0.0/ros_ws/build/coppeliasim_bridge/CMakeFiles/CMakeOutput.log".

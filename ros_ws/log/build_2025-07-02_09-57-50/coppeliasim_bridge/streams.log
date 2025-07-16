@@ -1,0 +1,11 @@
+[0.016s] Invoking command in '/home/shanto/Documents/arm-ws-v0.0.0/ros_ws/build/coppeliasim_bridge': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/opt/ros/humble /usr/bin/cmake --build /home/shanto/Documents/arm-ws-v0.0.0/ros_ws/build/coppeliasim_bridge -- -j22 -l22
+[0.061s] [35m[1mConsolidate compiler generated dependencies of target zmq_pub[0m
+[0.074s] [ 50%] [32mBuilding CXX object CMakeFiles/zmq_pub.dir/src/zmq_pub.cpp.o[0m
+[0.083s] [01m[K/home/shanto/Documents/arm-ws-v0.0.0/ros_ws/src/coppeliasim_bridge/src/zmq_pub.cpp:1:10:[m[K [01;31m[Kfatal error: [m[KRemoteAPIClient.h: No such file or directory
+[0.083s]     1 | #include [01;31m[K"RemoteAPIClient.h"[m[K
+[0.083s]       |          [01;31m[K^~~~~~~~~~~~~~~~~~~[m[K
+[0.083s] compilation terminated.
+[0.084s] gmake[2]: *** [CMakeFiles/zmq_pub.dir/build.make:76: CMakeFiles/zmq_pub.dir/src/zmq_pub.cpp.o] Error 1
+[0.084s] gmake[1]: *** [CMakeFiles/Makefile2:137: CMakeFiles/zmq_pub.dir/all] Error 2
+[0.085s] gmake: *** [Makefile:146: all] Error 2
+[0.086s] Invoked command in '/home/shanto/Documents/arm-ws-v0.0.0/ros_ws/build/coppeliasim_bridge' returned '2': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/opt/ros/humble /usr/bin/cmake --build /home/shanto/Documents/arm-ws-v0.0.0/ros_ws/build/coppeliasim_bridge -- -j22 -l22

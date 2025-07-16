@@ -1,0 +1,25 @@
+[01m[K/home/shanto/Documents/arm-ws-v0.0.0/ros_ws/src/coppeliasim_bridge/src/zmq_pub.cpp:[m[K In function ‘[01m[Kint main(int, char**)[m[K’:
+[01m[K/home/shanto/Documents/arm-ws-v0.0.0/ros_ws/src/coppeliasim_bridge/src/zmq_pub.cpp:8:9:[m[K [01;31m[Kerror: [m[K‘[01m[Kclass jsoncons::basic_json<char, jsoncons::sorted_policy, std::allocator<char> >[m[K’ has no member named ‘[01m[KsetStepping[m[K’
+    8 |     sim.[01;31m[KsetStepping[m[K(true);
+      |         [01;31m[K^~~~~~~~~~~[m[K
+[01m[K/home/shanto/Documents/arm-ws-v0.0.0/ros_ws/src/coppeliasim_bridge/src/zmq_pub.cpp:10:9:[m[K [01;31m[Kerror: [m[K‘[01m[Kclass jsoncons::basic_json<char, jsoncons::sorted_policy, std::allocator<char> >[m[K’ has no member named ‘[01m[KstartSimulation[m[K’
+   10 |     sim.[01;31m[KstartSimulation[m[K();
+      |         [01;31m[K^~~~~~~~~~~~~~~[m[K
+[01m[K/home/shanto/Documents/arm-ws-v0.0.0/ros_ws/src/coppeliasim_bridge/src/zmq_pub.cpp:14:17:[m[K [01;31m[Kerror: [m[K‘[01m[Kclass jsoncons::basic_json<char, jsoncons::sorted_policy, std::allocator<char> >[m[K’ has no member named ‘[01m[KgetSimulationTime[m[K’
+   14 |         t = sim.[01;31m[KgetSimulationTime[m[K();
+      |                 [01;31m[K^~~~~~~~~~~~~~~~~[m[K
+[01m[K/home/shanto/Documents/arm-ws-v0.0.0/ros_ws/src/coppeliasim_bridge/src/zmq_pub.cpp:16:13:[m[K [01;31m[Kerror: [m[K‘[01m[Kclass jsoncons::basic_json<char, jsoncons::sorted_policy, std::allocator<char> >[m[K’ has no member named ‘[01m[Kstep[m[K’
+   16 |         sim.[01;31m[Kstep[m[K();
+      |             [01;31m[K^~~~[m[K
+[01m[K/home/shanto/Documents/arm-ws-v0.0.0/ros_ws/src/coppeliasim_bridge/src/zmq_pub.cpp:18:9:[m[K [01;31m[Kerror: [m[K‘[01m[Kclass jsoncons::basic_json<char, jsoncons::sorted_policy, std::allocator<char> >[m[K’ has no member named ‘[01m[KstopSimulation[m[K’
+   18 |     sim.[01;31m[KstopSimulation[m[K();
+      |         [01;31m[K^~~~~~~~~~~~~~[m[K
+[01m[K/home/shanto/Documents/arm-ws-v0.0.0/ros_ws/src/coppeliasim_bridge/src/zmq_pub.cpp:3:14:[m[K [01;35m[Kwarning: [m[Kunused parameter ‘[01m[Kargc[m[K’ [[01;35m[K]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wunused-parameter-Wunused-parameter]8;;[m[K]
+    3 | int main([01;35m[Kint argc[m[K,char* argv[])
+      |          [01;35m[K~~~~^~~~[m[K
+[01m[K/home/shanto/Documents/arm-ws-v0.0.0/ros_ws/src/coppeliasim_bridge/src/zmq_pub.cpp:3:25:[m[K [01;35m[Kwarning: [m[Kunused parameter ‘[01m[Kargv[m[K’ [[01;35m[K]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wunused-parameter-Wunused-parameter]8;;[m[K]
+    3 | int main(int argc,[01;35m[Kchar* argv[][m[K)
+      |                   [01;35m[K~~~~~~^~~~~~[m[K
+gmake[2]: *** [CMakeFiles/zmq_pub.dir/build.make:76: CMakeFiles/zmq_pub.dir/src/zmq_pub.cpp.o] Error 1
+gmake[1]: *** [CMakeFiles/Makefile2:137: CMakeFiles/zmq_pub.dir/all] Error 2
+gmake: *** [Makefile:146: all] Error 2

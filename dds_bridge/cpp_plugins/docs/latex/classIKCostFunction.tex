@@ -1,0 +1,107 @@
+\hypertarget{classIKCostFunction}{}\doxysection{IKCost\+Function Class Reference}
+\label{classIKCostFunction}\index{IKCostFunction@{IKCostFunction}}
+
+
+Cost function for IK optimization.  
+
+
+
+
+{\ttfamily \#include $<$ik\+\_\+solver.\+h$>$}
+
+
+
+Inheritance diagram for IKCost\+Function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=218pt]{classIKCostFunction__inherit__graph}
+\end{center}
+\end{figure}
+
+
+Collaboration diagram for IKCost\+Function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=218pt]{classIKCostFunction__coll__graph}
+\end{center}
+\end{figure}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classIKCostFunction_a5167e322ec1ee7f4c1e7e475b9b41d69}{IKCost\+Function}} (std\+::shared\+\_\+ptr$<$ \mbox{\hyperlink{classIKModel}{IKModel}} $>$ ik\+\_\+model, const pinocchio\+::\+SE3 \&target\+\_\+pose)
+\begin{DoxyCompactList}\small\item\em Constructor. \end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{classIKCostFunction_a9d3d503ec02c43ae168348f683375111}{Evaluate}} (const double $\ast$parameters, double $\ast$cost, double $\ast$gradient) const override
+\begin{DoxyCompactList}\small\item\em Evaluate the cost function. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{classIKCostFunction_a8bc51f8762ee08c44d67e4da00d1e527}{Num\+Parameters}} () const override
+\begin{DoxyCompactList}\small\item\em Get the number of parameters (joints) \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Cost function for IK optimization. 
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classIKCostFunction_a5167e322ec1ee7f4c1e7e475b9b41d69}\label{classIKCostFunction_a5167e322ec1ee7f4c1e7e475b9b41d69}} 
+\index{IKCostFunction@{IKCostFunction}!IKCostFunction@{IKCostFunction}}
+\index{IKCostFunction@{IKCostFunction}!IKCostFunction@{IKCostFunction}}
+\doxysubsubsection{\texorpdfstring{IKCostFunction()}{IKCostFunction()}}
+{\footnotesize\ttfamily IKCost\+Function\+::\+IKCost\+Function (\begin{DoxyParamCaption}\item[{std\+::shared\+\_\+ptr$<$ \mbox{\hyperlink{classIKModel}{IKModel}} $>$}]{ik\+\_\+model,  }\item[{const pinocchio\+::\+SE3 \&}]{target\+\_\+pose }\end{DoxyParamCaption})}
+
+
+
+Constructor. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em ik\+\_\+model} & Pointer to the \mbox{\hyperlink{classIKModel}{IKModel}} instance \\
+\hline
+{\em target\+\_\+pose} & Target pose for optimization \\
+\hline
+\end{DoxyParams}
+
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classIKCostFunction_a9d3d503ec02c43ae168348f683375111}\label{classIKCostFunction_a9d3d503ec02c43ae168348f683375111}} 
+\index{IKCostFunction@{IKCostFunction}!Evaluate@{Evaluate}}
+\index{Evaluate@{Evaluate}!IKCostFunction@{IKCostFunction}}
+\doxysubsubsection{\texorpdfstring{Evaluate()}{Evaluate()}}
+{\footnotesize\ttfamily bool IKCost\+Function\+::\+Evaluate (\begin{DoxyParamCaption}\item[{const double $\ast$}]{parameters,  }\item[{double $\ast$}]{cost,  }\item[{double $\ast$}]{gradient }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [override]}}
+
+
+
+Evaluate the cost function. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em parameters} & Joint configuration (6D vector) \\
+\hline
+{\em cost} & Output cost value \\
+\hline
+{\em gradient} & Output gradient (6D vector) \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+true if evaluation was successful 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classIKCostFunction_a8bc51f8762ee08c44d67e4da00d1e527}\label{classIKCostFunction_a8bc51f8762ee08c44d67e4da00d1e527}} 
+\index{IKCostFunction@{IKCostFunction}!NumParameters@{NumParameters}}
+\index{NumParameters@{NumParameters}!IKCostFunction@{IKCostFunction}}
+\doxysubsubsection{\texorpdfstring{NumParameters()}{NumParameters()}}
+{\footnotesize\ttfamily int IKCost\+Function\+::\+Num\+Parameters (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [override]}}
+
+
+
+Get the number of parameters (joints) 
+
+\begin{DoxyReturn}{Returns}
+Number of parameters 
+\end{DoxyReturn}
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+/home/shanto/\+Documents/arm-\/ws-\/v0.\+0.\+0/dds\+\_\+bridge/cpp\+\_\+plugins/include/ik\+\_\+solver.\+h\item 
+/home/shanto/\+Documents/arm-\/ws-\/v0.\+0.\+0/dds\+\_\+bridge/cpp\+\_\+plugins/src/ik\+\_\+solver.\+cpp\end{DoxyCompactItemize}

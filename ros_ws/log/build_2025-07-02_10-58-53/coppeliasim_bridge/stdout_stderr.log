@@ -1,0 +1,17 @@
+[100%] Built target zmq_pub
+-- Install configuration: "Release"
+-- Up-to-date: /home/shanto/Documents/arm-ws-v0.0.0/ros_ws/install/coppeliasim_bridge/share/ament_index/resource_index/package_run_dependencies/coppeliasim_bridge
+-- Up-to-date: /home/shanto/Documents/arm-ws-v0.0.0/ros_ws/install/coppeliasim_bridge/share/ament_index/resource_index/parent_prefix_path/coppeliasim_bridge
+-- Up-to-date: /home/shanto/Documents/arm-ws-v0.0.0/ros_ws/install/coppeliasim_bridge/share/coppeliasim_bridge/environment/ament_prefix_path.sh
+-- Up-to-date: /home/shanto/Documents/arm-ws-v0.0.0/ros_ws/install/coppeliasim_bridge/share/coppeliasim_bridge/environment/ament_prefix_path.dsv
+-- Up-to-date: /home/shanto/Documents/arm-ws-v0.0.0/ros_ws/install/coppeliasim_bridge/share/coppeliasim_bridge/environment/path.sh
+-- Up-to-date: /home/shanto/Documents/arm-ws-v0.0.0/ros_ws/install/coppeliasim_bridge/share/coppeliasim_bridge/environment/path.dsv
+-- Up-to-date: /home/shanto/Documents/arm-ws-v0.0.0/ros_ws/install/coppeliasim_bridge/share/coppeliasim_bridge/local_setup.bash
+-- Up-to-date: /home/shanto/Documents/arm-ws-v0.0.0/ros_ws/install/coppeliasim_bridge/share/coppeliasim_bridge/local_setup.sh
+-- Up-to-date: /home/shanto/Documents/arm-ws-v0.0.0/ros_ws/install/coppeliasim_bridge/share/coppeliasim_bridge/local_setup.zsh
+-- Up-to-date: /home/shanto/Documents/arm-ws-v0.0.0/ros_ws/install/coppeliasim_bridge/share/coppeliasim_bridge/local_setup.dsv
+-- Installing: /home/shanto/Documents/arm-ws-v0.0.0/ros_ws/install/coppeliasim_bridge/share/coppeliasim_bridge/package.dsv
+-- Up-to-date: /home/shanto/Documents/arm-ws-v0.0.0/ros_ws/install/coppeliasim_bridge/share/ament_index/resource_index/packages/coppeliasim_bridge
+-- Up-to-date: /home/shanto/Documents/arm-ws-v0.0.0/ros_ws/install/coppeliasim_bridge/share/coppeliasim_bridge/cmake/coppeliasim_bridgeConfig.cmake
+-- Up-to-date: /home/shanto/Documents/arm-ws-v0.0.0/ros_ws/install/coppeliasim_bridge/share/coppeliasim_bridge/cmake/coppeliasim_bridgeConfig-version.cmake
+-- Up-to-date: /home/shanto/Documents/arm-ws-v0.0.0/ros_ws/install/coppeliasim_bridge/share/coppeliasim_bridge/package.xml

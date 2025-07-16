@@ -1,0 +1,20 @@
+[35m[1mConsolidate compiler generated dependencies of target zmq_pub[0m
+[ 50%] [32mBuilding CXX object CMakeFiles/zmq_pub.dir/src/zmq_pub.cpp.o[0m
+[100%] [32m[1mLinking CXX executable zmq_pub[0m
+[100%] Built target zmq_pub
+-- Install configuration: ""
+-- Installing: /home/shanto/Documents/arm-ws-v0.0.0/ros_ws/install/coppeliasim_bridge/share/ament_index/resource_index/package_run_dependencies/coppeliasim_bridge
+-- Installing: /home/shanto/Documents/arm-ws-v0.0.0/ros_ws/install/coppeliasim_bridge/share/ament_index/resource_index/parent_prefix_path/coppeliasim_bridge
+-- Installing: /home/shanto/Documents/arm-ws-v0.0.0/ros_ws/install/coppeliasim_bridge/share/coppeliasim_bridge/environment/ament_prefix_path.sh
+-- Installing: /home/shanto/Documents/arm-ws-v0.0.0/ros_ws/install/coppeliasim_bridge/share/coppeliasim_bridge/environment/ament_prefix_path.dsv
+-- Installing: /home/shanto/Documents/arm-ws-v0.0.0/ros_ws/install/coppeliasim_bridge/share/coppeliasim_bridge/environment/path.sh
+-- Installing: /home/shanto/Documents/arm-ws-v0.0.0/ros_ws/install/coppeliasim_bridge/share/coppeliasim_bridge/environment/path.dsv
+-- Installing: /home/shanto/Documents/arm-ws-v0.0.0/ros_ws/install/coppeliasim_bridge/share/coppeliasim_bridge/local_setup.bash
+-- Installing: /home/shanto/Documents/arm-ws-v0.0.0/ros_ws/install/coppeliasim_bridge/share/coppeliasim_bridge/local_setup.sh
+-- Installing: /home/shanto/Documents/arm-ws-v0.0.0/ros_ws/install/coppeliasim_bridge/share/coppeliasim_bridge/local_setup.zsh
+-- Installing: /home/shanto/Documents/arm-ws-v0.0.0/ros_ws/install/coppeliasim_bridge/share/coppeliasim_bridge/local_setup.dsv
+-- Up-to-date: /home/shanto/Documents/arm-ws-v0.0.0/ros_ws/install/coppeliasim_bridge/share/coppeliasim_bridge/package.dsv
+-- Installing: /home/shanto/Documents/arm-ws-v0.0.0/ros_ws/install/coppeliasim_bridge/share/ament_index/resource_index/packages/coppeliasim_bridge
+-- Installing: /home/shanto/Documents/arm-ws-v0.0.0/ros_ws/install/coppeliasim_bridge/share/coppeliasim_bridge/cmake/coppeliasim_bridgeConfig.cmake
+-- Installing: /home/shanto/Documents/arm-ws-v0.0.0/ros_ws/install/coppeliasim_bridge/share/coppeliasim_bridge/cmake/coppeliasim_bridgeConfig-version.cmake
+-- Installing: /home/shanto/Documents/arm-ws-v0.0.0/ros_ws/install/coppeliasim_bridge/share/coppeliasim_bridge/package.xml

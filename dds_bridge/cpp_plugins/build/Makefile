@@ -117,48 +117,90 @@ depend:
 .PHONY : depend
 
 #=============================================================================
-# Target rules for targets named ik_solver_sub
+# Target rules for targets named ik_model_lib
 
 # Build rule for target.
-ik_solver_sub: cmake_check_build_system
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 ik_solver_sub
-.PHONY : ik_solver_sub
+ik_model_lib: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 ik_model_lib
+.PHONY : ik_model_lib
 
 # fast build rule for target.
-ik_solver_sub/fast:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/ik_solver_sub.dir/build.make CMakeFiles/ik_solver_sub.dir/build
-.PHONY : ik_solver_sub/fast
+ik_model_lib/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/ik_model_lib.dir/build.make CMakeFiles/ik_model_lib.dir/build
+.PHONY : ik_model_lib/fast
 
-generated/arm_msgs.o: generated/arm_msgs.cpp.o
-.PHONY : generated/arm_msgs.o
+#=============================================================================
+# Target rules for targets named ik_solver_lib
 
-# target to build an object file
-generated/arm_msgs.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/ik_solver_sub.dir/build.make CMakeFiles/ik_solver_sub.dir/generated/arm_msgs.cpp.o
-.PHONY : generated/arm_msgs.cpp.o
+# Build rule for target.
+ik_solver_lib: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 ik_solver_lib
+.PHONY : ik_solver_lib
 
-generated/arm_msgs.i: generated/arm_msgs.cpp.i
-.PHONY : generated/arm_msgs.i
+# fast build rule for target.
+ik_solver_lib/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/ik_solver_lib.dir/build.make CMakeFiles/ik_solver_lib.dir/build
+.PHONY : ik_solver_lib/fast
 
-# target to preprocess a source file
-generated/arm_msgs.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/ik_solver_sub.dir/build.make CMakeFiles/ik_solver_sub.dir/generated/arm_msgs.cpp.i
-.PHONY : generated/arm_msgs.cpp.i
+#=============================================================================
+# Target rules for targets named ik_solver_v3_lib
 
-generated/arm_msgs.s: generated/arm_msgs.cpp.s
-.PHONY : generated/arm_msgs.s
+# Build rule for target.
+ik_solver_v3_lib: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 ik_solver_v3_lib
+.PHONY : ik_solver_v3_lib
 
-# target to generate assembly for a file
-generated/arm_msgs.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/ik_solver_sub.dir/build.make CMakeFiles/ik_solver_sub.dir/generated/arm_msgs.cpp.s
-.PHONY : generated/arm_msgs.cpp.s
+# fast build rule for target.
+ik_solver_v3_lib/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/ik_solver_v3_lib.dir/build.make CMakeFiles/ik_solver_v3_lib.dir/build
+.PHONY : ik_solver_v3_lib/fast
+
+#=============================================================================
+# Target rules for targets named test_ik_solver_v2
+
+# Build rule for target.
+test_ik_solver_v2: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 test_ik_solver_v2
+.PHONY : test_ik_solver_v2
+
+# fast build rule for target.
+test_ik_solver_v2/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_ik_solver_v2.dir/build.make CMakeFiles/test_ik_solver_v2.dir/build
+.PHONY : test_ik_solver_v2/fast
+
+#=============================================================================
+# Target rules for targets named test_ik_solver_v3
+
+# Build rule for target.
+test_ik_solver_v3: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 test_ik_solver_v3
+.PHONY : test_ik_solver_v3
+
+# fast build rule for target.
+test_ik_solver_v3/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_ik_solver_v3.dir/build.make CMakeFiles/test_ik_solver_v3.dir/build
+.PHONY : test_ik_solver_v3/fast
+
+#=============================================================================
+# Target rules for targets named reachable_workspace
+
+# Build rule for target.
+reachable_workspace: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 reachable_workspace
+.PHONY : reachable_workspace
+
+# fast build rule for target.
+reachable_workspace/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/reachable_workspace.dir/build.make CMakeFiles/reachable_workspace.dir/build
+.PHONY : reachable_workspace/fast
 
 src/ik_model.o: src/ik_model.cpp.o
 .PHONY : src/ik_model.o
 
 # target to build an object file
 src/ik_model.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/ik_solver_sub.dir/build.make CMakeFiles/ik_solver_sub.dir/src/ik_model.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/ik_model_lib.dir/build.make CMakeFiles/ik_model_lib.dir/src/ik_model.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_ik_solver_v2.dir/build.make CMakeFiles/test_ik_solver_v2.dir/src/ik_model.cpp.o
 .PHONY : src/ik_model.cpp.o
 
 src/ik_model.i: src/ik_model.cpp.i
@@ -166,7 +208,8 @@ src/ik_model.i: src/ik_model.cpp.i
 
 # target to preprocess a source file
 src/ik_model.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/ik_solver_sub.dir/build.make CMakeFiles/ik_solver_sub.dir/src/ik_model.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/ik_model_lib.dir/build.make CMakeFiles/ik_model_lib.dir/src/ik_model.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_ik_solver_v2.dir/build.make CMakeFiles/test_ik_solver_v2.dir/src/ik_model.cpp.i
 .PHONY : src/ik_model.cpp.i
 
 src/ik_model.s: src/ik_model.cpp.s
@@ -174,56 +217,111 @@ src/ik_model.s: src/ik_model.cpp.s
 
 # target to generate assembly for a file
 src/ik_model.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/ik_solver_sub.dir/build.make CMakeFiles/ik_solver_sub.dir/src/ik_model.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/ik_model_lib.dir/build.make CMakeFiles/ik_model_lib.dir/src/ik_model.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_ik_solver_v2.dir/build.make CMakeFiles/test_ik_solver_v2.dir/src/ik_model.cpp.s
 .PHONY : src/ik_model.cpp.s
 
-src/ik_solver_sub.o: src/ik_solver_sub.cpp.o
-.PHONY : src/ik_solver_sub.o
+src/ik_solver_v2.o: src/ik_solver_v2.cpp.o
+.PHONY : src/ik_solver_v2.o
 
 # target to build an object file
-src/ik_solver_sub.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/ik_solver_sub.dir/build.make CMakeFiles/ik_solver_sub.dir/src/ik_solver_sub.cpp.o
-.PHONY : src/ik_solver_sub.cpp.o
+src/ik_solver_v2.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/ik_solver_lib.dir/build.make CMakeFiles/ik_solver_lib.dir/src/ik_solver_v2.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_ik_solver_v2.dir/build.make CMakeFiles/test_ik_solver_v2.dir/src/ik_solver_v2.cpp.o
+.PHONY : src/ik_solver_v2.cpp.o
 
-src/ik_solver_sub.i: src/ik_solver_sub.cpp.i
-.PHONY : src/ik_solver_sub.i
+src/ik_solver_v2.i: src/ik_solver_v2.cpp.i
+.PHONY : src/ik_solver_v2.i
 
 # target to preprocess a source file
-src/ik_solver_sub.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/ik_solver_sub.dir/build.make CMakeFiles/ik_solver_sub.dir/src/ik_solver_sub.cpp.i
-.PHONY : src/ik_solver_sub.cpp.i
+src/ik_solver_v2.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/ik_solver_lib.dir/build.make CMakeFiles/ik_solver_lib.dir/src/ik_solver_v2.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_ik_solver_v2.dir/build.make CMakeFiles/test_ik_solver_v2.dir/src/ik_solver_v2.cpp.i
+.PHONY : src/ik_solver_v2.cpp.i
 
-src/ik_solver_sub.s: src/ik_solver_sub.cpp.s
-.PHONY : src/ik_solver_sub.s
+src/ik_solver_v2.s: src/ik_solver_v2.cpp.s
+.PHONY : src/ik_solver_v2.s
 
 # target to generate assembly for a file
-src/ik_solver_sub.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/ik_solver_sub.dir/build.make CMakeFiles/ik_solver_sub.dir/src/ik_solver_sub.cpp.s
-.PHONY : src/ik_solver_sub.cpp.s
+src/ik_solver_v2.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/ik_solver_lib.dir/build.make CMakeFiles/ik_solver_lib.dir/src/ik_solver_v2.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_ik_solver_v2.dir/build.make CMakeFiles/test_ik_solver_v2.dir/src/ik_solver_v2.cpp.s
+.PHONY : src/ik_solver_v2.cpp.s
 
-src/motor_controller.o: src/motor_controller.cpp.o
-.PHONY : src/motor_controller.o
+src/ik_solver_v3.o: src/ik_solver_v3.cpp.o
+.PHONY : src/ik_solver_v3.o
 
 # target to build an object file
-src/motor_controller.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/ik_solver_sub.dir/build.make CMakeFiles/ik_solver_sub.dir/src/motor_controller.cpp.o
-.PHONY : src/motor_controller.cpp.o
+src/ik_solver_v3.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/ik_solver_v3_lib.dir/build.make CMakeFiles/ik_solver_v3_lib.dir/src/ik_solver_v3.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_ik_solver_v3.dir/build.make CMakeFiles/test_ik_solver_v3.dir/src/ik_solver_v3.cpp.o
+.PHONY : src/ik_solver_v3.cpp.o
 
-src/motor_controller.i: src/motor_controller.cpp.i
-.PHONY : src/motor_controller.i
+src/ik_solver_v3.i: src/ik_solver_v3.cpp.i
+.PHONY : src/ik_solver_v3.i
 
 # target to preprocess a source file
-src/motor_controller.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/ik_solver_sub.dir/build.make CMakeFiles/ik_solver_sub.dir/src/motor_controller.cpp.i
-.PHONY : src/motor_controller.cpp.i
+src/ik_solver_v3.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/ik_solver_v3_lib.dir/build.make CMakeFiles/ik_solver_v3_lib.dir/src/ik_solver_v3.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_ik_solver_v3.dir/build.make CMakeFiles/test_ik_solver_v3.dir/src/ik_solver_v3.cpp.i
+.PHONY : src/ik_solver_v3.cpp.i
 
-src/motor_controller.s: src/motor_controller.cpp.s
-.PHONY : src/motor_controller.s
+src/ik_solver_v3.s: src/ik_solver_v3.cpp.s
+.PHONY : src/ik_solver_v3.s
 
 # target to generate assembly for a file
-src/motor_controller.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/ik_solver_sub.dir/build.make CMakeFiles/ik_solver_sub.dir/src/motor_controller.cpp.s
-.PHONY : src/motor_controller.cpp.s
+src/ik_solver_v3.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/ik_solver_v3_lib.dir/build.make CMakeFiles/ik_solver_v3_lib.dir/src/ik_solver_v3.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_ik_solver_v3.dir/build.make CMakeFiles/test_ik_solver_v3.dir/src/ik_solver_v3.cpp.s
+.PHONY : src/ik_solver_v3.cpp.s
+
+src/reachable_workspace.o: src/reachable_workspace.cpp.o
+.PHONY : src/reachable_workspace.o
+
+# target to build an object file
+src/reachable_workspace.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/reachable_workspace.dir/build.make CMakeFiles/reachable_workspace.dir/src/reachable_workspace.cpp.o
+.PHONY : src/reachable_workspace.cpp.o
+
+src/reachable_workspace.i: src/reachable_workspace.cpp.i
+.PHONY : src/reachable_workspace.i
+
+# target to preprocess a source file
+src/reachable_workspace.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/reachable_workspace.dir/build.make CMakeFiles/reachable_workspace.dir/src/reachable_workspace.cpp.i
+.PHONY : src/reachable_workspace.cpp.i
+
+src/reachable_workspace.s: src/reachable_workspace.cpp.s
+.PHONY : src/reachable_workspace.s
+
+# target to generate assembly for a file
+src/reachable_workspace.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/reachable_workspace.dir/build.make CMakeFiles/reachable_workspace.dir/src/reachable_workspace.cpp.s
+.PHONY : src/reachable_workspace.cpp.s
+
+src/test_ik_solver_v2.o: src/test_ik_solver_v2.cpp.o
+.PHONY : src/test_ik_solver_v2.o
+
+# target to build an object file
+src/test_ik_solver_v2.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_ik_solver_v2.dir/build.make CMakeFiles/test_ik_solver_v2.dir/src/test_ik_solver_v2.cpp.o
+.PHONY : src/test_ik_solver_v2.cpp.o
+
+src/test_ik_solver_v2.i: src/test_ik_solver_v2.cpp.i
+.PHONY : src/test_ik_solver_v2.i
+
+# target to preprocess a source file
+src/test_ik_solver_v2.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_ik_solver_v2.dir/build.make CMakeFiles/test_ik_solver_v2.dir/src/test_ik_solver_v2.cpp.i
+.PHONY : src/test_ik_solver_v2.cpp.i
+
+src/test_ik_solver_v2.s: src/test_ik_solver_v2.cpp.s
+.PHONY : src/test_ik_solver_v2.s
+
+# target to generate assembly for a file
+src/test_ik_solver_v2.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_ik_solver_v2.dir/build.make CMakeFiles/test_ik_solver_v2.dir/src/test_ik_solver_v2.cpp.s
+.PHONY : src/test_ik_solver_v2.cpp.s
 
 # Help Target
 help:
@@ -233,19 +331,27 @@ help:
 	@echo "... depend"
 	@echo "... edit_cache"
 	@echo "... rebuild_cache"
-	@echo "... ik_solver_sub"
-	@echo "... generated/arm_msgs.o"
-	@echo "... generated/arm_msgs.i"
-	@echo "... generated/arm_msgs.s"
+	@echo "... ik_model_lib"
+	@echo "... ik_solver_lib"
+	@echo "... ik_solver_v3_lib"
+	@echo "... reachable_workspace"
+	@echo "... test_ik_solver_v2"
+	@echo "... test_ik_solver_v3"
 	@echo "... src/ik_model.o"
 	@echo "... src/ik_model.i"
 	@echo "... src/ik_model.s"
-	@echo "... src/ik_solver_sub.o"
-	@echo "... src/ik_solver_sub.i"
-	@echo "... src/ik_solver_sub.s"
-	@echo "... src/motor_controller.o"
-	@echo "... src/motor_controller.i"
-	@echo "... src/motor_controller.s"
+	@echo "... src/ik_solver_v2.o"
+	@echo "... src/ik_solver_v2.i"
+	@echo "... src/ik_solver_v2.s"
+	@echo "... src/ik_solver_v3.o"
+	@echo "... src/ik_solver_v3.i"
+	@echo "... src/ik_solver_v3.s"
+	@echo "... src/reachable_workspace.o"
+	@echo "... src/reachable_workspace.i"
+	@echo "... src/reachable_workspace.s"
+	@echo "... src/test_ik_solver_v2.o"
+	@echo "... src/test_ik_solver_v2.i"
+	@echo "... src/test_ik_solver_v2.s"
 .PHONY : help
 
 

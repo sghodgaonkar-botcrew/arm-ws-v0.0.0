@@ -1,0 +1,30 @@
+[0.431s] Invoking command in '/home/shanto/Documents/arm-ws-v0.0.0/ros_ws/src/cps_bridge': PYTHONPATH=/home/shanto/Documents/arm-ws-v0.0.0/ros_ws/build/cps_bridge/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/shanto/Documents/arm-ws-v0.0.0/ros_ws/install/cps_bridge/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py egg_info --egg-base ../../build/cps_bridge build --build-base /home/shanto/Documents/arm-ws-v0.0.0/ros_ws/build/cps_bridge/build install --record /home/shanto/Documents/arm-ws-v0.0.0/ros_ws/build/cps_bridge/install.log --single-version-externally-managed install_data
+[0.528s] /home/shanto/.local/lib/python3.10/site-packages/setuptools/_distutils/dist.py:289: UserWarning: Unknown distribution option: 'tests_require'
+[0.528s]   warnings.warn(msg)
+[0.584s] running egg_info
+[0.593s] writing ../../build/cps_bridge/cps_bridge.egg-info/PKG-INFO
+[0.593s] writing dependency_links to ../../build/cps_bridge/cps_bridge.egg-info/dependency_links.txt
+[0.594s] writing entry points to ../../build/cps_bridge/cps_bridge.egg-info/entry_points.txt
+[0.594s] writing requirements to ../../build/cps_bridge/cps_bridge.egg-info/requires.txt
+[0.594s] writing top-level names to ../../build/cps_bridge/cps_bridge.egg-info/top_level.txt
+[0.613s] reading manifest file '../../build/cps_bridge/cps_bridge.egg-info/SOURCES.txt'
+[0.613s] adding license file 'LICENSE'
+[0.613s] writing manifest file '../../build/cps_bridge/cps_bridge.egg-info/SOURCES.txt'
+[0.614s] running build
+[0.614s] running build_py
+[0.614s] copying src/cps_pub.py -> /home/shanto/Documents/arm-ws-v0.0.0/ros_ws/build/cps_bridge/build/lib/src
+[0.614s] copying src/__init__.py -> /home/shanto/Documents/arm-ws-v0.0.0/ros_ws/build/cps_bridge/build/lib/src
+[0.614s] running install
+[0.617s] running install_lib
+[0.626s] copying /home/shanto/Documents/arm-ws-v0.0.0/ros_ws/build/cps_bridge/build/lib/src/cps_pub.py -> /home/shanto/Documents/arm-ws-v0.0.0/ros_ws/install/cps_bridge/lib/python3.10/site-packages/src
+[0.626s] byte-compiling /home/shanto/Documents/arm-ws-v0.0.0/ros_ws/install/cps_bridge/lib/python3.10/site-packages/src/cps_pub.py to cps_pub.cpython-310.pyc
+[0.627s] running install_data
+[0.627s] copying resource/cps_bridge -> /home/shanto/Documents/arm-ws-v0.0.0/ros_ws/install/cps_bridge/share/ament_index/resource_index/packages
+[0.627s] copying package.xml -> /home/shanto/Documents/arm-ws-v0.0.0/ros_ws/install/cps_bridge/share/cps_bridge
+[0.627s] running install_egg_info
+[0.637s] removing '/home/shanto/Documents/arm-ws-v0.0.0/ros_ws/install/cps_bridge/lib/python3.10/site-packages/cps_bridge-0.0.0-py3.10.egg-info' (and everything under it)
+[0.637s] Copying ../../build/cps_bridge/cps_bridge.egg-info to /home/shanto/Documents/arm-ws-v0.0.0/ros_ws/install/cps_bridge/lib/python3.10/site-packages/cps_bridge-0.0.0-py3.10.egg-info
+[0.637s] running install_scripts
+[0.656s] Installing cps_pub script to /home/shanto/Documents/arm-ws-v0.0.0/ros_ws/install/cps_bridge/lib/cps_bridge
+[0.656s] writing list of installed files to '/home/shanto/Documents/arm-ws-v0.0.0/ros_ws/build/cps_bridge/install.log'
+[0.670s] Invoked command in '/home/shanto/Documents/arm-ws-v0.0.0/ros_ws/src/cps_bridge' returned '0': PYTHONPATH=/home/shanto/Documents/arm-ws-v0.0.0/ros_ws/build/cps_bridge/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/shanto/Documents/arm-ws-v0.0.0/ros_ws/install/cps_bridge/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py egg_info --egg-base ../../build/cps_bridge build --build-base /home/shanto/Documents/arm-ws-v0.0.0/ros_ws/build/cps_bridge/build install --record /home/shanto/Documents/arm-ws-v0.0.0/ros_ws/build/cps_bridge/install.log --single-version-externally-managed install_data

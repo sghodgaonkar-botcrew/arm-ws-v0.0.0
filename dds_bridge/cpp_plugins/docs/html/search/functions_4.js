@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['quaterniontorotationmatrix_45',['quaternionToRotationMatrix',['../classIKModel.html#a40aa3bc6f56d62aab55b8e1a7c9abe3e',1,'IKModel']]]
+  ['homogeneoustoxyzquat_47',['homogeneousToXYZQuat',['../classIKModel.html#a8b96fe0c0419d5754cdfbe1355055a81',1,'IKModel']]]
 ];

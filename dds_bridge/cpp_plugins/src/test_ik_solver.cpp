@@ -113,7 +113,7 @@ int main() {
         pinocchio::SE3 target_pose = current_pose;
         // target_pose.translation().x() = 0.0;
         // target_pose.translation().y() = 0.05;
-        target_pose.translation().z() -= 0.2;
+        target_pose.translation().z() -= 0.1;
 
         std::cout << "\nTarget pose: [" << target_pose << "]" << std::endl;
 

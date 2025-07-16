@@ -1,0 +1,5 @@
+[31mCMake Error at CMakeLists.txt:45 (message):
+  jsoncons not found.  Please install it: sudo apt install libjsoncons-dev
+
+[0m
+gmake: *** [Makefile:308: cmake_check_build_system] Error 1

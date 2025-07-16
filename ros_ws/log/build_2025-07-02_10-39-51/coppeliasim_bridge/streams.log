@@ -1,0 +1,32 @@
+[0.011s] Invoking command in '/home/shanto/Documents/arm-ws-v0.0.0/ros_ws/build/coppeliasim_bridge': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/opt/ros/humble /usr/bin/cmake --build /home/shanto/Documents/arm-ws-v0.0.0/ros_ws/build/coppeliasim_bridge -- -j22 -l22
+[0.073s] [  2%] Built target zmq_pub
+[0.108s] [35m[1mConsolidate compiler generated dependencies of target unit_tests[0m
+[0.168s] [  3%] [32mBuilding CXX object _deps/jsoncons-build/test/CMakeFiles/unit_tests.dir/corelib/src/reflect/reflect_traits_container_tests.cpp.o[0m
+[6.184s] [  5%] [32mBuilding CXX object _deps/jsoncons-build/test/CMakeFiles/unit_tests.dir/jsonpath/src/jsonpath_test_suite.cpp.o[0m
+[6.184s] [  5%] [32mBuilding CXX object _deps/jsoncons-build/test/CMakeFiles/unit_tests.dir/jsonpointer/src/jsonpointer_flatten_tests.cpp.o[0m
+[6.184s] [  5%] [32mBuilding CXX object _deps/jsoncons-build/test/CMakeFiles/unit_tests.dir/jsonpath/src/path_node_tests.cpp.o[0m
+[7.197s] [  7%] [32mBuilding CXX object _deps/jsoncons-build/test/CMakeFiles/unit_tests.dir/jsonpath/src/jsonpath_stateful_allocator_tests.cpp.o[0m
+[7.197s] [  7%] [32mBuilding CXX object _deps/jsoncons-build/test/CMakeFiles/unit_tests.dir/jsonpath/src/jsonpath_select_paths_tests.cpp.o[0m
+[7.591s] [  7%] [32mBuilding CXX object _deps/jsoncons-build/test/CMakeFiles/unit_tests.dir/jsonpath/src/jsonpath_json_replace_tests.cpp.o[0m
+[8.603s] [  9%] [32mBuilding CXX object _deps/jsoncons-build/test/CMakeFiles/unit_tests.dir/jsonpath/src/jsonpath_json_query_tests.cpp.o[0m
+[8.603s] [  9%] [32mBuilding CXX object _deps/jsoncons-build/test/CMakeFiles/unit_tests.dir/jsonpointer/src/jsonpointer_tests.cpp.o[0m
+[8.603s] [ 10%] [32mBuilding CXX object _deps/jsoncons-build/test/CMakeFiles/unit_tests.dir/jsonpath/src/jsonpath_function_tests.cpp.o[0m
+[9.615s] [ 11%] [32mBuilding CXX object _deps/jsoncons-build/test/CMakeFiles/unit_tests.dir/jsonpath/src/jsonpath_flatten_tests.cpp.o[0m
+[9.615s] [ 11%] [32mBuilding CXX object _deps/jsoncons-build/test/CMakeFiles/unit_tests.dir/jsonpath/src/jsonpath_expression_tests.cpp.o[0m
+[10.625s] [ 13%] [32mBuilding CXX object _deps/jsoncons-build/test/CMakeFiles/unit_tests.dir/jsonpatch/src/jsonpatch_tests.cpp.o[0m
+[10.626s] [ 13%] [32mBuilding CXX object _deps/jsoncons-build/test/CMakeFiles/unit_tests.dir/jmespath/src/jmespath_tests.cpp.o[0m
+[10.626s] [ 13%] [32mBuilding CXX object _deps/jsoncons-build/test/CMakeFiles/unit_tests.dir/jsonpath/src/jsonpath_custom_function_tests.cpp.o[0m
+[10.634s] [ 15%] [32mBuilding CXX object _deps/jsoncons-build/test/CMakeFiles/unit_tests.dir/jmespath/src/jmespath_expression_tests.cpp.o[0m
+[10.635s] [ 15%] [32mBuilding CXX object _deps/jsoncons-build/test/CMakeFiles/unit_tests.dir/jmespath/src/jmespath_let_tests.cpp.o[0m
+[10.635s] [ 15%] [32mBuilding CXX object _deps/jsoncons-build/test/CMakeFiles/unit_tests.dir/jmespath/src/jmespath_custom_function_tests.cpp.o[0m
+[11.232s] [ 16%] [32mBuilding CXX object _deps/jsoncons-build/test/CMakeFiles/unit_tests.dir/corelib/src/reflect/reflect_traits_gen_tests.cpp.o[0m
+[11.232s] [ 19%] [32mBuilding CXX object _deps/jsoncons-build/test/CMakeFiles/unit_tests.dir/csv/src/csv_cursor_tests.cpp.o[0m
+[11.232s] [ 19%] [32mBuilding CXX object _deps/jsoncons-build/test/CMakeFiles/unit_tests.dir/csv/src/csv_tests.cpp.o[0m
+[11.232s] [ 19%] [32mBuilding CXX object _deps/jsoncons-build/test/CMakeFiles/unit_tests.dir/csv/src/encode_decode_csv_tests.cpp.o[0m
+[11.232s] [ 19%] [32mBuilding CXX object _deps/jsoncons-build/test/CMakeFiles/unit_tests.dir/corelib/src/reflect/reflect_traits_gen_functional_tests.cpp.o[0m
+[12.250s] [ 19%] [32mBuilding CXX object _deps/jsoncons-build/test/CMakeFiles/unit_tests.dir/jsonschema/src/abort_early_tests.cpp.o[0m
+[14.763s] [ 20%] [32mBuilding CXX object _deps/jsoncons-build/test/CMakeFiles/unit_tests.dir/jsonschema/src/custom_message_tests.cpp.o[0m
+[61.523s] gmake[2]: *** [_deps/jsoncons-build/test/CMakeFiles/unit_tests.dir/build.make:1602: _deps/jsoncons-build/test/CMakeFiles/unit_tests.dir/jsonpath/src/jsonpath_test_suite.cpp.o] Interrupt
+[61.534s] gmake[1]: *** [CMakeFiles/Makefile2:951: _deps/jsoncons-build/test/CMakeFiles/unit_tests.dir/all] Interrupt
+[61.534s] gmake: *** [Makefile:146: all] Interrupt
+[61.624s] Invoked command in '/home/shanto/Documents/arm-ws-v0.0.0/ros_ws/build/coppeliasim_bridge' returned '-2': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/opt/ros/humble /usr/bin/cmake --build /home/shanto/Documents/arm-ws-v0.0.0/ros_ws/build/coppeliasim_bridge -- -j22 -l22

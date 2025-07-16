@@ -1,0 +1,3 @@
+gmake[2]: *** [_deps/jsoncons-build/test/CMakeFiles/unit_tests.dir/build.make:1602: _deps/jsoncons-build/test/CMakeFiles/unit_tests.dir/jsonpath/src/jsonpath_test_suite.cpp.o] Interrupt
+gmake[1]: *** [CMakeFiles/Makefile2:951: _deps/jsoncons-build/test/CMakeFiles/unit_tests.dir/all] Interrupt
+gmake: *** [Makefile:146: all] Interrupt

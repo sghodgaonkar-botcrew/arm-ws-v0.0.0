@@ -1,0 +1,22 @@
+[0.017s] Invoking command in '/home/shanto/Documents/arm-ws-v0.0.0/ros_ws/build/coppeliasim_bridge': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/opt/ros/humble /usr/bin/cmake --build /home/shanto/Documents/arm-ws-v0.0.0/ros_ws/build/coppeliasim_bridge -- -j22 -l22
+[0.061s] [35m[1mConsolidate compiler generated dependencies of target zmq_pub[0m
+[0.078s] [ 50%] [32mBuilding CXX object CMakeFiles/zmq_pub.dir/src/zmq_pub.cpp.o[0m
+[0.743s] [01m[K/home/shanto/Documents/arm-ws-v0.0.0/ros_ws/src/coppeliasim_bridge/src/zmq_pub.cpp:[m[K In function ‘[01m[Kint main(int, char**)[m[K’:
+[0.743s] [01m[K/home/shanto/Documents/arm-ws-v0.0.0/ros_ws/src/coppeliasim_bridge/src/zmq_pub.cpp:7:32:[m[K [01;31m[Kerror: [m[Kno matching function for call to ‘[01m[KRemoteAPIClient::getObject()[m[K’
+[0.743s]     7 |     auto sim = [01;31m[Kclient.getObject()[m[K.sim();
+[0.743s]       |                [01;31m[K~~~~~~~~~~~~~~~~^~[m[K
+[0.743s] In file included from [01m[K/home/shanto/Documents/arm-ws-v0.0.0/ros_ws/src/coppeliasim_bridge/src/zmq_pub.cpp:1[m[K:
+[0.743s] [01m[K/home/shanto/CoppeliaSim_Pro_V4_10_0_rev0_Ubuntu22_04/programming/zmqRemoteApi/clients/cpp/RemoteAPIClient.h:32:10:[m[K [01;36m[Knote: [m[Kcandidate: ‘[01m[Kjsoncons::json RemoteAPIClient::getObject(const string&)[m[K’
+[0.743s]    32 |     json [01;36m[KgetObject[m[K(const std::string &name);
+[0.743s]       |          [01;36m[K^~~~~~~~~[m[K
+[0.743s] [01m[K/home/shanto/CoppeliaSim_Pro_V4_10_0_rev0_Ubuntu22_04/programming/zmqRemoteApi/clients/cpp/RemoteAPIClient.h:32:10:[m[K [01;36m[Knote: [m[K  candidate expects 1 argument, 0 provided
+[0.743s] [01m[K/home/shanto/Documents/arm-ws-v0.0.0/ros_ws/src/coppeliasim_bridge/src/zmq_pub.cpp:3:14:[m[K [01;35m[Kwarning: [m[Kunused parameter ‘[01m[Kargc[m[K’ [[01;35m[K]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wunused-parameter-Wunused-parameter]8;;[m[K]
+[0.743s]     3 | int main([01;35m[Kint argc[m[K,char* argv[])
+[0.743s]       |          [01;35m[K~~~~^~~~[m[K
+[0.744s] [01m[K/home/shanto/Documents/arm-ws-v0.0.0/ros_ws/src/coppeliasim_bridge/src/zmq_pub.cpp:3:25:[m[K [01;35m[Kwarning: [m[Kunused parameter ‘[01m[Kargv[m[K’ [[01;35m[K]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wunused-parameter-Wunused-parameter]8;;[m[K]
+[0.744s]     3 | int main(int argc,[01;35m[Kchar* argv[][m[K)
+[0.744s]       |                   [01;35m[K~~~~~~^~~~~~[m[K
+[1.151s] gmake[2]: *** [CMakeFiles/zmq_pub.dir/build.make:76: CMakeFiles/zmq_pub.dir/src/zmq_pub.cpp.o] Error 1
+[1.151s] gmake[1]: *** [CMakeFiles/Makefile2:137: CMakeFiles/zmq_pub.dir/all] Error 2
+[1.152s] gmake: *** [Makefile:146: all] Error 2
+[1.156s] Invoked command in '/home/shanto/Documents/arm-ws-v0.0.0/ros_ws/build/coppeliasim_bridge' returned '2': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/opt/ros/humble /usr/bin/cmake --build /home/shanto/Documents/arm-ws-v0.0.0/ros_ws/build/coppeliasim_bridge -- -j22 -l22

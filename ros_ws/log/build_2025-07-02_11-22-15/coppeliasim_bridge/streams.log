@@ -1,0 +1,10 @@
+[0.016s] Invoking command in '/home/shanto/Documents/arm-ws-v0.0.0/ros_ws/build/coppeliasim_bridge': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/opt/ros/humble /usr/bin/cmake --build /home/shanto/Documents/arm-ws-v0.0.0/ros_ws/build/coppeliasim_bridge -- -j22 -l22
+[0.079s] [ 25%] [32mBuilding CXX object CMakeFiles/RemoteAPIClient.dir/src/RemoteAPIClient.cpp.o[0m
+[0.216s] [01m[K/home/shanto/Documents/arm-ws-v0.0.0/ros_ws/src/coppeliasim_bridge/src/RemoteAPIClient.cpp:251:10:[m[K [01;31m[Kfatal error: [m[KRemoteAPIObjects.cpp: No such file or directory
+[0.216s]   251 | #include [01;31m[K"RemoteAPIObjects.cpp"[m[K
+[0.216s]       |          [01;31m[K^~~~~~~~~~~~~~~~~~~~~~[m[K
+[0.216s] compilation terminated.
+[0.219s] gmake[2]: *** [CMakeFiles/RemoteAPIClient.dir/build.make:76: CMakeFiles/RemoteAPIClient.dir/src/RemoteAPIClient.cpp.o] Error 1
+[0.220s] gmake[1]: *** [CMakeFiles/Makefile2:139: CMakeFiles/RemoteAPIClient.dir/all] Error 2
+[0.220s] gmake: *** [Makefile:146: all] Error 2
+[0.223s] Invoked command in '/home/shanto/Documents/arm-ws-v0.0.0/ros_ws/build/coppeliasim_bridge' returned '2': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/opt/ros/humble /usr/bin/cmake --build /home/shanto/Documents/arm-ws-v0.0.0/ros_ws/build/coppeliasim_bridge -- -j22 -l22

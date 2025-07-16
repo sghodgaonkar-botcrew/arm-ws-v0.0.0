@@ -1,0 +1,18 @@
+[01m[K/home/shanto/Documents/arm-ws-v0.0.0/ros_ws/src/coppeliasim_bridge/src/zmq_pub.cpp:[m[K In function ‘[01m[Kint main(int, char**)[m[K’:
+[01m[K/home/shanto/Documents/arm-ws-v0.0.0/ros_ws/src/coppeliasim_bridge/src/zmq_pub.cpp:7:32:[m[K [01;31m[Kerror: [m[Kno matching function for call to ‘[01m[KRemoteAPIClient::getObject()[m[K’
+    7 |     auto sim = [01;31m[Kclient.getObject()[m[K.sim();
+      |                [01;31m[K~~~~~~~~~~~~~~~~^~[m[K
+In file included from [01m[K/home/shanto/Documents/arm-ws-v0.0.0/ros_ws/src/coppeliasim_bridge/src/zmq_pub.cpp:1[m[K:
+[01m[K/home/shanto/CoppeliaSim_Pro_V4_10_0_rev0_Ubuntu22_04/programming/zmqRemoteApi/clients/cpp/RemoteAPIClient.h:32:10:[m[K [01;36m[Knote: [m[Kcandidate: ‘[01m[Kjsoncons::json RemoteAPIClient::getObject(const string&)[m[K’
+   32 |     json [01;36m[KgetObject[m[K(const std::string &name);
+      |          [01;36m[K^~~~~~~~~[m[K
+[01m[K/home/shanto/CoppeliaSim_Pro_V4_10_0_rev0_Ubuntu22_04/programming/zmqRemoteApi/clients/cpp/RemoteAPIClient.h:32:10:[m[K [01;36m[Knote: [m[K  candidate expects 1 argument, 0 provided
+[01m[K/home/shanto/Documents/arm-ws-v0.0.0/ros_ws/src/coppeliasim_bridge/src/zmq_pub.cpp:3:14:[m[K [01;35m[Kwarning: [m[Kunused parameter ‘[01m[Kargc[m[K’ [[01;35m[K]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wunused-parameter-Wunused-parameter]8;;[m[K]
+    3 | int main([01;35m[Kint argc[m[K,char* argv[])
+      |          [01;35m[K~~~~^~~~[m[K
+[01m[K/home/shanto/Documents/arm-ws-v0.0.0/ros_ws/src/coppeliasim_bridge/src/zmq_pub.cpp:3:25:[m[K [01;35m[Kwarning: [m[Kunused parameter ‘[01m[Kargv[m[K’ [[01;35m[K]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wunused-parameter-Wunused-parameter]8;;[m[K]
+    3 | int main(int argc,[01;35m[Kchar* argv[][m[K)
+      |                   [01;35m[K~~~~~~^~~~~~[m[K
+gmake[2]: *** [CMakeFiles/zmq_pub.dir/build.make:76: CMakeFiles/zmq_pub.dir/src/zmq_pub.cpp.o] Error 1
+gmake[1]: *** [CMakeFiles/Makefile2:137: CMakeFiles/zmq_pub.dir/all] Error 2
+gmake: *** [Makefile:146: all] Error 2
