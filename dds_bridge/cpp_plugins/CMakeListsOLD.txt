@@ -1,0 +1,233 @@
+cmake_minimum_required(VERSION 3.16)
+project(ik_profiling_example)
+
+# Set C++ standard
+set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+
+# Find required packages
+find_package(PkgConfig REQUIRED)
+find_package(Eigen3 REQUIRED)
+
+# Find Pinocchio (default installation from /opt/openrobots)
+find_package(pinocchio REQUIRED)
+
+# Find ProxSuite (installed in miniconda3)
+set(PROXSUITE_ROOT "/home/shanto/miniconda3")
+find_path(PROXSUITE_INCLUDE_DIRS
+    NAMES proxsuite/proxqp/dense/dense.hpp
+    PATHS ${PROXSUITE_ROOT}/include
+    NO_DEFAULT_PATH
+)
+
+if(PROXSUITE_INCLUDE_DIRS)
+    message(STATUS "ProxSuite found at: ${PROXSUITE_INCLUDE_DIRS}")
+else()
+    message(FATAL_ERROR "ProxSuite not found. Please check the installation path.")
+endif()
+
+# Find OpenMP (optional, for reachable_workspace parallelization)
+find_package(OpenMP)
+if(OpenMP_CXX_FOUND)
+    message(STATUS "OpenMP found - reachable_workspace will use parallel processing")
+else()
+    message(STATUS "OpenMP not found - reachable_workspace will use single-threaded processing")
+endif()
+
+# Try to find IPOPT (optional)
+find_package(PkgConfig QUIET)
+pkg_check_modules(IPOPT QUIET ipopt)
+if(IPOPT_FOUND)
+    add_definitions(-DHAVE_IPOPT)
+    message(STATUS "IPOPT found - IK solver will be available")
+else()
+    message(STATUS "IPOPT not found - IK solver will be disabled")
+endif()
+
+# Add profiling definitions
+add_definitions(-DENABLE_PROFILING)
+
+# Include directories
+include_directories(include)
+include_directories(${EIGEN3_INCLUDE_DIRS})
+include_directories(/opt/openrobots/include) # Use system Pinocchio
+include_directories(${PROXSUITE_INCLUDE_DIRS})
+
+# Create library
+add_library(ik_model_lib
+    src/ik_model.cpp
+)
+
+# Link libraries for ik_model_lib
+target_link_libraries(ik_model_lib
+    ${PINOCCHIO_LIBRARIES}
+    ${EIGEN3_LIBRARIES}
+)
+
+# Create IK solver library (only if IPOPT is available)
+if(IPOPT_FOUND)
+    add_library(ik_solver_lib
+        src/ik_solver_v2.cpp
+    )
+
+    target_link_libraries(ik_solver_lib
+        ik_model_lib
+        ${IPOPT_LIBRARIES}
+    )
+
+    target_include_directories(ik_solver_lib PRIVATE
+        ${IPOPT_INCLUDE_DIRS}
+    )
+endif()
+
+# Create ik_solver_v2 executable (standalone version)
+add_executable(ik_solver_v2
+    src/ik_solver_v2.cpp
+    # src/ik_model.cpp
+)
+
+target_include_directories(ik_solver_v2 PRIVATE
+    ${CMAKE_CURRENT_SOURCE_DIR}/include
+    ${EIGEN3_INCLUDE_DIRS}
+    /opt/openrobots/include # Use system Pinocchio
+    ${PROXSUITE_INCLUDE_DIRS}
+)
+
+target_link_libraries(ik_solver_v2 PUBLIC
+    pinocchio::pinocchio
+    pinocchio::pinocchio_parsers
+    ${EIGEN3_LIBRARIES}
+)
+
+# Add compiler flags for ik_solver_v2
+target_compile_options(ik_solver_v2 PRIVATE
+    -O2 -g
+)
+
+# Enable AddressSanitizer for ik_solver_v2 (optional)
+option(ENABLE_ASAN_IK_SOLVER "Build ik_solver_v2 with AddressSanitizer" OFF)
+if(ENABLE_ASAN_IK_SOLVER)
+    target_compile_options(ik_solver_v2 PRIVATE
+        -g -O1 -fsanitize=address -fno-omit-frame-pointer
+    )
+    target_link_options(ik_solver_v2 PRIVATE
+        -fsanitize=address
+    )
+endif()
+
+# # Create profiling example executable
+# add_executable(profile_example
+#     src/profile_example.cpp
+# )
+
+# # Link libraries for profiling example
+# target_link_libraries(profile_example
+#     ik_model_lib
+# )
+
+# if(IPOPT_FOUND)
+#     target_include_directories(profile_example PRIVATE
+#         ${IPOPT_INCLUDE_DIRS}
+#     )
+#     target_link_libraries(profile_example
+#         ik_solver_lib
+#         ${IPOPT_LIBRARIES}
+#     )
+# endif()
+
+# Create IPOPT profiling test executable (only if IPOPT is available)
+if(IPOPT_FOUND)
+    #     add_executable(ipopt_profile_test
+    #         src/ipopt_profile_test.cpp
+    #     )
+
+    #     target_link_libraries(ipopt_profile_test
+    #         ik_model_lib
+    #         ik_solver_lib
+    #         ${IPOPT_LIBRARIES}
+    #     )
+
+    #     target_include_directories(ipopt_profile_test PRIVATE
+    #         ${IPOPT_INCLUDE_DIRS}
+    #     )
+
+    #     # Create detailed IPOPT profiling test
+    #     add_executable(ipopt_detailed_profile
+    #         src/ipopt_detailed_profile.cpp
+    #     )
+
+    #     target_link_libraries(ipopt_detailed_profile
+    #         ik_model_lib
+    #         ik_solver_lib
+    #         ${IPOPT_LIBRARIES}
+    #     )
+
+    #     target_include_directories(ipopt_detailed_profile PRIVATE
+    #         ${IPOPT_INCLUDE_DIRS}
+    #     )
+
+    #     # Create simple IPOPT profiling test
+    #     add_executable(ipopt_simple_profile
+    #         src/ipopt_simple_profile.cpp
+    #     )
+
+    #     target_link_libraries(ipopt_simple_profile
+    #         ik_model_lib
+    #         ik_solver_lib
+    #         ${IPOPT_LIBRARIES}
+    #     )
+
+    #     target_include_directories(ipopt_simple_profile PRIVATE
+    #         ${IPOPT_INCLUDE_DIRS}
+    #     )
+
+
+
+
+
+    message(STATUS "IPOPT profiling test targets created")
+else()
+    message(STATUS "IPOPT profiling test targets skipped (IPOPT not found)")
+endif()
+
+# Add reachable_workspace executable
+add_executable(reachable_workspace src/reachable_workspace.cpp)
+
+# Link libraries for reachable_workspace
+target_link_libraries(reachable_workspace
+    ik_model_lib
+    ${PINOCCHIO_LIBRARIES}
+    ${EIGEN3_LIBRARIES}
+    pinocchio::pinocchio
+    pinocchio::pinocchio_parsers
+)
+
+# Add OpenMP support for reachable_workspace if available
+if(OpenMP_CXX_FOUND)
+    target_link_libraries(reachable_workspace OpenMP::OpenMP_CXX)
+    target_compile_options(reachable_workspace PRIVATE ${OpenMP_CXX_FLAGS})
+    message(STATUS "OpenMP linked to reachable_workspace")
+endif()
+
+# Enable AddressSanitizer for reachable_workspace only
+# target_compile_options(reachable_workspace PRIVATE
+#     -g -O1 -fsanitize=address -fno-omit-frame-pointer
+# )
+# target_link_options(reachable_workspace PRIVATE
+#     -fsanitize=address
+# )
+
+
+
+# Set compiler flags for optimization and debugging
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O2 -g")
+
+# Print configuration summary
+message(STATUS "Configuration Summary:")
+message(STATUS "  C++ Standard: ${CMAKE_CXX_STANDARD}")
+message(STATUS "  Profiling: ENABLED")
+message(STATUS "  IPOPT: ${IPOPT_FOUND}")
+message(STATUS "  Eigen3: ${EIGEN3_FOUND}")
+message(STATUS "  Pinocchio: ${PINOCCHIO_FOUND}")
+message(STATUS "  ProxSuite: ${PROXSUITE_INCLUDE_DIRS}")
+message(STATUS "  OpenMP: ${OpenMP_CXX_FOUND}")

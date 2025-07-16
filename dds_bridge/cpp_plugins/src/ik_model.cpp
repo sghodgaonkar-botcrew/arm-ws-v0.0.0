@@ -212,8 +212,10 @@ pinocchio::SE3 IKModel::xyzQuatToHomogeneous(const XYZQuat &xyzquat) {
     Eigen::Vector3d translation = xyzquat.head<3>();
 
     // Convert quaternion to rotation matrix
-    Eigen::Quaterniond quat(xyzquat(3), xyzquat(4), xyzquat(5),
-                            xyzquat(6)); // x, y, z, w
+    // Eigen::Quaterniond quat(xyzquat(3), xyzquat(4), xyzquat(5),
+    //                         xyzquat(6)); // x, y, z, w
+    Eigen::Quaterniond quat(xyzquat(6), xyzquat(3), xyzquat(4),
+                            xyzquat(5)); // w, x, y, z
     Eigen::Matrix3d rotation_matrix = quat.toRotationMatrix();
 
     // Create SE3 transform
