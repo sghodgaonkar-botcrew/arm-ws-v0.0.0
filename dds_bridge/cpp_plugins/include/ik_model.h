@@ -1,10 +1,30 @@
 #ifndef IK_MODEL_H
 #define IK_MODEL_H
-
+// General
 #include <Eigen/Dense>
 #include <pinocchio/multibody/data.hpp>
 #include <pinocchio/multibody/model.hpp>
 #include <string>
+// For IK
+#include <Eigen/src/Core/MatrixBase.h>
+#include <iomanip>
+#include <iostream>
+#include <pinocchio/algorithm/frames.hpp>
+#include <pinocchio/algorithm/kinematics.hpp>
+#include <pinocchio/parsers/urdf.hpp>
+// For RWS
+#include "pinocchio/algorithm/geometry.hpp"
+#include "pinocchio/collision/collision.hpp"
+#include "pinocchio/multibody/geometry.hpp"
+#include "pinocchio/parsers/srdf.hpp"
+#include <Eigen/Geometry>
+#include <boost/random/sobol.hpp>
+#include <filesystem>
+#include <fstream>
+#include <iomanip>
+#include <iostream>
+#include <sstream>
+#include <vector>
 
 // Type aliases for fixed-size vectors
 using JointConfig = Eigen::Vector<double, 6>;
@@ -23,7 +43,7 @@ class IKModel {
      */
     explicit IKModel(const std::string &urdf_path,
                      const std::string &end_effector_name,
-                     const Eigen::Vector<double, 6> &pose_weights);
+                     const std::string &srdf_path);
 
     /**
      * @brief Print all loaded frames
@@ -114,6 +134,13 @@ class IKModel {
     }
 
     /**
+     * @brief Set the current joint configuration
+     */
+    void setCurrentJointConfig(const JointConfig &q) {
+        current_joint_config_ = q;
+    }
+
+    /**
      * @brief Get the current end effector pose in XYZQuat format
      */
     const pinocchio::SE3 &getEndEffectorFrame() const {
@@ -142,12 +169,18 @@ class IKModel {
     std::string urdf_path_;                 ///< URDF file path
     std::string end_effector_name_;         ///< End effector frame name
     pinocchio::FrameIndex end_effector_id_; ///< End effector frame ID
+    std::string srdf_path_;                 ///< SRDF file path
     // XYZQuat end_effector_xyzquat_; ///< End effector pose as [x, y, z, qx,
     // qy,
     //                                ///< qz, qw]
     JointConfig current_joint_config_; ///< Current joint configuration
-    const Eigen::Matrix<double, 6, 6>
-        pose_weights_; ///< Diagonal weight matrix for pose components
+    const Eigen::Matrix<double, 6, 6> pose_weights_ =
+        Eigen::Matrix<double, 6, 6>::Identity(); ///< Diagonal weight matrix for
+                                                 ///< pose components
+    pinocchio::GeometryModel geom_model_;        ///< Geometry model
+    pinocchio::GeometryData geom_data_;          ///< Geometry data
+    JointConfig joint_limits_lower_;             ///< Lower joint limits
+    JointConfig joint_limits_upper_;             ///< Upper joint limits
 };
 
 #endif // IK_MODEL_H

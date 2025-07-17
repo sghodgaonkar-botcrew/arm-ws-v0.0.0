@@ -35,8 +35,8 @@ int main() {
 
     // QP solver (box constraints = true)
     proxsuite::proxqp::dense::QP<double> qp(nx, n_eq, n_in, true);
-    std::cout << "Box‐constrained? " << std::boolalpha
-              << qp.is_box_constrained() << std::endl;
+    // std::cout << "Box‐constrained? " << std::boolalpha
+    //           << qp.is_box_constrained() << std::endl;
 
     // Line search parameters
     const double alpha_init = 1.0;

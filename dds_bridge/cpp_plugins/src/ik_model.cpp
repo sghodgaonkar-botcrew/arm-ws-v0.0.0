@@ -1,20 +1,22 @@
 #include "ik_model.h"
-#include <Eigen/src/Core/MatrixBase.h>
-#include <iomanip>
-#include <iostream>
-#include <pinocchio/algorithm/frames.hpp>
-#include <pinocchio/algorithm/kinematics.hpp>
-#include <pinocchio/parsers/urdf.hpp>
 
 // Define static member
 const JointConfig IKModel::NEUTRAL_JOINT_CONFIG = JointConfig::Zero();
 
 IKModel::IKModel(const std::string &urdf_path,
                  const std::string &end_effector_name,
-                 const Eigen::Vector<double, 6> &pose_weights)
+                 const std::string &srdf_path)
     : urdf_path_(urdf_path), end_effector_name_(end_effector_name),
-      current_joint_config_(NEUTRAL_JOINT_CONFIG),
-      pose_weights_(pose_weights.asDiagonal()) {
+      current_joint_config_(NEUTRAL_JOINT_CONFIG), srdf_path_(srdf_path) {
+    if (!std::filesystem::exists(urdf_path)) {
+        std::cerr << "ERROR: URDF file not found: " << urdf_path << std::endl;
+        throw std::runtime_error("URDF file not found");
+    }
+    if (!std::filesystem::exists(srdf_path)) {
+        std::cerr << "ERROR: SRDF file not found: " << srdf_path << std::endl;
+        throw std::runtime_error("SRDF file not found");
+    }
+
     try {
         // Load the URDF model
         pinocchio::urdf::buildModel(urdf_path, model_);
@@ -37,14 +39,41 @@ IKModel::IKModel(const std::string &urdf_path,
                   << std::endl;
         std::cout << "Model has " << model_.nv << " velocity variables"
                   << std::endl;
+
+        pinocchio::urdf::buildGeom(
+            model_, urdf_path_, pinocchio::COLLISION, geom_model_,
+            std::filesystem::path(urdf_path_).parent_path().string());
+        std::cout << "Loaded " << geom_model_.ngeoms << " geometry objects"
+                  << std::endl;
+        geom_model_.addAllCollisionPairs();
+        pinocchio::srdf::removeCollisionPairs(model_, geom_model_, srdf_path_);
+        geom_data_ = pinocchio::GeometryData(geom_model_);
+        std::cout << "SRDF loaded successfully and collision pairs removed."
+                  << std::endl;
+
         std::cout << "End effector frame: '" << end_effector_name
                   << "' (ID: " << end_effector_id_ << ")" << std::endl;
         // Compute and print the end effector pose in neutral configuration
         computeForwardKinematics(NEUTRAL_JOINT_CONFIG);
         std::cout << "End effector pose (neutral config): ["
                   << getEndEffectorFrame() << "]" << std::endl;
+
+        joint_limits_lower_ = model_.lowerPositionLimit.cast<double>();
+        joint_limits_upper_ = model_.upperPositionLimit.cast<double>();
+
+        for (int i = 0; i < model_.njoints; ++i) {
+            // Skip the universe joint (index 0, usually has no limits)
+            if (i == 0)
+                continue;
+            const std::string &joint_name = model_.names[i];
+            double ll = joint_limits_lower_[i - 1];
+            double ul = joint_limits_upper_[i - 1];
+            std::cout << joint_name << " has limits [" << ll << ", " << ul
+                      << "]" << std::endl;
+        }
+
     } catch (const std::exception &e) {
-        std::cerr << "Error loading URDF: " << e.what() << std::endl;
+        std::cerr << "ERROR: " << e.what() << std::endl;
         throw;
     }
 }
@@ -165,6 +194,8 @@ pinocchio::SE3 IKModel::computeForwardKinematics(const JointConfig &q) {
 
     // Update frame placements
     pinocchio::updateFramePlacements(model_, data_);
+
+    pinocchio::updateGeometryPlacements(model_, data_, geom_model_, geom_data_);
 
     // Get the end effector transformation
     // const pinocchio::SE3 &end_effector_pose =
