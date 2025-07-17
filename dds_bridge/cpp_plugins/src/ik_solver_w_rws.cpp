@@ -37,16 +37,35 @@ JointConfig solve_ik(IKModel &ik_model, const pinocchio::SE3 &target_pose,
     proxsuite::proxqp::dense::QP<double> qp(nx, n_eq, n_in, true);
     // std::cout << "Box‐constrained? " << std::boolalpha
     //           << qp.is_box_constrained() << std::endl;
-
+    qp.init(Eigen::MatrixXd::Identity(nx, nx), Eigen::VectorXd::Zero(nx),
+            Eigen::MatrixXd(),
+            Eigen::VectorXd(), // no equality constraints (A_eq, b_eq)
+            Eigen::MatrixXd(),
+            Eigen::VectorXd(), // no general inequalities (C, l)
+            Eigen::VectorXd(), // no general upper bounds (u)
+            lb, ub             // box constraints
+    );
     // Line search parameters
     const double alpha_init = 1.0;
     const double rho = 0.5;
     const double alpha_min = 1e-4;
 
+    // Timing variables for per-iteration measurements
+    long long total_fk_jacobian_time = 0;
+    long long total_qp_time = 0;
+    long long total_line_search_time = 0;
+    int iterations_completed = 0;
+
     for (int iter = 0; iter < 1000; ++iter) {
         // 1) Forward kinematics & Jacobian
+        auto start_fk_jacobian = std::chrono::high_resolution_clock::now();
         fk_pose = ik_model.computeForwardKinematics(q);
         J = ik_model.computeGeometricJacobian(q); // size 6×nx
+        auto end_fk_jacobian = std::chrono::high_resolution_clock::now();
+        total_fk_jacobian_time +=
+            std::chrono::duration_cast<std::chrono::microseconds>(
+                end_fk_jacobian - start_fk_jacobian)
+                .count();
 
         // 2) Compute task error
         err = -(pinocchio::log6(target_pose.inverse() * fk_pose)).toVector();
@@ -55,6 +74,7 @@ JointConfig solve_ik(IKModel &ik_model, const pinocchio::SE3 &target_pose,
             std::cout << "Converged in " << iter
                       << " iterations \nq = " << q.transpose() * (180 / 3.14159)
                       << "\nerror norm = " << error_norm << std::endl;
+            iterations_completed = iter + 1;
             break;
         }
         // std::cout << "iter " << iter << "  err = " << error_norm << "\r";
@@ -64,19 +84,38 @@ JointConfig solve_ik(IKModel &ik_model, const pinocchio::SE3 &target_pose,
         Eigen::VectorXd g = -J.transpose() * err;
 
         // 4) Initialize and solve QP with box constraints
+        auto start_qp = std::chrono::high_resolution_clock::now();
         // Note: we supply 9 args: H, g, A_eq, b_eq, C, l, u, lb, ub
-        qp.init(H, g, Eigen::MatrixXd(),
-                Eigen::VectorXd(), // no equality constraints (A_eq, b_eq)
-                Eigen::MatrixXd(),
-                Eigen::VectorXd(), // no general inequalities (C, l)
-                Eigen::VectorXd(), // no general upper bounds (u)
-                lb, ub             // box constraints
+
+        // A) Compute per‐iteration delta‐bounds so that (q + dq) ∈ [q_min,
+        // q_max]
+        Eigen::VectorXd dq_lb =
+            (ik_model.getJointLimitsLower() - q).cwiseMax(lb);
+        Eigen::VectorXd dq_ub =
+            (ik_model.getJointLimitsUpper() - q).cwiseMin(ub);
+
+        qp.update(
+            /*H=*/H,
+            /*g=*/g,
+            /*A=*/std::nullopt,
+            /*b=*/std::nullopt,
+            /*C=*/std::nullopt,
+            /*l=*/std::nullopt,
+            /*u=*/std::nullopt,
+            /*l_box=*/dq_lb,
+            /*u_box=*/dq_ub,
+            /*recond=*/false // skip expensive preconditioner rebuild
         );
         qp.solve();
+        auto end_qp = std::chrono::high_resolution_clock::now();
+        total_qp_time += std::chrono::duration_cast<std::chrono::microseconds>(
+                             end_qp - start_qp)
+                             .count();
 
         Eigen::VectorXd dq = qp.results.x;
 
         // 5) Backtracking line search along dq
+        auto start_line_search = std::chrono::high_resolution_clock::now();
         double alpha = alpha_init;
         const double err0 = error_norm;
         pinocchio::SE3 fk_tmp;
@@ -94,9 +133,30 @@ JointConfig solve_ik(IKModel &ik_model, const pinocchio::SE3 &target_pose,
                 break;
             alpha *= rho;
         }
+        auto end_line_search = std::chrono::high_resolution_clock::now();
+        total_line_search_time +=
+            std::chrono::duration_cast<std::chrono::microseconds>(
+                end_line_search - start_line_search)
+                .count();
 
         // 6) Update joint configuration
         q += alpha * dq;
+        iterations_completed = iter + 1;
+    }
+
+    // Print average per-iteration timings
+    if (iterations_completed > 0) {
+        std::cout << "\nPer-iteration timing averages (" << iterations_completed
+                  << " iterations):" << std::endl;
+        std::cout << "  Forward kinematics + Jacobian: "
+                  << (total_fk_jacobian_time / iterations_completed) << " us"
+                  << std::endl;
+        std::cout << "  QP setup & solve: "
+                  << (total_qp_time / iterations_completed) << " us"
+                  << std::endl;
+        std::cout << "  Backtracking line search: "
+                  << (total_line_search_time / iterations_completed) << " us"
+                  << std::endl;
     }
     // Print the final pose after IK
     pinocchio::SE3 final_pose = ik_model.computeForwardKinematics(q);
@@ -122,6 +182,50 @@ JointConfig solve_ik(IKModel &ik_model,
     XYZQuat final_pose_xyzquat =
         IKModel::homogeneousToXYZQuat(ik_model.computeForwardKinematics(q));
     std::cout << final_pose_xyzquat.transpose() << std::endl;
+    return q;
+}
+
+JointConfig solve_ik_dls(IKModel &ik_model, const pinocchio::SE3 &target_pose,
+                         const JointConfig *q_init) {
+    const int nx = ik_model.getNumVelocityVariables();
+    Eigen::VectorXd q = (q_init ? *q_init : ik_model.getCurrentJointConfig());
+
+    // Joint limits (user‐provided)
+    Eigen::VectorXd q_min = ik_model.getJointLimitsLower();
+    Eigen::VectorXd q_max = ik_model.getJointLimitsUpper();
+
+    const double vel_limit = 0.1; // rad per iteration
+    const double lambda = 1e-3;   // Tikhonov damping
+
+    for (int iter = 0; iter < 1000; ++iter) {
+        // 1) FK & error
+        auto fk = ik_model.computeForwardKinematics(q);
+        Eigen::Vector<double, 6> err =
+            -(pinocchio::log6(target_pose.inverse() * fk)).toVector();
+        if (err.norm() < 1e-8)
+            break;
+
+        // 2) Jacobian
+        Eigen::MatrixXd J = ik_model.computeGeometricJacobian(q);
+
+        // 3) DLS step: (JᵀJ + λI) dq = -Jᵀ err
+        Eigen::MatrixXd H_reg =
+            J.transpose() * J + lambda * Eigen::MatrixXd::Identity(nx, nx);
+        Eigen::VectorXd b = -J.transpose() * err;
+        Eigen::VectorXd dq = H_reg.ldlt().solve(b);
+
+        // 4) Clip to both vel‐ and joint‐limits
+        for (int i = 0; i < nx; ++i) {
+            double dq_min = std::max(-vel_limit, q_min[i] - q[i]);
+            double dq_max = std::min(vel_limit, q_max[i] - q[i]);
+            dq[i] = std::clamp(dq[i], dq_min, dq_max);
+        }
+
+        // 5) Update
+        q += dq;
+    }
+
+    ik_model.setCurrentJointConfig(q);
     return q;
 }
 
@@ -868,6 +972,18 @@ int main() {
         std::cin >> target_pose_xyzquat[i];
     }
 
+    // Start timing the entire IK solving process
+    auto start_time_total_us =
+        std::chrono::duration_cast<std::chrono::microseconds>(
+            std::chrono::high_resolution_clock::now().time_since_epoch())
+            .count();
+
+    // Time the pose extraction step
+    auto start_time_pose_extraction_us =
+        std::chrono::duration_cast<std::chrono::microseconds>(
+            std::chrono::high_resolution_clock::now().time_since_epoch())
+            .count();
+
     // Split target pose into translation and quaternion components
     Eigen::Vector3d xyz =
         target_pose_xyzquat.head<3>(); // Extract translation [x, y, z]
@@ -876,6 +992,14 @@ int main() {
     Eigen::Quaterniond quat(target_pose_xyzquat[6], target_pose_xyzquat[3],
                             target_pose_xyzquat[4], target_pose_xyzquat[5]);
     quat.normalize(); // Ensure unit quaternion
+
+    auto end_time_pose_extraction_us =
+        std::chrono::duration_cast<std::chrono::microseconds>(
+            std::chrono::high_resolution_clock::now().time_since_epoch())
+            .count();
+    std::cout << "Time for pose extraction: "
+              << (end_time_pose_extraction_us - start_time_pose_extraction_us)
+              << " us" << std::endl;
 
     // // Find 10 nearest neighbors to the target xyz position
     // std::cout << "Finding 10 nearest neighbors to target position..."
@@ -960,6 +1084,12 @@ int main() {
         std::cout << std::endl;
     }
 
+    // Time the best initial configuration selection
+    auto start_time_config_selection_us =
+        std::chrono::duration_cast<std::chrono::microseconds>(
+            std::chrono::high_resolution_clock::now().time_since_epoch())
+            .count();
+
     // Pick the best initial configuration for IK warm-start
     JointConfig q_init = IKModel::NEUTRAL_JOINT_CONFIG;
 
@@ -1005,6 +1135,14 @@ int main() {
             << std::endl;
     }
 
+    auto end_time_config_selection_us =
+        std::chrono::duration_cast<std::chrono::microseconds>(
+            std::chrono::high_resolution_clock::now().time_since_epoch())
+            .count();
+    std::cout << "Time for configuration selection: "
+              << (end_time_config_selection_us - start_time_config_selection_us)
+              << " us" << std::endl;
+
     // Sanity check: if the closest neighbor is too far, warn the user
     if (!nearest_neighbors_voxel.empty() &&
         nearest_neighbors_voxel[0].distance > 0.1) {
@@ -1013,8 +1151,84 @@ int main() {
                   << "m away. Target may be unreachable." << std::endl;
     }
 
+    // Time the solve_ik function
+    auto start_time_solve_ik_us =
+        std::chrono::duration_cast<std::chrono::microseconds>(
+            std::chrono::high_resolution_clock::now().time_since_epoch())
+            .count();
+
     // Solve IK with warm-start
     solve_ik(ik_model, target_pose_xyzquat, &q_init);
+
+    auto end_time_solve_ik_us =
+        std::chrono::duration_cast<std::chrono::microseconds>(
+            std::chrono::high_resolution_clock::now().time_since_epoch())
+            .count();
+    std::cout << "Time for solve_ik: "
+              << (end_time_solve_ik_us - start_time_solve_ik_us) << " us ("
+              << (end_time_solve_ik_us - start_time_solve_ik_us) / 1000.0
+              << " ms)" << std::endl;
+
+    // End timing and print total time
+    auto end_time_total_us =
+        std::chrono::duration_cast<std::chrono::microseconds>(
+            std::chrono::high_resolution_clock::now().time_since_epoch())
+            .count();
+    std::cout << "\nTotal time for IK solving process: "
+              << (end_time_total_us - start_time_total_us) << " us ("
+              << (end_time_total_us - start_time_total_us) / 1000.0 << " ms)"
+              << std::endl;
+
+    auto start_time_solve_ik_no_warmstart_us =
+        std::chrono::duration_cast<std::chrono::microseconds>(
+            std::chrono::high_resolution_clock::now().time_since_epoch())
+            .count();
+    ik_model.setCurrentJointConfig(IKModel::NEUTRAL_JOINT_CONFIG);
+    solve_ik(ik_model, target_pose_xyzquat);
+
+    auto end_time_solve_ik_no_warmstart_us =
+        std::chrono::duration_cast<std::chrono::microseconds>(
+            std::chrono::high_resolution_clock::now().time_since_epoch())
+            .count();
+    std::cout << "Time for solve_ik (no warm-start): "
+              << (end_time_solve_ik_no_warmstart_us -
+                  start_time_solve_ik_no_warmstart_us)
+              << " us ("
+              << (end_time_solve_ik_no_warmstart_us -
+                  start_time_solve_ik_no_warmstart_us) /
+                     1000.0
+              << " ms)" << std::endl;
+
+    // Test DLS solver with warm start
+    auto start_time_solve_ik_dls_warmstart_us =
+        std::chrono::duration_cast<std::chrono::microseconds>(
+            std::chrono::high_resolution_clock::now().time_since_epoch())
+            .count();
+
+    ik_model.setCurrentJointConfig(IKModel::NEUTRAL_JOINT_CONFIG);
+
+    // Convert target pose to SE3 format for DLS solver
+    pinocchio::SE3 target_pose_se3 = pinocchio::SE3::Identity();
+    target_pose_se3.translation() = target_pose_xyzquat.head<3>();
+    target_pose_se3.rotation() =
+        Eigen::Quaterniond(target_pose_xyzquat[6], target_pose_xyzquat[3],
+                           target_pose_xyzquat[4], target_pose_xyzquat[5])
+            .toRotationMatrix();
+
+    solve_ik_dls(ik_model, target_pose_se3, &q_init);
+
+    auto end_time_solve_ik_dls_warmstart_us =
+        std::chrono::duration_cast<std::chrono::microseconds>(
+            std::chrono::high_resolution_clock::now().time_since_epoch())
+            .count();
+    std::cout << "Time for solve_ik_dls (with warm-start): "
+              << (end_time_solve_ik_dls_warmstart_us -
+                  start_time_solve_ik_dls_warmstart_us)
+              << " us ("
+              << (end_time_solve_ik_dls_warmstart_us -
+                  start_time_solve_ik_dls_warmstart_us) /
+                     1000.0
+              << " ms)" << std::endl;
 
     return 0;
 }

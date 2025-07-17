@@ -615,8 +615,7 @@ int main() {
     long unsigned int duplicate_count = 0;
 
     // Random number generator and working variables
-    std::random_device rd;
-    std::mt19937 gen(rd());
+    std::mt19937 gen(42); // Fixed seed for reproducible results
     std::uniform_real_distribution<double> dis(0.0, 1.0);
     std::vector<double> u(model.nq);
     JointConfig q_local = q;

@@ -163,6 +163,22 @@ class IKModel {
     Eigen::Matrix<double, 7, 6>
     computeEndEffectorFullJacobian(const Eigen::VectorXd &q);
 
+    /**
+     * @brief Get the lower joint limits
+     * @return Reference to the lower joint limits vector
+     */
+    const JointConfig &getJointLimitsLower() const {
+        return joint_limits_lower_;
+    }
+
+    /**
+     * @brief Get the upper joint limits
+     * @return Reference to the upper joint limits vector
+     */
+    const JointConfig &getJointLimitsUpper() const {
+        return joint_limits_upper_;
+    }
+
   private:
     pinocchio::Model model_;                ///< Robot model
     pinocchio::Data data_;                  ///< Robot data
