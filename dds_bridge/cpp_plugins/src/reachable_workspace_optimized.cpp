@@ -17,10 +17,13 @@
 #ifdef _OPENMP
 #include <omp.h>
 #endif
+#include <algorithm>
+#include <mutex>
 #include <queue>
 #include <random>
 #include <set>
 #include <sstream>
+#include <thread>
 #include <unordered_set>
 #include <vector>
 
@@ -32,22 +35,13 @@ const std::string srdf_filename =
     "/home/shanto/Documents/arm-ws-v0.0.0/urdf/ur10_v1.1.3/ur10.srdf";
 const std::string end_effector_name = "connection_frame";
 
-const long unsigned int num_points = 500000;
+const long unsigned int num_points = 100000;
+const int batch_size =
+    1000; // Process samples in batches for better cache locality
 
 using JointConfig = Eigen::Vector<double, 6>;
 
-// Simple function to check if two joint configurations are approximately equal
-bool isJointConfigEqual(const JointConfig &lhs, const JointConfig &rhs,
-                        double tolerance = 1e-3) {
-    for (int i = 0; i < lhs.size(); ++i) {
-        if (std::abs(lhs[i] - rhs[i]) > tolerance) {
-            return false;
-        }
-    }
-    return true;
-}
-
-// Hash function for JointConfig to use with unordered_set
+// Hash function for JointConfig to use with unordered_set (O(1) lookup)
 struct JointConfigHash {
     std::size_t operator()(const JointConfig &config) const {
         std::size_t hash = 0;
@@ -63,7 +57,13 @@ struct JointConfigHash {
 // Equality function for JointConfig to use with unordered_set
 struct JointConfigEqual {
     bool operator()(const JointConfig &lhs, const JointConfig &rhs) const {
-        return isJointConfigEqual(lhs, rhs);
+        const double tolerance = 1e-3;
+        for (int i = 0; i < lhs.size(); ++i) {
+            if (std::abs(lhs[i] - rhs[i]) > tolerance) {
+                return false;
+            }
+        }
+        return true;
     }
 };
 
@@ -79,17 +79,15 @@ struct WorkspacePoint {
         : position(pos), rotation(rot), joint_config(config) {}
 };
 
-// Helper function to process a single sample
-bool processSample(const pinocchio::Model &model, pinocchio::Data &data,
-                   const pinocchio::GeometryModel &geom_model,
-                   pinocchio::GeometryData &geom_data,
-                   const Eigen::VectorXd &joint_limits_lower,
-                   const Eigen::VectorXd &joint_limits_upper,
-                   const int frame_id, const std::vector<double> &u,
-                   JointConfig &q, WorkspacePoint &result,
-                   const std::unordered_set<JointConfig, JointConfigHash,
-                                            JointConfigEqual> &existing_configs,
-                   const double ground_threshold = 0.05) {
+// Optimized function to process a single sample without duplicate checking
+bool processSampleFast(const pinocchio::Model &model, pinocchio::Data &data,
+                       const pinocchio::GeometryModel &geom_model,
+                       pinocchio::GeometryData &geom_data,
+                       const Eigen::VectorXd &joint_limits_lower,
+                       const Eigen::VectorXd &joint_limits_upper,
+                       const int frame_id, const std::vector<double> &u,
+                       JointConfig &q, WorkspacePoint &result,
+                       const double ground_threshold = 0.05) {
 
     // Safety checks
     if (frame_id < 0 || frame_id >= model.frames.size()) {
@@ -101,29 +99,14 @@ bool processSample(const pinocchio::Model &model, pinocchio::Data &data,
     }
 
     // Map Sobol sequence values to joint configuration with bounds checking
-
-    // Map Sobol sequence [0,1] to joint limits with proper bounds checking
     for (int j = 0; j < model.nq; ++j) {
-        // Ensure u[j] is in [0,1] range (Sobol should generate this, but let's
-        // be safe)
         double clamped_u = std::max(0.0, std::min(1.0, u[j]));
-
-        // Linear interpolation from joint limits
         q[j] = joint_limits_lower[j] +
                (joint_limits_upper[j] - joint_limits_lower[j]) * clamped_u;
 
-        // Final bounds check
         if (q[j] < joint_limits_lower[j] || q[j] > joint_limits_upper[j]) {
-            std::cerr << "ERROR: Joint " << j << " out of bounds: " << q[j]
-                      << " not in [" << joint_limits_lower[j] << ", "
-                      << joint_limits_upper[j] << "]" << std::endl;
             return false;
         }
-    }
-
-    // Check if this joint configuration already exists in the workspace
-    if (existing_configs.find(q) != existing_configs.end()) {
-        return false; // Duplicate configuration, discard it
     }
 
     try {
@@ -136,61 +119,120 @@ bool processSample(const pinocchio::Model &model, pinocchio::Data &data,
         bool collision_detected =
             pinocchio::computeCollisions(model, data, geom_model, geom_data, q);
 
-        // Only return collision-free configurations above ground
         if (!collision_detected) {
-
             // Check that frames from link2 onwards are above ground
             bool frames_above_ground = true;
-
-            // Find link2 frame ID
             const int link2_frame_id = model.getFrameId("link_2");
 
-            // If link2 is found, check all frames from link2 onwards
             if (link2_frame_id >= 0) {
                 for (pinocchio::FrameIndex i = link2_frame_id;
                      i < model.nframes; ++i) {
                     if (data.oMf[i].translation()[2] <= ground_threshold) {
                         frames_above_ground = false;
-                        // std::cout << "Frame '" << model.frames[i].name
-                        //           << "' touched the ground threshold (z = "
-                        //           << data.oMf[i].translation()[2]
-                        //           << ") at joint config (deg): ["
-                        //           << (q * (180.0 / M_PI)).transpose() << "]"
-                        //           << std::endl;
                         break;
                     }
                 }
             } else {
-                // If link2 not found, fall back to checking end effector only
                 if (data.oMf[frame_id].translation()[2] <= ground_threshold) {
                     frames_above_ground = false;
                 }
             }
 
-            if (!frames_above_ground) {
-                return false;
+            if (frames_above_ground) {
+                Eigen::Vector3d position = data.oMf[frame_id].translation();
+                Eigen::Matrix3d rotation_matrix = data.oMf[frame_id].rotation();
+                Eigen::Quaterniond rotation(rotation_matrix);
+                rotation.normalize();
+
+                result = WorkspacePoint(position, rotation, q);
+                return true;
             }
-
-            Eigen::Vector3d position = data.oMf[frame_id].translation();
-            // if (position[2] > 0.0) {
-            // Extract rotation matrix and convert to quaternion
-            Eigen::Matrix3d rotation_matrix = data.oMf[frame_id].rotation();
-            Eigen::Quaterniond rotation(rotation_matrix);
-            rotation.normalize(); // Ensure unit quaternion
-
-            result = WorkspacePoint(position, rotation, q);
-            return true;
-            // }
         }
-    } catch (const std::exception &e) {
-        // Log error and return false
-        return false;
     } catch (...) {
-        // Catch any other exceptions
         return false;
     }
 
     return false;
+}
+
+// Batch processing function for better cache locality
+std::vector<WorkspacePoint>
+processBatch(const pinocchio::Model &model,
+             const pinocchio::GeometryModel &geom_model,
+             const Eigen::VectorXd &joint_limits_lower,
+             const Eigen::VectorXd &joint_limits_upper, const int frame_id,
+             std::mt19937 &gen,
+             std::unordered_set<JointConfig, JointConfigHash, JointConfigEqual>
+                 &existing_configs,
+             const int batch_size) {
+
+    std::vector<WorkspacePoint> batch_results;
+    batch_results.reserve(batch_size / 10); // Conservative estimate
+
+    // Thread-local Pinocchio data structures
+    pinocchio::Data data_local(model);
+    pinocchio::GeometryData geom_data_local(geom_model);
+
+    std::uniform_real_distribution<double> dis(0.0, 1.0);
+    std::vector<double> u(model.nq);
+    JointConfig q_local;
+    WorkspacePoint result(Eigen::Vector3d::Zero(),
+                          Eigen::Quaterniond::Identity(), JointConfig::Zero());
+
+    int attempts = 0;
+    const int max_attempts_per_sample =
+        10; // Limit attempts to avoid infinite loops
+
+    for (int i = 0; i < batch_size; ++i) {
+        attempts = 0;
+        bool valid_config_found = false;
+
+        // Keep trying until we find a unique configuration or hit max attempts
+        while (attempts < max_attempts_per_sample && !valid_config_found) {
+            // Generate random values
+            for (int j = 0; j < model.nq; ++j) {
+                u[j] = dis(gen);
+            }
+
+            // Map to joint configuration
+            for (int j = 0; j < model.nq; ++j) {
+                double clamped_u = std::max(0.0, std::min(1.0, u[j]));
+                q_local[j] =
+                    joint_limits_lower[j] +
+                    (joint_limits_upper[j] - joint_limits_lower[j]) * clamped_u;
+            }
+
+            // Check if configuration already exists
+            if (existing_configs.find(q_local) != existing_configs.end()) {
+                attempts++;
+                continue; // Try again with new random values
+            }
+
+            // Configuration is unique, process it
+            if (processSampleFast(model, data_local, geom_model,
+                                  geom_data_local, joint_limits_lower,
+                                  joint_limits_upper, frame_id, u, q_local,
+                                  result)) {
+                batch_results.push_back(result);
+                existing_configs.insert(q_local);
+                valid_config_found = true;
+            } else {
+                // Configuration is unique but failed processing (collision,
+                // etc.) Still mark it as seen to avoid infinite loops
+                existing_configs.insert(q_local);
+                attempts++;
+            }
+        }
+
+        // If we couldn't find a valid unique configuration after max attempts,
+        // we'll skip this iteration and continue with the next one
+        if (!valid_config_found) {
+            // This could happen if the workspace is very constrained
+            // We'll just continue to the next iteration
+        }
+    }
+
+    return batch_results;
 }
 
 // Helper function to write binary PLY file
@@ -221,7 +263,6 @@ void writeBinaryPLY(const std::string &filename,
 
     // Write binary data
     for (const auto &point : workspace_points) {
-        // Write position (3 floats)
         float x = static_cast<float>(point.position[0]);
         float y = static_cast<float>(point.position[1]);
         float z = static_cast<float>(point.position[2]);
@@ -229,7 +270,6 @@ void writeBinaryPLY(const std::string &filename,
         ply_file.write(reinterpret_cast<const char *>(&y), sizeof(float));
         ply_file.write(reinterpret_cast<const char *>(&z), sizeof(float));
 
-        // Write joint configuration (6 floats)
         for (int j = 0; j < point.joint_config.size(); ++j) {
             float joint_val = static_cast<float>(point.joint_config[j]);
             ply_file.write(reinterpret_cast<const char *>(&joint_val),
@@ -238,10 +278,7 @@ void writeBinaryPLY(const std::string &filename,
     }
 
     ply_file.close();
-    std::cout << "\nWorkspace points saved to: " << filename << std::endl;
-    std::cout << "You can now load this file in CloudCompare to visualize the "
-                 "workspace."
-              << std::endl;
+    std::cout << "Workspace points saved to: " << filename << std::endl;
 }
 
 // Helper function to write k-d tree data to binary file
@@ -300,12 +337,10 @@ void writeKDTreeData(const std::string &filename,
 std::string getTimestampedFilename(const std::string &base_dir,
                                    const std::string &prefix,
                                    const std::string &extension) {
-    // Create output directory if it doesn't exist
     if (!std::filesystem::exists(base_dir)) {
         std::filesystem::create_directory(base_dir);
     }
 
-    // Get current time for timestamp
     auto now = std::chrono::system_clock::now();
     std::time_t now_c = std::chrono::system_clock::to_time_t(now);
     std::tm tm_buf;
@@ -469,6 +504,8 @@ void buildAndSaveVoxelGrid(const std::vector<WorkspacePoint> &workspace_points,
 }
 
 int main() {
+    auto start_time = std::chrono::high_resolution_clock::now();
+
     if (!std::filesystem::exists(urdf_filename)) {
         std::cerr << "ERROR: URDF file not found: " << urdf_filename
                   << std::endl;
@@ -490,7 +527,7 @@ int main() {
     // Build the data associated to the model
     Data data(model);
 
-    // set joint limits
+    // Set joint limits
     const auto joint_limits_lower = model.lowerPositionLimit.cast<double>();
     const auto joint_limits_upper = model.upperPositionLimit.cast<double>();
 
@@ -499,36 +536,17 @@ int main() {
               << std::endl;
     std::cout << "Joint limits upper: " << joint_limits_upper.transpose()
               << std::endl;
-    std::cout << "JointConfig size: " << JointConfig::SizeAtCompileTime
-              << std::endl;
 
-    // Verify that model has exactly 6 joints (as expected for UR10)
+    // Verify that model has exactly 6 joints
     if (model.nq != 6) {
         std::cerr << "ERROR: Expected 6 joints for UR10, but model has "
                   << model.nq << " joints!" << std::endl;
         return -1;
     }
 
-    // Verify joint limits are reasonable
-    for (int i = 0; i < model.nq; ++i) {
-        if (joint_limits_lower[i] >= joint_limits_upper[i]) {
-            std::cerr << "ERROR: Invalid joint limits for joint " << i
-                      << ": lower=" << joint_limits_lower[i]
-                      << ", upper=" << joint_limits_upper[i] << std::endl;
-            return -1;
-        }
-        if (std::abs(joint_limits_lower[i]) > 1000 ||
-            std::abs(joint_limits_upper[i]) > 1000) {
-            std::cerr << "WARNING: Suspicious joint limits for joint " << i
-                      << ": lower=" << joint_limits_lower[i]
-                      << ", upper=" << joint_limits_upper[i] << std::endl;
-        }
-    }
-
     const int frame_id = model.getFrameId(end_effector_name);
 
-    // Load the geometries associated to model which are contained in the URDF
-    // file
+    // Load the geometries
     GeometryModel geom_model;
     pinocchio::urdf::buildGeom(model, urdf_filename, pinocchio::COLLISION,
                                geom_model, robots_model_path);
@@ -538,183 +556,71 @@ int main() {
     pinocchio::srdf::removeCollisionPairs(model, geom_model, srdf_filename);
     GeometryData geom_data(geom_model);
 
-    // Set a joint configuration (using neutral configuration from IKModel)
-    JointConfig q = IKModel::NEUTRAL_JOINT_CONFIG;
-
-    // Compute forward kinematics
-    pinocchio::forwardKinematics(model, data, q);
-    pinocchio::updateFramePlacements(model, data);
-    pinocchio::updateGeometryPlacements(model, data, geom_model, geom_data);
-
-    // Compute collisions
-    bool collision_detected =
-        pinocchio::computeCollisions(model, data, geom_model, geom_data, q);
-
-    std::cout << "Forward kinematics computed for configuration" << std::endl;
-    std::cout << "Collision detected: " << (collision_detected ? "YES" : "NO")
-              << std::endl;
-
-    // Print end effector pose
-    std::cout << "End effector pose " << frame_id << ":" << std::endl;
-    std::cout << data.oMf[frame_id] << std::endl;
-
-    // Print information about collision pairs
-    std::cout << "Number of collision pairs: "
-              << geom_model.collisionPairs.size() << std::endl;
-
-    // Check for collisions in each pair
-    for (const auto &cp : geom_model.collisionPairs) {
-        // Use the collision results from the initial computeCollisions() call
-        bool pair_collision =
-            geom_data.collisionResults[&cp - &geom_model.collisionPairs[0]]
-                .isCollision();
-
-        if (pair_collision) {
-            // Get the names of the colliding geometry objects
-            const std::string &name1 =
-                geom_model.geometryObjects[cp.first].name;
-            const std::string &name2 =
-                geom_model.geometryObjects[cp.second].name;
-
-            std::cout << "Collision pair: " << cp.first << " , " << cp.second
-                      << " - COLLISION DETECTED" << std::endl;
-            std::cout << "  Colliding objects: " << name1 << " <-> " << name2
-                      << std::endl;
-        }
-    }
-
     std::cout << "Generating " << num_points
               << " random joint configurations..." << std::endl;
 
-    // Progress reporting interval (1% of total)
-    const long unsigned int progress_interval = std::max(1UL, num_points / 100);
-
-    // Thread-local storage for workspace points
-    std::vector<std::vector<WorkspacePoint>> thread_local_points;
-
-    // Temporarily disable OpenMP to isolate segmentation fault
-    int num_threads = 1;
-    std::cout << "Using single-threaded processing for stability" << std::endl;
-
-    try {
-        thread_local_points.resize(num_threads);
-        std::cout << "Thread-local storage allocated for " << num_threads
-                  << " threads" << std::endl;
-    } catch (const std::exception &e) {
-        std::cerr << "Failed to allocate thread-local storage: " << e.what()
-                  << std::endl;
-        return -1;
-    }
-
-    // Pre-allocate thread-local buffers with smaller chunks
-    for (int i = 0; i < num_threads; ++i) {
-        try {
-            thread_local_points[i].reserve(std::min(
-                10000UL,
-                num_points / (num_threads * 20))); // Very conservative estimate
-            std::cout << "Thread " << i << " buffer pre-allocated" << std::endl;
-        } catch (const std::exception &e) {
-            std::cerr << "Failed to pre-allocate buffer for thread " << i
-                      << ": " << e.what() << std::endl;
-            return -1;
-        }
-    }
-
-    std::cout << "Starting single-threaded processing..." << std::endl;
-
-    // Single-threaded processing for stability
-    auto &local_points = thread_local_points[0];
-
-    // Thread-local Pinocchio data structures
-    pinocchio::Data data_local(model);
-    pinocchio::GeometryData geom_data_local(geom_model);
-
-    // Hash set to track existing joint configurations to avoid duplicates (O(1)
-    // lookup)
+    // Hash set for O(1) duplicate checking
     std::unordered_set<JointConfig, JointConfigHash, JointConfigEqual>
         existing_configs;
+    std::vector<WorkspacePoint> all_workspace_points;
+    all_workspace_points.reserve(num_points / 10); // Conservative estimate
+
     long unsigned int duplicate_count = 0;
+    long unsigned int processed_count = 0;
+    long unsigned int total_attempts = 0;
 
-    // Random number generator and working variables
+    // Progress reporting interval
+    const long unsigned int progress_interval = std::max(1UL, num_points / 100);
+
+    // Random number generator
     std::mt19937 gen(42); // Fixed seed for reproducible results
-    std::uniform_real_distribution<double> dis(0.0, 1.0);
-    std::vector<double> u(model.nq);
-    JointConfig q_local = q;
-    WorkspacePoint result(Eigen::Vector3d::Zero(),
-                          Eigen::Quaterniond::Identity(), JointConfig::Zero());
 
-    // Debug: Print joint limits for reference
-    std::cout << "Joint limits for mapping:" << std::endl;
-    std::cout << "Lower: [";
-    for (int j = 0; j < model.nq; ++j) {
-        std::cout << joint_limits_lower[j];
-        if (j < model.nq - 1)
-            std::cout << ", ";
-    }
-    std::cout << "]" << std::endl;
-    std::cout << "Upper: [";
-    for (int j = 0; j < model.nq; ++j) {
-        std::cout << joint_limits_upper[j];
-        if (j < model.nq - 1)
-            std::cout << ", ";
-    }
-    std::cout << "]" << std::endl;
+    std::cout << "Starting optimized batch processing with duplicate retry..."
+              << std::endl;
 
-    for (long unsigned int i = 0; i < num_points; ++i) {
-        try {
-            // Generate random values for this iteration
-            for (int j = 0; j < model.nq; ++j) {
-                u[j] = dis(gen);
-            }
+    // Process in batches for better cache locality
+    for (long unsigned int batch_start = 0; batch_start < num_points;
+         batch_start += batch_size) {
+        int current_batch_size =
+            std::min(static_cast<int>(batch_size),
+                     static_cast<int>(num_points - batch_start));
 
-            // Process single sample
-            if (processSample(model, data_local, geom_model, geom_data_local,
-                              joint_limits_lower, joint_limits_upper, frame_id,
-                              u, q_local, result, existing_configs)) {
-                local_points.push_back(result);
-                existing_configs.insert(q_local); // O(1) insertion
-            } else {
-                // Check if it was rejected due to being a duplicate
-                if (existing_configs.find(q_local) != existing_configs.end()) {
-                    duplicate_count++;
-                }
-            }
+        auto batch_results = processBatch(model, geom_model, joint_limits_lower,
+                                          joint_limits_upper, frame_id, gen,
+                                          existing_configs, current_batch_size);
 
-            // Progress reporting
-            if (i % progress_interval == 0) {
-                std::cout << "Progress: " << (i * 100 / num_points) << "% ("
-                          << i << "/" << num_points << ")\n";
-            }
-        } catch (const std::exception &e) {
-            std::cerr << "Error at iteration " << i << ": " << e.what()
-                      << std::endl;
-        } catch (...) {
-            std::cerr << "Unknown error at iteration " << i << std::endl;
+        all_workspace_points.insert(all_workspace_points.end(),
+                                    batch_results.begin(), batch_results.end());
+
+        processed_count += current_batch_size;
+
+        // Progress reporting
+        if (processed_count % progress_interval < current_batch_size) {
+            std::cout << "Progress: " << (processed_count * 100 / num_points)
+                      << "% (" << processed_count << "/" << num_points << ")\r";
         }
     }
+    std::cout << std::endl;
 
-    std::cout << "\nSingle-threaded processing completed with "
-              << local_points.size() << " points." << std::endl;
+    auto end_time = std::chrono::high_resolution_clock::now();
+    auto duration =
+        std::chrono::duration_cast<std::chrono::seconds>(end_time - start_time);
 
-    // Merge all thread-local results
-    std::vector<WorkspacePoint> all_workspace_points;
-    size_t total_points = 0;
-    for (const auto &thread_points : thread_local_points) {
-        total_points += thread_points.size();
-    }
-    all_workspace_points.reserve(total_points);
-
-    for (const auto &thread_points : thread_local_points) {
-        all_workspace_points.insert(all_workspace_points.end(),
-                                    thread_points.begin(), thread_points.end());
-    }
-
-    std::cout << "\nGenerated " << all_workspace_points.size()
+    std::cout << "\nOptimized processing completed in " << duration.count()
+              << " seconds" << std::endl;
+    std::cout << "Generated " << all_workspace_points.size()
               << " workspace points." << std::endl;
-    std::cout << "Duplicate configurations detected and skipped: "
-              << duplicate_count << std::endl;
     std::cout << "Total unique joint configurations: "
               << existing_configs.size() << std::endl;
+    std::cout << "Processing rate: " << (num_points / duration.count())
+              << " samples/second" << std::endl;
+    std::cout << "Success rate: "
+              << (all_workspace_points.size() * 100.0 / num_points) << "% ("
+              << all_workspace_points.size() << "/" << num_points << ")"
+              << std::endl;
+    std::cout
+        << "Note: Duplicate configurations were retried with new random values"
+        << std::endl;
 
     // Example: Print first few entries
     std::cout << "\nFirst 5 workspace points:" << std::endl;
@@ -733,13 +639,13 @@ int main() {
 
     // Save workspace points to binary PLY file
     const std::string output_dir = "generated_workspaces";
-    std::string ply_filename =
-        getTimestampedFilename(output_dir, "workspace_points", ".ply");
+    std::string ply_filename = getTimestampedFilename(
+        output_dir, "workspace_points_optimized", ".ply");
     writeBinaryPLY(ply_filename, all_workspace_points);
 
     // Save k-d tree data to binary file
     std::string kdtree_filename =
-        getTimestampedFilename(output_dir, "kdtree_data", ".bin");
+        getTimestampedFilename(output_dir, "kdtree_data_optimized", ".bin");
     writeKDTreeData(kdtree_filename, all_workspace_points);
 
     // Build and save 3D voxel grid

@@ -1179,56 +1179,56 @@ int main() {
               << (end_time_total_us - start_time_total_us) / 1000.0 << " ms)"
               << std::endl;
 
-    auto start_time_solve_ik_no_warmstart_us =
-        std::chrono::duration_cast<std::chrono::microseconds>(
-            std::chrono::high_resolution_clock::now().time_since_epoch())
-            .count();
-    ik_model.setCurrentJointConfig(IKModel::NEUTRAL_JOINT_CONFIG);
-    solve_ik(ik_model, target_pose_xyzquat);
+    // auto start_time_solve_ik_no_warmstart_us =
+    //     std::chrono::duration_cast<std::chrono::microseconds>(
+    //         std::chrono::high_resolution_clock::now().time_since_epoch())
+    //         .count();
+    // ik_model.setCurrentJointConfig(IKModel::NEUTRAL_JOINT_CONFIG);
+    // solve_ik(ik_model, target_pose_xyzquat);
 
-    auto end_time_solve_ik_no_warmstart_us =
-        std::chrono::duration_cast<std::chrono::microseconds>(
-            std::chrono::high_resolution_clock::now().time_since_epoch())
-            .count();
-    std::cout << "Time for solve_ik (no warm-start): "
-              << (end_time_solve_ik_no_warmstart_us -
-                  start_time_solve_ik_no_warmstart_us)
-              << " us ("
-              << (end_time_solve_ik_no_warmstart_us -
-                  start_time_solve_ik_no_warmstart_us) /
-                     1000.0
-              << " ms)" << std::endl;
+    // auto end_time_solve_ik_no_warmstart_us =
+    //     std::chrono::duration_cast<std::chrono::microseconds>(
+    //         std::chrono::high_resolution_clock::now().time_since_epoch())
+    //         .count();
+    // std::cout << "Time for solve_ik (no warm-start): "
+    //           << (end_time_solve_ik_no_warmstart_us -
+    //               start_time_solve_ik_no_warmstart_us)
+    //           << " us ("
+    //           << (end_time_solve_ik_no_warmstart_us -
+    //               start_time_solve_ik_no_warmstart_us) /
+    //                  1000.0
+    //           << " ms)" << std::endl;
 
-    // Test DLS solver with warm start
-    auto start_time_solve_ik_dls_warmstart_us =
-        std::chrono::duration_cast<std::chrono::microseconds>(
-            std::chrono::high_resolution_clock::now().time_since_epoch())
-            .count();
+    // // Test DLS solver with warm start
+    // auto start_time_solve_ik_dls_warmstart_us =
+    //     std::chrono::duration_cast<std::chrono::microseconds>(
+    //         std::chrono::high_resolution_clock::now().time_since_epoch())
+    //         .count();
 
-    ik_model.setCurrentJointConfig(IKModel::NEUTRAL_JOINT_CONFIG);
+    // ik_model.setCurrentJointConfig(IKModel::NEUTRAL_JOINT_CONFIG);
 
-    // Convert target pose to SE3 format for DLS solver
-    pinocchio::SE3 target_pose_se3 = pinocchio::SE3::Identity();
-    target_pose_se3.translation() = target_pose_xyzquat.head<3>();
-    target_pose_se3.rotation() =
-        Eigen::Quaterniond(target_pose_xyzquat[6], target_pose_xyzquat[3],
-                           target_pose_xyzquat[4], target_pose_xyzquat[5])
-            .toRotationMatrix();
+    // // Convert target pose to SE3 format for DLS solver
+    // pinocchio::SE3 target_pose_se3 = pinocchio::SE3::Identity();
+    // target_pose_se3.translation() = target_pose_xyzquat.head<3>();
+    // target_pose_se3.rotation() =
+    //     Eigen::Quaterniond(target_pose_xyzquat[6], target_pose_xyzquat[3],
+    //                        target_pose_xyzquat[4], target_pose_xyzquat[5])
+    //         .toRotationMatrix();
 
-    solve_ik_dls(ik_model, target_pose_se3, &q_init);
+    // solve_ik_dls(ik_model, target_pose_se3, &q_init);
 
-    auto end_time_solve_ik_dls_warmstart_us =
-        std::chrono::duration_cast<std::chrono::microseconds>(
-            std::chrono::high_resolution_clock::now().time_since_epoch())
-            .count();
-    std::cout << "Time for solve_ik_dls (with warm-start): "
-              << (end_time_solve_ik_dls_warmstart_us -
-                  start_time_solve_ik_dls_warmstart_us)
-              << " us ("
-              << (end_time_solve_ik_dls_warmstart_us -
-                  start_time_solve_ik_dls_warmstart_us) /
-                     1000.0
-              << " ms)" << std::endl;
+    // auto end_time_solve_ik_dls_warmstart_us =
+    //     std::chrono::duration_cast<std::chrono::microseconds>(
+    //         std::chrono::high_resolution_clock::now().time_since_epoch())
+    //         .count();
+    // std::cout << "Time for solve_ik_dls (with warm-start): "
+    //           << (end_time_solve_ik_dls_warmstart_us -
+    //               start_time_solve_ik_dls_warmstart_us)
+    //           << " us ("
+    //           << (end_time_solve_ik_dls_warmstart_us -
+    //               start_time_solve_ik_dls_warmstart_us) /
+    //                  1000.0
+    //           << " ms)" << std::endl;
 
     return 0;
 }

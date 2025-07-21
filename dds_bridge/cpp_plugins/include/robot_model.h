@@ -1,5 +1,5 @@
-#ifndef IK_MODEL_H
-#define IK_MODEL_H
+#ifndef ROBOT_MODEL_H
+#define ROBOT_MODEL_H
 // General
 #include <Eigen/Dense>
 #include <pinocchio/multibody/data.hpp>
@@ -30,7 +30,7 @@
 using JointConfig = Eigen::Vector<double, 6>;
 using XYZQuat = Eigen::Vector<double, 7>;
 
-class IKModel {
+class RobotModel {
   public:
     // Neutral joint configuration for UR10 robot (6 joints)
     static const JointConfig NEUTRAL_JOINT_CONFIG;
@@ -41,9 +41,9 @@ class IKModel {
      * @param end_effector_name Name of the end effector frame in the URDF
      * @param pose_weights 6D vector for pose weights [x, y, z, ωx, ωy, ωz]
      */
-    explicit IKModel(const std::string &urdf_path,
-                     const std::string &end_effector_name,
-                     const std::string &srdf_path);
+    explicit RobotModel(const std::string &urdf_path,
+                        const std::string &end_effector_name,
+                        const std::string &srdf_path);
 
     /**
      * @brief Print all loaded frames
@@ -179,6 +179,53 @@ class IKModel {
         return joint_limits_upper_;
     }
 
+    /**
+     * @brief Check if a joint configuration results in a collision
+     * @param q Joint configuration to check
+     * @return true if collision detected, false otherwise
+     */
+    bool checkCollision(const JointConfig &q);
+
+    /**
+     * @brief Check if a joint configuration results in a collision and ground
+     * contact
+     * @param q Joint configuration to check
+     * @param ground_threshold Minimum z-coordinate for ground clearance
+     * @return true if collision or ground contact detected, false otherwise
+     */
+    bool checkCollisionAndGroundContact(const JointConfig &q,
+                                        double ground_threshold = 0.05);
+
+    /**
+     * @brief Check if a joint configuration is valid (no collision, above
+     * ground)
+     * @param q Joint configuration to check
+     * @param ground_threshold Minimum z-coordinate for ground clearance
+     * @return true if configuration is valid, false otherwise
+     */
+    bool isValidConfiguration(const JointConfig &q,
+                              double ground_threshold = 0.05);
+
+    /**
+     * @brief Get the end effector frame ID
+     * @return End effector frame ID
+     */
+    pinocchio::FrameIndex getEndEffectorFrameId() const {
+        return end_effector_id_;
+    }
+
+    /**
+     * @brief Get the robot model
+     * @return Reference to the robot model
+     */
+    const pinocchio::Model &getModel() const { return model_; }
+
+    /**
+     * @brief Get the robot data
+     * @return Reference to the robot data
+     */
+    const pinocchio::Data &getData() const { return data_; }
+
   private:
     pinocchio::Model model_;                ///< Robot model
     pinocchio::Data data_;                  ///< Robot data
@@ -199,4 +246,4 @@ class IKModel {
     JointConfig joint_limits_upper_;             ///< Upper joint limits
 };
 
-#endif // IK_MODEL_H
+#endif // ROBOT_MODEL_H

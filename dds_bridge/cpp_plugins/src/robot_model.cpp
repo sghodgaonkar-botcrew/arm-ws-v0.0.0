@@ -1,11 +1,11 @@
-#include "ik_model.h"
+#include "robot_model.h"
 
 // Define static member
-const JointConfig IKModel::NEUTRAL_JOINT_CONFIG = JointConfig::Zero();
+const JointConfig RobotModel::NEUTRAL_JOINT_CONFIG = JointConfig::Zero();
 
-IKModel::IKModel(const std::string &urdf_path,
-                 const std::string &end_effector_name,
-                 const std::string &srdf_path)
+RobotModel::RobotModel(const std::string &urdf_path,
+                       const std::string &end_effector_name,
+                       const std::string &srdf_path)
     : urdf_path_(urdf_path), end_effector_name_(end_effector_name),
       current_joint_config_(NEUTRAL_JOINT_CONFIG), srdf_path_(srdf_path) {
     if (!std::filesystem::exists(urdf_path)) {
@@ -78,7 +78,7 @@ IKModel::IKModel(const std::string &urdf_path,
     }
 }
 
-void IKModel::printAllFrames() const {
+void RobotModel::printAllFrames() const {
     std::cout << "\n=== All Frames in Robot Model ===" << std::endl;
     std::cout << std::setw(30) << std::left << "Frame Name" << std::setw(15)
               << std::left << "Type" << std::setw(10) << std::left << "ID"
@@ -118,7 +118,7 @@ void IKModel::printAllFrames() const {
     std::cout << std::endl;
 }
 
-void IKModel::findAndPrintFrame(const std::string &frame_name) {
+void RobotModel::findAndPrintFrame(const std::string &frame_name) {
     std::cout << "\n=== Searching for Frame: " << frame_name
               << " ===" << std::endl;
 
@@ -181,7 +181,7 @@ void IKModel::findAndPrintFrame(const std::string &frame_name) {
               << xyzquat.transpose() << "]" << std::endl;
 }
 
-pinocchio::SE3 IKModel::computeForwardKinematics(const JointConfig &q) {
+pinocchio::SE3 RobotModel::computeForwardKinematics(const JointConfig &q) {
     // Check if joint configuration has correct size
     if (model_.nq != 6) {
         throw std::runtime_error("Model configuration size (" +
@@ -217,11 +217,11 @@ pinocchio::SE3 IKModel::computeForwardKinematics(const JointConfig &q) {
     // return xyzquat;
 }
 
-int IKModel::getNumJoints() const { return model_.nq; }
+int RobotModel::getNumJoints() const { return model_.nq; }
 
-int IKModel::getNumVelocityVariables() const { return model_.nv; }
+int RobotModel::getNumVelocityVariables() const { return model_.nv; }
 
-XYZQuat IKModel::homogeneousToXYZQuat(const pinocchio::SE3 &se3_transform) {
+XYZQuat RobotModel::homogeneousToXYZQuat(const pinocchio::SE3 &se3_transform) {
     XYZQuat xyzquat;
 
     // Extract translation (x, y, z)
@@ -238,7 +238,7 @@ XYZQuat IKModel::homogeneousToXYZQuat(const pinocchio::SE3 &se3_transform) {
     return xyzquat;
 }
 
-pinocchio::SE3 IKModel::xyzQuatToHomogeneous(const XYZQuat &xyzquat) {
+pinocchio::SE3 RobotModel::xyzQuatToHomogeneous(const XYZQuat &xyzquat) {
     // Extract translation
     Eigen::Vector3d translation = xyzquat.head<3>();
 
@@ -253,7 +253,8 @@ pinocchio::SE3 IKModel::xyzQuatToHomogeneous(const XYZQuat &xyzquat) {
     return pinocchio::SE3(rotation_matrix, translation);
 }
 
-double IKModel::cost(const JointConfig &q, const pinocchio::SE3 &target_pose) {
+double RobotModel::cost(const JointConfig &q,
+                        const pinocchio::SE3 &target_pose) {
     // 1. Forward kinematics for the given joint config
     const pinocchio::SE3 fk_pose = computeForwardKinematics(q);
 
@@ -266,8 +267,8 @@ double IKModel::cost(const JointConfig &q, const pinocchio::SE3 &target_pose) {
     return 0.5 * error.transpose() * pose_weights_ * error;
 }
 
-JointConfig IKModel::cost_grad(const JointConfig &q,
-                               const pinocchio::SE3 &target_pose) {
+JointConfig RobotModel::cost_grad(const JointConfig &q,
+                                  const pinocchio::SE3 &target_pose) {
     // 1. Compute the pose error, in the same way that it was done in cost()
     const pinocchio::SE3 fk_pose = computeForwardKinematics(q);
 
@@ -285,7 +286,7 @@ JointConfig IKModel::cost_grad(const JointConfig &q,
     return J6.transpose() * pose_weights_ * error;
 }
 
-Eigen::Matrix<double, 6, 6> IKModel::cost_hess(const JointConfig &q) {
+Eigen::Matrix<double, 6, 6> RobotModel::cost_hess(const JointConfig &q) {
     // 1. Compute Jacobian
     Eigen::Matrix<double, 6, Eigen::Dynamic> J6(6, q.size());
     pinocchio::computeFrameJacobian(model_, data_, q, end_effector_id_,
@@ -296,7 +297,7 @@ Eigen::Matrix<double, 6, 6> IKModel::cost_hess(const JointConfig &q) {
 }
 
 Eigen::Matrix<double, 6, 6>
-IKModel::computeGeometricJacobian(const JointConfig &q) {
+RobotModel::computeGeometricJacobian(const JointConfig &q) {
     // Compute forward kinematics first
     pinocchio::forwardKinematics(model_, data_, q);
 
@@ -309,7 +310,7 @@ IKModel::computeGeometricJacobian(const JointConfig &q) {
 }
 
 Eigen::Matrix<double, 7, 6>
-IKModel::computeEndEffectorFullJacobian(const Eigen::VectorXd &q) {
+RobotModel::computeEndEffectorFullJacobian(const Eigen::VectorXd &q) {
     // Ensure the input vector has the correct size (nq degrees of freedom)
     if (q.size() != model_.nq)
         throw std::invalid_argument(
@@ -362,4 +363,79 @@ IKModel::computeEndEffectorFullJacobian(const Eigen::VectorXd &q) {
 
     // Return the full Jacobian (7×6 for 6-DOF robot)
     return J7;
+}
+
+bool RobotModel::checkCollision(const JointConfig &q) {
+    try {
+        // Compute forward kinematics
+        pinocchio::forwardKinematics(model_, data_, q);
+        pinocchio::updateFramePlacements(model_, data_);
+        pinocchio::updateGeometryPlacements(model_, data_, geom_model_,
+                                            geom_data_);
+
+        // Check for collisions
+        bool collision_detected = pinocchio::computeCollisions(
+            model_, data_, geom_model_, geom_data_, q);
+
+        return collision_detected;
+    } catch (const std::exception &e) {
+        std::cerr << "Error in collision detection: " << e.what() << std::endl;
+        return true; // Assume collision if error occurs
+    }
+}
+
+bool RobotModel::checkCollisionAndGroundContact(const JointConfig &q,
+                                                double ground_threshold) {
+    try {
+        // Compute forward kinematics
+        pinocchio::forwardKinematics(model_, data_, q);
+        pinocchio::updateFramePlacements(model_, data_);
+        pinocchio::updateGeometryPlacements(model_, data_, geom_model_,
+                                            geom_data_);
+
+        // Check for collisions
+        bool collision_detected = pinocchio::computeCollisions(
+            model_, data_, geom_model_, geom_data_, q);
+
+        if (collision_detected) {
+            return true; // Collision detected
+        }
+
+        // Check that frames from link2 onwards are above ground
+        const int link2_frame_id = model_.getFrameId("link_2");
+
+        if (link2_frame_id >= 0) {
+            for (pinocchio::FrameIndex i = link2_frame_id; i < model_.nframes;
+                 ++i) {
+                if (data_.oMf[i].translation()[2] <= ground_threshold) {
+                    return true; // Ground contact detected
+                }
+            }
+        } else {
+            // If link2 not found, fall back to checking end effector only
+            if (data_.oMf[end_effector_id_].translation()[2] <=
+                ground_threshold) {
+                return true; // Ground contact detected
+            }
+        }
+
+        return false; // No collision or ground contact
+    } catch (const std::exception &e) {
+        std::cerr << "Error in collision and ground contact detection: "
+                  << e.what() << std::endl;
+        return true; // Assume invalid if error occurs
+    }
+}
+
+bool RobotModel::isValidConfiguration(const JointConfig &q,
+                                      double ground_threshold) {
+    // Check joint limits first (fast check)
+    for (int i = 0; i < q.size(); ++i) {
+        if (q[i] < joint_limits_lower_[i] || q[i] > joint_limits_upper_[i]) {
+            return false; // Joint out of limits
+        }
+    }
+
+    // Check collision and ground contact
+    return !checkCollisionAndGroundContact(q, ground_threshold);
 }
