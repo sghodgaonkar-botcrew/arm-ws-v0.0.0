@@ -1,9 +1,47 @@
+/**
+ * @file ik_solver_w_rws.cpp
+ * @brief Implementation of Inverse Kinematics Solver with Reachable Workspace
+ * Support
+ *
+ * This file implements the IKSolverWithRWS class, providing efficient inverse
+ * kinematics solving using pre-computed workspace data. The implementation
+ * includes sophisticated nearest neighbor search algorithms and iterative
+ * optimization using quadratic programming.
+ *
+ * @author Shantanu Ghodgaonkar
+ * @date 2025-07-21
+ * @version 1.0
+ */
+
 #include "ik_solver_w_rws.hpp"
 #include <chrono>
 #include <iomanip>
 #include <sstream>
 #include <unordered_set>
 
+/**
+ * @brief Constructor implementation
+ *
+ * **Constructor Flow:**
+ * 1. Initialize member variables and set voxel grid loaded flag to false
+ * 2. Find and load the latest k-d tree data file
+ * 3. Verify k-d tree data was loaded successfully
+ * 4. Find and load the latest voxel grid data file
+ * 5. Verify voxel grid data was loaded successfully
+ * 6. Set voxel grid loaded flag to true
+ * 7. Print loading statistics for verification
+ *
+ * **Error Handling:**
+ * - Throws runtime_error if no k-d tree files found
+ * - Throws runtime_error if k-d tree data loading fails
+ * - Throws runtime_error if no voxel grid files found
+ * - Throws runtime_error if voxel grid data loading fails
+ *
+ * **Data Loading Strategy:**
+ * - Automatically finds the most recent data files by modification time
+ * - Provides detailed error messages for debugging
+ * - Ensures data integrity before proceeding
+ */
 IKSolverWithRWS::IKSolverWithRWS(const std::string &workspace_dir,
                                  RobotModel &robot_model)
     : workspace_dir_(workspace_dir), robot_model_(robot_model),
@@ -77,6 +115,30 @@ IKSolverWithRWS::IKSolverWithRWS(const std::string &workspace_dir,
     // std::cout << std::endl;
 }
 
+/**
+ * @brief Solve IK for target pose given as XYZQuat vector
+ *
+ * **Method Flow:**
+ * 1. **Input Processing**: Extract translation and rotation from XYZQuat input
+ * 2. **Quaternion Normalization**: Ensure unit quaternion for numerical
+ * stability
+ * 3. **Nearest Neighbor Search**: Use voxel grid for efficient spatial search
+ * 4. **Warm-start Selection**: Choose best initial configuration based on
+ * rotation error
+ * 5. **Joint Angle Normalization**: Wrap angles to [-π, π] range
+ * 6. **IK Solving**: Call core IK solver with warm-start configuration
+ *
+ * **Neighbor Selection Logic:**
+ * - Uses geodesic distance (2*acos(|q1·q2|)) for rotation error
+ * - Selects configuration with minimum rotation error
+ * - Falls back to current joint config if no neighbors found
+ * - Provides detailed logging of selection process
+ *
+ * **Performance Optimizations:**
+ * - Uses voxel grid for O(1) spatial indexing
+ * - Searches for 20 neighbors to ensure good coverage
+ * - Normalizes quaternions to prevent numerical issues
+ */
 JointConfig
 IKSolverWithRWS::solve(const Eigen::Vector<double, 7> &target_pose_xyzquat) {
     // Split target pose into translation and quaternion components
@@ -88,6 +150,7 @@ IKSolverWithRWS::solve(const Eigen::Vector<double, 7> &target_pose_xyzquat) {
                             target_pose_xyzquat[4], target_pose_xyzquat[5]);
     quat.normalize(); // Ensure unit quaternion
 
+    // Perform nearest neighbor search using voxel grid for efficiency
     std::vector<NearestNeighbor> nearest_neighbors_voxel =
         findKNearestNeighborsVoxel(workspace_points_, voxel_grid_, xyz, 20);
 
@@ -104,10 +167,14 @@ IKSolverWithRWS::solve(const Eigen::Vector<double, 7> &target_pose_xyzquat) {
         size_t bestIdx = nearest_neighbors_voxel[0].index;
         double bestPoseErr = std::numeric_limits<double>::infinity();
 
+        // Iterate through all neighbors to find the one with minimum rotation
+        // error
         for (const auto &neighbor : nearest_neighbors_voxel) {
             const auto &wp = workspace_points_[neighbor.index];
 
-            // Geodesic rotation error
+            // Calculate geodesic rotation error between target and neighbor
+            // quaternions This measures the angular distance between two
+            // rotations
             double ang = 2.0 * std::acos(std::abs(wp.rotation.dot(quat)));
 
             if (ang < bestPoseErr) {
@@ -116,82 +183,23 @@ IKSolverWithRWS::solve(const Eigen::Vector<double, 7> &target_pose_xyzquat) {
             }
         }
 
+        // Use the best neighbor's joint configuration as warm-start
         q_init = workspace_points_[bestIdx].joint_config;
         std::cout << "Selected initial configuration with rotation error: "
                   << bestPoseErr << " radians" << std::endl;
         std::cout << "Initial joint config: [" << q_init.transpose() << "]"
                   << std::endl;
 
-        // // Measure error between best nearest neighbor and target
-        // pinocchio::SE3 target_pose;
-        // target_pose.translation() = xyz;
-        // target_pose.rotation() = quat.toRotationMatrix();
-
-        // pinocchio::SE3 best_neighbor_pose;
-        // best_neighbor_pose.translation() =
-        // workspace_points_[bestIdx].position; best_neighbor_pose.rotation() =
-        //     workspace_points_[bestIdx].rotation.toRotationMatrix();
-
-        // double best_neighbor_error =
-        //     (pinocchio::log6(target_pose.inverse() * best_neighbor_pose))
-        //         .toVector()
-        //         .norm();
-
-        // // Measure error between current end effector pose and target
-        // pinocchio::SE3 current_pose = robot_model_.computeForwardKinematics(
-        //     robot_model_.getCurrentJointConfig());
-        // double current_pose_error =
-        //     (pinocchio::log6(target_pose.inverse() * current_pose))
-        //         .toVector()
-        //         .norm();
-
-        // // Measure error between neutral joint config pose and target
-        // pinocchio::SE3 neutral_pose = robot_model_.computeForwardKinematics(
-        //     RobotModel::NEUTRAL_JOINT_CONFIG);
-        // double neutral_pose_error =
-        //     (pinocchio::log6(target_pose.inverse() * neutral_pose))
-        //         .toVector()
-        //         .norm();
-
-        // std::cout << "Best neighbor error: " << best_neighbor_error
-        //           << ", Current pose error: " << current_pose_error
-        //           << ", Neutral config error: " << neutral_pose_error
-        //           << std::endl;
-
-        // // If best_neighbor_error > 2.0, default to current joint config
-        // if (best_neighbor_error > 2.0) {
-        //     q_init = robot_model_.getCurrentJointConfig();
-        //     std::cout << "Best neighbor error exceeds threshold (2.0). "
-        //                  "Defaulting to current joint config."
-        //               << std::endl;
-        // } else {
-        //     // Choose the joint config with the least error as q_init
-        //     double min_error = best_neighbor_error;
-        //     JointConfig min_config = workspace_points_[bestIdx].joint_config;
-
-        //     if (current_pose_error < min_error) {
-        //         min_error = current_pose_error;
-        //         min_config = robot_model_.getCurrentJointConfig();
-        //     }
-        //     if (neutral_pose_error < min_error) {
-        //         min_error = neutral_pose_error;
-        //         min_config = RobotModel::NEUTRAL_JOINT_CONFIG;
-        //     }
-
-        //     q_init = min_config;
-        //     std::cout << "Selected initial configuration with minimum error:
-        //     "
-        //               << min_error << std::endl;
-        //     std::cout << "Initial joint config: [" << q_init.transpose() <<
-        //     "]"
-        //               << std::endl;
-        // }
+        // Commented out code shows alternative selection strategies
+        // that were considered but not used in the final implementation
     } else {
         std::cout << "No neighbors found, using current joint configuration as "
                      "warm-start."
                   << std::endl;
         q_init = robot_model_.getCurrentJointConfig();
     }
+
+    // Normalize joint angles to [-π, π] range to prevent numerical issues
     for (uint8_t i = 0; i < robot_model_.getNumJoints(); i++) {
         if (q_init[i] > M_PI) {
             q_init[i] -= 2 * M_PI;
@@ -199,39 +207,85 @@ IKSolverWithRWS::solve(const Eigen::Vector<double, 7> &target_pose_xyzquat) {
             q_init[i] += 2 * M_PI;
         }
     }
-    // Solve IK with warm-start
+
+    // Solve IK with warm-start configuration
     return solve_ik(target_pose_xyzquat, &q_init);
 }
 
+/**
+ * @brief Solve IK for target pose given as SE3 transform
+ *
+ * **Method Flow:**
+ * 1. Convert SE3 transform to XYZQuat format using RobotModel utility
+ * 2. Call the XYZQuat version of solve()
+ *
+ * This method provides a convenient interface for users working with
+ * Pinocchio SE3 transforms, automatically handling the conversion.
+ */
 JointConfig IKSolverWithRWS::solve(const pinocchio::SE3 &target_pose) {
     // Convert SE3 to XYZQuat format
     XYZQuat target_xyzquat = RobotModel::homogeneousToXYZQuat(target_pose);
     return solve(target_xyzquat);
 }
 
+/**
+ * @brief Core IK solving method using iterative optimization
+ *
+ * **Core IK Algorithm Flow:**
+ * 1. **Initialization**: Set up QP solver with joint velocity bounds
+ * 2. **Iterative Loop** (up to MAX_IK_ITERATIONS):
+ *    a. Compute forward kinematics and geometric Jacobian
+ *    b. Calculate pose error using SE3 logarithm
+ *    c. Check convergence (error < 1e-9)
+ *    d. Build QP problem: H = J^T J + λI, g = -J^T err
+ *    e. Update joint velocity bounds based on joint limits
+ *    f. Solve QP to get joint velocity update
+ *    g. Perform line search to find optimal step size
+ *    h. Update joint configuration
+ * 3. **Finalization**: Set robot model configuration and return result
+ *
+ * **Key Algorithm Features:**
+ * - Uses quadratic programming for robust optimization
+ * - Implements line search to ensure convergence
+ * - Enforces joint limits through velocity bounds
+ * - Uses regularization (λ) to handle singular configurations
+ * - Monitors convergence using SE3 error metric
+ *
+ * **QP Problem Formulation:**
+ * - Objective: minimize ||J*dq - err||² + λ||dq||²
+ * - Constraints: joint velocity bounds and joint limit constraints
+ * - Variables: joint velocity updates (dq)
+ *
+ * **Line Search Parameters:**
+ * - Initial step size: 1.0
+ * - Reduction factor: 0.5
+ * - Minimum step size: 1e-6
+ * - Armijo condition: err_new < err_old
+ */
 JointConfig IKSolverWithRWS::solve_ik(const pinocchio::SE3 &target_pose,
                                       const JointConfig *q_init) {
     const int nx = robot_model_.getNumVelocityVariables();
     const int n_eq = 0;
     const int n_in = 0;
 
+    // Initialize joint configuration
     Eigen::VectorXd q;
     if (q_init == nullptr)
         q = robot_model_.getCurrentJointConfig();
     else
         q = *q_init;
 
-    // Preallocate
+    // Preallocate matrices and vectors for efficiency
     pinocchio::SE3 fk_pose;
     Eigen::MatrixXd J(6, nx);
     Eigen::Vector<double, 6> err;
     double error_norm = 0.0;
 
-    // Joint velocity bounds
+    // Set joint velocity bounds for QP solver
     Eigen::VectorXd lb = Eigen::VectorXd::Constant(nx, -0.1);
     Eigen::VectorXd ub = Eigen::VectorXd::Constant(nx, 0.1);
 
-    // QP solver (box constraints = true)
+    // Initialize QP solver with box constraints
     proxsuite::proxqp::dense::QP<double> qp(nx, n_eq, n_in, true);
     qp.init(Eigen::MatrixXd::Identity(nx, nx), Eigen::VectorXd::Zero(nx),
             Eigen::MatrixXd(),
@@ -242,19 +296,22 @@ JointConfig IKSolverWithRWS::solve_ik(const pinocchio::SE3 &target_pose,
             lb, ub             // box constraints
     );
 
-    // Line search parameters
+    // Line search parameters for convergence
     const double alpha_init = 1.0;
     const double rho = 0.5;
     const double alpha_min = 1e-6;
 
+    // Main IK iteration loop
     for (int iter = 0; iter < MAX_IK_ITERATIONS; ++iter) {
-        // 1) Forward kinematics & Jacobian
+        // 1) Compute forward kinematics and geometric Jacobian
         fk_pose = robot_model_.computeForwardKinematics(q);
         J = robot_model_.computeGeometricJacobian(q); // size 6×nx
 
-        // 2) Compute task error
+        // 2) Compute task error using SE3 logarithm
         err = -(pinocchio::log6(target_pose.inverse() * fk_pose)).toVector();
         error_norm = err.norm();
+
+        // Check for convergence
         if (error_norm < 1e-9) {
             std::cout << "Converged in " << iter
                       << " iterations \nq = " << q.transpose() * (180 / 3.14159)
@@ -262,23 +319,20 @@ JointConfig IKSolverWithRWS::solve_ik(const pinocchio::SE3 &target_pose,
             break;
         }
 
-        // 3) Build QP: H = JᵀJ, g = -Jᵀ err
-        // Eigen::MatrixXd H = J.transpose() * J;
-        const double lambda = 1e-3;
+        // 3) Build QP problem: H = JᵀJ + λI, g = -Jᵀ err
+        const double lambda = 1e-3; // Regularization parameter
         Eigen::MatrixXd H =
             J.transpose() * J + lambda * Eigen::MatrixXd::Identity(nx, nx);
 
         Eigen::VectorXd g = -J.transpose() * err;
 
-        // 4) Initialize and solve QP with box constraints
-
-        // A) Compute per‐iteration delta‐bounds so that (q + dq) ∈ [q_min,
-        // q_max]
+        // 4) Compute per-iteration delta-bounds to enforce joint limits
         Eigen::VectorXd dq_lb =
             (robot_model_.getJointLimitsLower() - q).cwiseMax(lb);
         Eigen::VectorXd dq_ub =
             (robot_model_.getJointLimitsUpper() - q).cwiseMin(ub);
 
+        // Update and solve QP
         qp.update(
             /*H=*/H,
             /*g=*/g,
@@ -302,6 +356,7 @@ JointConfig IKSolverWithRWS::solve_ik(const pinocchio::SE3 &target_pose,
         Eigen::Vector<double, 6> err_tmp;
         double err_tmp_norm;
 
+        // Line search to find optimal step size
         while (alpha > alpha_min) {
             Eigen::VectorXd q_test = q + alpha * dq;
             // evaluate new error
@@ -326,6 +381,18 @@ JointConfig IKSolverWithRWS::solve_ik(const pinocchio::SE3 &target_pose,
     return q;
 }
 
+/**
+ * @brief Solve IK with explicit initial configuration for XYZQuat input
+ *
+ * **Method Flow:**
+ * 1. Convert XYZQuat input to SE3 transform
+ * 2. Normalize quaternion to ensure unit length
+ * 3. Call the SE3 version of solve_ik()
+ * 4. Print final pose in XYZQuat format for verification
+ *
+ * This method provides a convenient interface for users who prefer
+ * XYZQuat format and want to specify their own initial configuration.
+ */
 JointConfig
 IKSolverWithRWS::solve_ik(const Eigen::Vector<double, 7> &target_pose_xyzquat,
                           const JointConfig *q_init) {
@@ -345,6 +412,24 @@ IKSolverWithRWS::solve_ik(const Eigen::Vector<double, 7> &target_pose_xyzquat,
     return q;
 }
 
+/**
+ * @brief Find the latest k-d tree data file in the workspace directory
+ *
+ * **Search Logic:**
+ * 1. Check if directory exists
+ * 2. Iterate through all files in directory
+ * 3. Filter files by name pattern: "kdtree_data_*.bin"
+ * 4. Compare modification times to find most recent
+ * 5. Return path to latest file or empty string if none found
+ *
+ * **File Naming Convention:**
+ * - Files must start with "kdtree_data_"
+ * - Files must end with ".bin"
+ * - Modification time determines "latest"
+ *
+ * This method enables automatic loading of the most recent workspace data
+ * without manual file specification.
+ */
 std::string
 IKSolverWithRWS::findLatestKDTreeFile(const std::string &directory) {
     if (!std::filesystem::exists(directory)) {
@@ -373,6 +458,24 @@ IKSolverWithRWS::findLatestKDTreeFile(const std::string &directory) {
     return latest_file;
 }
 
+/**
+ * @brief Find the latest voxel grid data file in the workspace directory
+ *
+ * **Search Logic:**
+ * 1. Check if directory exists
+ * 2. Iterate through all files in directory
+ * 3. Filter files by name pattern: "workspace_grid_sparse_*.bin"
+ * 4. Compare modification times to find most recent
+ * 5. Return path to latest file or empty string if none found
+ *
+ * **File Naming Convention:**
+ * - Files must start with "workspace_grid_sparse_"
+ * - Files must end with ".bin"
+ * - Modification time determines "latest"
+ *
+ * The voxel grid provides spatial indexing for efficient nearest neighbor
+ * search.
+ */
 std::string
 IKSolverWithRWS::findLatestVoxelGridFile(const std::string &directory) {
     if (!std::filesystem::exists(directory)) {
@@ -402,6 +505,35 @@ IKSolverWithRWS::findLatestVoxelGridFile(const std::string &directory) {
     return latest_file;
 }
 
+/**
+ * @brief Load workspace points from k-d tree binary file
+ *
+ * **File Format:**
+ * - Header: number of points (size_t)
+ * - For each point:
+ *   - Position: 3 doubles (x, y, z)
+ *   - Quaternion: 4 doubles (w, x, y, z)
+ *   - Joint config: 6 doubles
+ *
+ * **Loading Process:**
+ * 1. Open binary file and read header
+ * 2. Pre-allocate vector for efficiency
+ * 3. Read each point's data sequentially
+ * 4. Normalize quaternions to ensure unit length
+ * 5. Create WorkspacePoint objects
+ * 6. Handle read errors gracefully
+ *
+ * **Error Handling:**
+ * - Returns empty vector if file cannot be opened
+ * - Returns empty vector if header read fails
+ * - Stops loading if any point read fails
+ * - Provides detailed error messages
+ *
+ * **Performance Optimizations:**
+ * - Pre-allocates vector to avoid reallocation
+ * - Uses binary I/O for efficiency
+ * - Normalizes quaternions during loading
+ */
 std::vector<WorkspacePoint>
 IKSolverWithRWS::loadKDTreeData(const std::string &filename) {
     std::vector<WorkspacePoint> workspace_points;
@@ -474,6 +606,36 @@ IKSolverWithRWS::loadKDTreeData(const std::string &filename) {
     return workspace_points;
 }
 
+/**
+ * @brief Load voxel grid data from binary file
+ *
+ * **File Format:**
+ * - Header: minB(3×double), r(double), dims(3×int), maxDistance(int),
+ * numCells(size_t)
+ * - Data: (cell_index, nearest_point_index) pairs
+ *
+ * **Loading Process:**
+ * 1. Open binary file and read header information
+ * 2. Read sparse data as (cell_index, nearest_point_index) pairs
+ * 3. Store in sparseNearestIdx map for efficient lookup
+ * 4. Handle read errors gracefully
+ *
+ * **Voxel Grid Structure:**
+ * - minB: minimum bounds of the grid (3D point)
+ * - r: resolution (voxel size)
+ * - dims: grid dimensions (3D vector)
+ * - maxDistance: maximum search distance
+ * - numCells: number of occupied cells
+ * - sparseNearestIdx: map from cell index to nearest point index
+ *
+ * The voxel grid provides O(1) spatial indexing for nearest neighbor search.
+ *
+ * **Error Handling:**
+ * - Returns empty grid if file cannot be opened
+ * - Returns empty grid if header read fails
+ * - Stops loading if any data read fails
+ * - Provides detailed error messages
+ */
 VoxelGrid IKSolverWithRWS::loadVoxelGridData(const std::string &filename) {
     VoxelGrid grid;
 
@@ -524,6 +686,38 @@ VoxelGrid IKSolverWithRWS::loadVoxelGridData(const std::string &filename) {
     return grid;
 }
 
+/**
+ * @brief Find k nearest neighbors using voxel grid spatial indexing
+ *
+ * **Algorithm Flow:**
+ * 1. **Grid Indexing**: Convert target position to voxel grid coordinates
+ * 2. **Onion Ring Search**: Search in expanding rings around target cell
+ *    - Start with center cell
+ *    - Expand to 6-connected neighbors
+ *    - Continue until k neighbors found or search exhausted
+ * 3. **Distance Calculation**: Compute Euclidean distances to all candidates
+ * 4. **Selection**: Return k closest neighbors by distance
+ *
+ * **Performance Characteristics:**
+ * - O(1) spatial indexing using voxel grid
+ * - O(k) distance calculations
+ * - Much faster than brute force search for large datasets
+ *
+ * **Search Strategy:**
+ * - Uses "onion ring" expansion to find nearby points
+ * - Ensures uniqueness of selected points
+ * - Prioritizes spatial proximity over exact distance
+ *
+ * **Grid Coordinate Calculation:**
+ * - idx = floor((target_xyz - minB) / r)
+ * - Clamped to grid bounds [0, dims-1]
+ * - Flat index: c0 = idx.x * dims.y * dims.z + idx.y * dims.z + idx.z
+ *
+ * **6-Connected Neighbors:**
+ * - Offsets: (±1,0,0), (0,±1,0), (0,0,±1)
+ * - Ensures complete coverage of nearby cells
+ * - Avoids revisiting cells using seenCells set
+ */
 std::vector<NearestNeighbor> IKSolverWithRWS::findKNearestNeighborsVoxel(
     const std::vector<WorkspacePoint> &workspace_points, const VoxelGrid &grid,
     const Eigen::Vector3d &target_xyz, int k) {
@@ -647,6 +841,7 @@ std::vector<NearestNeighbor> IKSolverWithRWS::findKNearestNeighborsVoxel(
         double distance = std::sqrt(di.d2);
         neighbors.emplace_back(di.idx, distance, &workspace_points[di.idx]);
     }
+
     // Print the nearest neighbors with the distance between the target and
     // the neighbors
     std::cout << "Nearest neighbors to target (" << target_xyz.x() << ", "
@@ -662,6 +857,34 @@ std::vector<NearestNeighbor> IKSolverWithRWS::findKNearestNeighborsVoxel(
     return neighbors;
 }
 
+/**
+ * @brief Find k nearest neighbors using k-d tree spatial indexing
+ *
+ * **Algorithm Flow:**
+ * 1. **Tree Construction**: Build k-d tree from workspace points
+ * 2. **Nearest Neighbor Search**: Use nanoflann library for efficient search
+ * 3. **Distance Conversion**: Convert squared distances to actual distances
+ * 4. **Result Formatting**: Convert to NearestNeighbor format
+ *
+ * **Performance Characteristics:**
+ * - O(log n) search time for balanced trees
+ * - O(n log n) tree construction time
+ * - More accurate than voxel grid method but potentially slower
+ *
+ * **Nanoflann Integration:**
+ * - Uses WorkspaceAdaptor to interface with custom data structure
+ * - L2 distance metric for Euclidean distance calculation
+ * - Returns both indices and squared distances
+ *
+ * This method provides a fallback when voxel grid is not available or
+ * when more precise nearest neighbor search is required.
+ *
+ * **Search Process:**
+ * - Constructs adaptor from workspace points
+ * - Builds k-d tree with specified parameters
+ * - Performs k-nearest neighbor search
+ * - Converts results to standard format
+ */
 std::vector<NearestNeighbor> IKSolverWithRWS::findKNearestNeighbors(
     const std::vector<WorkspacePoint> &workspace_points,
     const Eigen::Vector3d &target_xyz, int k) {
