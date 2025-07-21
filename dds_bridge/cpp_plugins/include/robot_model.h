@@ -17,6 +17,7 @@
 #include "pinocchio/collision/collision.hpp"
 #include "pinocchio/multibody/geometry.hpp"
 #include "pinocchio/parsers/srdf.hpp"
+#include "workspace_types.h"
 #include <Eigen/Geometry>
 #include <boost/random/sobol.hpp>
 #include <filesystem>
@@ -25,10 +26,6 @@
 #include <iostream>
 #include <sstream>
 #include <vector>
-
-// Type aliases for fixed-size vectors
-using JointConfig = Eigen::Vector<double, 6>;
-using XYZQuat = Eigen::Vector<double, 7>;
 
 class RobotModel {
   public:

@@ -30,26 +30,22 @@ bool JointConfigEqual::operator()(const JointConfig &lhs,
     return true;
 }
 
-// WorkspacePoint constructor
-WorkspacePoint::WorkspacePoint(const Eigen::Vector3d &pos,
-                               const Eigen::Quaterniond &rot,
-                               const JointConfig &config)
-    : position(pos), rotation(rot), joint_config(config) {}
-
 // ReachableWorkspaceGenerator implementation
 ReachableWorkspaceGenerator::ReachableWorkspaceGenerator(
     RobotModel &robot_model, long unsigned int num_points, int batch_size,
     double ground_threshold, double joint_tolerance,
-    int max_attempts_per_sample)
+    int max_attempts_per_sample, int max_distance)
     : robot_model_(robot_model), random_generator_(42), num_points_(num_points),
       batch_size_(batch_size), ground_threshold_(ground_threshold),
       joint_tolerance_(joint_tolerance),
-      max_attempts_per_sample_(max_attempts_per_sample) {
+      max_attempts_per_sample_(max_attempts_per_sample),
+      max_distance_(max_distance) {
     std::cout << "Initialized workspace generator with external RobotModel"
               << std::endl;
     std::cout << "Workspace parameters: " << num_points_ << " points, "
               << batch_size_ << " batch size, " << ground_threshold_
-              << " ground threshold" << std::endl;
+              << " ground threshold, " << max_distance_ << " max distance"
+              << std::endl;
 }
 
 ReachableWorkspaceGenerator::~ReachableWorkspaceGenerator() {
@@ -221,69 +217,58 @@ std::vector<WorkspacePoint> ReachableWorkspaceGenerator::generateWorkspace() {
     return all_workspace_points;
 }
 
-void ReachableWorkspaceGenerator::saveToPLY(
-    const std::string &filename,
-    const std::vector<WorkspacePoint> &workspace_points) {
-    workspace_utils::writeBinaryPLY(filename, workspace_points);
-}
-
-void ReachableWorkspaceGenerator::saveToKDTree(
-    const std::string &filename,
-    const std::vector<WorkspacePoint> &workspace_points) {
-    workspace_utils::writeKDTreeData(filename, workspace_points);
-}
-
-void ReachableWorkspaceGenerator::saveToVoxelGrid(
-    const std::string &output_dir,
-    const std::vector<WorkspacePoint> &workspace_points) {
-    workspace_utils::buildAndSaveVoxelGrid(workspace_points, output_dir);
-}
-
 void ReachableWorkspaceGenerator::generateAndSaveWorkspace(
     const std::string &output_dir) {
     // Generate the workspace
     std::cout << "Generating and saving workspace..." << std::endl;
     auto workspace_points = generateWorkspace();
 
+    // Generate timestamp once for all files
+    auto now = std::chrono::system_clock::now();
+    std::time_t now_c = std::chrono::system_clock::to_time_t(now);
+    std::tm tm_buf;
+#ifdef _WIN32
+    localtime_s(&tm_buf, &now_c);
+#else
+    localtime_r(&now_c, &tm_buf);
+#endif
+    std::ostringstream timestamp_oss;
+    timestamp_oss << std::put_time(&tm_buf, "%Y%m%d_%H%M%S");
+    std::string timestamp = timestamp_oss.str();
+
+    // Create output directory if it doesn't exist
+    if (!std::filesystem::exists(output_dir)) {
+        std::filesystem::create_directory(output_dir);
+    }
+
     // Save workspace points to binary PLY file
-    std::string ply_filename = getTimestampedFilename(
-        output_dir, "workspace_points_optimized", ".ply");
-    saveToPLY(ply_filename, workspace_points);
+    std::string ply_filename =
+        output_dir + "/workspace_points_optimized_" + timestamp + ".ply";
+    writeBinaryPLY(ply_filename, workspace_points);
+
+    // Save workspace points to ASCII PLY file (human-readable)
+    std::string ascii_ply_filename =
+        output_dir + "/workspace_points_ascii_" + timestamp + ".ply";
+    writeAsciiPLY(ascii_ply_filename, workspace_points);
 
     // Save k-d tree data to binary file
     std::string kdtree_filename =
-        getTimestampedFilename(output_dir, "kdtree_data_optimized", ".bin");
-    saveToKDTree(kdtree_filename, workspace_points);
+        output_dir + "/kdtree_data_optimized_" + timestamp + ".bin";
+    writeKDTreeData(kdtree_filename, workspace_points);
 
     // Build and save 3D voxel grid
-    saveToVoxelGrid(output_dir, workspace_points);
+    ReachableWorkspaceGenerator::buildAndSaveVoxelGrid(workspace_points,
+                                                       output_dir, timestamp);
 
     std::cout << "Workspace generation and saving completed successfully!"
               << std::endl;
     std::cout << "All files saved to: " << output_dir << std::endl;
+    std::cout << "Timestamp used: " << timestamp << std::endl;
 }
 
-std::string ReachableWorkspaceGenerator::getTimestampedFilename(
-    const std::string &base_dir, const std::string &prefix,
-    const std::string &extension) {
-    return workspace_utils::getTimestampedFilename(base_dir, prefix, extension);
-}
-
-// Standalone helper functions implementation
-namespace workspace_utils {
-
-bool isJointConfigEqual(const JointConfig &lhs, const JointConfig &rhs,
-                        double tolerance) {
-    for (int i = 0; i < lhs.size(); ++i) {
-        if (std::abs(lhs[i] - rhs[i]) > tolerance) {
-            return false;
-        }
-    }
-    return true;
-}
-
-void writeBinaryPLY(const std::string &filename,
-                    const std::vector<WorkspacePoint> &workspace_points) {
+void ReachableWorkspaceGenerator::writeBinaryPLY(
+    const std::string &filename,
+    const std::vector<WorkspacePoint> &workspace_points) {
     std::ofstream ply_file(filename, std::ios::binary);
 
     if (!ply_file.is_open()) {
@@ -327,8 +312,57 @@ void writeBinaryPLY(const std::string &filename,
     std::cout << "Workspace points saved to: " << filename << std::endl;
 }
 
-void writeKDTreeData(const std::string &filename,
-                     const std::vector<WorkspacePoint> &workspace_points) {
+void ReachableWorkspaceGenerator::writeAsciiPLY(
+    const std::string &filename,
+    const std::vector<WorkspacePoint> &workspace_points) {
+    std::ofstream ply_file(filename, std::ios::out);
+
+    if (!ply_file.is_open()) {
+        std::cerr << "Error: Could not open file " << filename
+                  << " for writing." << std::endl;
+        return;
+    }
+
+    // Write PLY header
+    ply_file << "ply" << std::endl;
+    ply_file << "format ascii 1.0" << std::endl;
+    ply_file << "element vertex " << workspace_points.size() << std::endl;
+    ply_file << "property float x" << std::endl;
+    ply_file << "property float y" << std::endl;
+    ply_file << "property float z" << std::endl;
+    ply_file << "property float joint1" << std::endl;
+    ply_file << "property float joint2" << std::endl;
+    ply_file << "property float joint3" << std::endl;
+    ply_file << "property float joint4" << std::endl;
+    ply_file << "property float joint5" << std::endl;
+    ply_file << "property float joint6" << std::endl;
+    ply_file << "end_header" << std::endl;
+
+    // Write ASCII data
+    for (const auto &point : workspace_points) {
+        float x = static_cast<float>(point.position[0]);
+        float y = static_cast<float>(point.position[1]);
+        float z = static_cast<float>(point.position[2]);
+
+        ply_file << x << " " << y << " " << z;
+
+        // Write joint configuration values
+        for (int j = 0; j < point.joint_config.size(); ++j) {
+            float joint_val = static_cast<float>(point.joint_config[j]);
+            ply_file << " " << joint_val;
+        }
+
+        ply_file << std::endl;
+    }
+
+    ply_file.close();
+    std::cout << "Workspace points saved to ASCII PLY: " << filename
+              << std::endl;
+}
+
+void ReachableWorkspaceGenerator::writeKDTreeData(
+    const std::string &filename,
+    const std::vector<WorkspacePoint> &workspace_points) {
     std::ofstream kdtree_file(filename, std::ios::binary);
 
     if (!kdtree_file.is_open()) {
@@ -378,8 +412,10 @@ void writeKDTreeData(const std::string &filename,
               << std::endl;
 }
 
-void buildAndSaveVoxelGrid(const std::vector<WorkspacePoint> &workspace_points,
-                           const std::string &output_dir) {
+// Static version with timestamp parameter
+void ReachableWorkspaceGenerator::buildAndSaveVoxelGrid(
+    const std::vector<WorkspacePoint> &workspace_points,
+    const std::string &output_dir, const std::string &timestamp) {
     if (workspace_points.empty()) {
         std::cerr << "No workspace points to build voxel grid from."
                   << std::endl;
@@ -434,8 +470,7 @@ void buildAndSaveVoxelGrid(const std::vector<WorkspacePoint> &workspace_points,
     // C. Create sparse nearest neighbor data with limited BFS
     std::map<size_t, int> sparseNearestIdx;
     std::queue<std::pair<size_t, int>> q; // (cell_index, distance)
-    const int maxDistance =
-        3; // Only fill cells within 3 voxels of workspace points
+    int maxDistance = 5; // Default max distance for static version
 
     // Seed the queue with every non-empty cell
     for (const auto &cell : sparseGrid) {
@@ -488,7 +523,7 @@ void buildAndSaveVoxelGrid(const std::vector<WorkspacePoint> &workspace_points,
 
     // D. Serialize sparse data for runtime
     std::string grid_filename =
-        getTimestampedFilename(output_dir, "workspace_grid_sparse", ".bin");
+        output_dir + "/workspace_grid_sparse_" + timestamp + ".bin";
     std::ofstream out(grid_filename, std::ios::binary);
 
     if (!out.is_open()) {
@@ -525,9 +560,9 @@ void buildAndSaveVoxelGrid(const std::vector<WorkspacePoint> &workspace_points,
               << " bytes for dense grid)" << std::endl;
 }
 
-std::string getTimestampedFilename(const std::string &base_dir,
-                                   const std::string &prefix,
-                                   const std::string &extension) {
+std::string ReachableWorkspaceGenerator::getTimestampedFilename(
+    const std::string &base_dir, const std::string &prefix,
+    const std::string &extension) {
     if (!std::filesystem::exists(base_dir)) {
         std::filesystem::create_directory(base_dir);
     }
@@ -545,5 +580,3 @@ std::string getTimestampedFilename(const std::string &base_dir,
         << std::put_time(&tm_buf, "%Y%m%d_%H%M%S") << extension;
     return oss.str();
 }
-
-} // namespace workspace_utils
