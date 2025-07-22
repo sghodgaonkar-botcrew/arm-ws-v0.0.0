@@ -1,0 +1,135 @@
+\hypertarget{structWorkspaceAdaptor}{}\doxysection{Workspace\+Adaptor Struct Reference}
+\label{structWorkspaceAdaptor}\index{WorkspaceAdaptor@{WorkspaceAdaptor}}
+
+
+Nanoflann adaptor for \mbox{\hyperlink{structWorkspacePoint}{Workspace\+Point}} data structure.  
+
+
+
+
+{\ttfamily \#include $<$ik\+\_\+solver\+\_\+w\+\_\+rws.\+hpp$>$}
+
+\doxysubsection*{Public Types}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{structWorkspaceAdaptor_a4bbc51cd9ca313fedae6beb9531825fb}\label{structWorkspaceAdaptor_a4bbc51cd9ca313fedae6beb9531825fb}} 
+using {\bfseries Point\+CloudT} = std\+::vector$<$ \mbox{\hyperlink{structWorkspacePoint}{Workspace\+Point}} $>$
+\item 
+\mbox{\Hypertarget{structWorkspaceAdaptor_a4bbc51cd9ca313fedae6beb9531825fb}\label{structWorkspaceAdaptor_a4bbc51cd9ca313fedae6beb9531825fb}} 
+using {\bfseries Point\+CloudT} = std\+::vector$<$ \mbox{\hyperlink{structWorkspacePoint}{Workspace\+Point}} $>$
+\end{DoxyCompactItemize}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{structWorkspaceAdaptor_a8b130c20e7bcb87430431e7bce0068f3}{Workspace\+Adaptor}} (const Point\+CloudT \&points)
+\begin{DoxyCompactList}\small\item\em Constructor. \end{DoxyCompactList}\item 
+std\+::size\+\_\+t \mbox{\hyperlink{structWorkspaceAdaptor_a3a307e712157ac7dba3e5455e3b15ca8}{kdtree\+\_\+get\+\_\+point\+\_\+count}} () const noexcept
+\begin{DoxyCompactList}\small\item\em Get the total number of points in the workspace. \end{DoxyCompactList}\item 
+double \mbox{\hyperlink{structWorkspaceAdaptor_a099d369d4a8aa5a2d4e013318a307a8a}{kdtree\+\_\+get\+\_\+pt}} (const std\+::size\+\_\+t i, const std\+::size\+\_\+t d) const noexcept
+\begin{DoxyCompactList}\small\item\em Get the d-\/th coordinate of point i. \end{DoxyCompactList}\item 
+{\footnotesize template$<$class BBOX $>$ }\\bool \mbox{\hyperlink{structWorkspaceAdaptor_ae007642801e0dcfb3f1e49f0c6687faa}{kdtree\+\_\+get\+\_\+bbox}} (BBOX \&) const noexcept
+\begin{DoxyCompactList}\small\item\em Optional bounding box routine for nanoflann. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structWorkspaceAdaptor_a8b130c20e7bcb87430431e7bce0068f3}\label{structWorkspaceAdaptor_a8b130c20e7bcb87430431e7bce0068f3}} 
+{\bfseries Workspace\+Adaptor} (const Point\+CloudT \&points)
+\item 
+\mbox{\Hypertarget{structWorkspaceAdaptor_a3a307e712157ac7dba3e5455e3b15ca8}\label{structWorkspaceAdaptor_a3a307e712157ac7dba3e5455e3b15ca8}} 
+std\+::size\+\_\+t {\bfseries kdtree\+\_\+get\+\_\+point\+\_\+count} () const noexcept
+\item 
+\mbox{\Hypertarget{structWorkspaceAdaptor_a099d369d4a8aa5a2d4e013318a307a8a}\label{structWorkspaceAdaptor_a099d369d4a8aa5a2d4e013318a307a8a}} 
+double {\bfseries kdtree\+\_\+get\+\_\+pt} (const std\+::size\+\_\+t i, const std\+::size\+\_\+t d) const noexcept
+\item 
+\mbox{\Hypertarget{structWorkspaceAdaptor_ae007642801e0dcfb3f1e49f0c6687faa}\label{structWorkspaceAdaptor_ae007642801e0dcfb3f1e49f0c6687faa}} 
+{\footnotesize template$<$class BBOX $>$ }\\bool {\bfseries kdtree\+\_\+get\+\_\+bbox} (BBOX \&) const noexcept
+\end{DoxyCompactItemize}
+\doxysubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{structWorkspaceAdaptor_a58ec3e37fe175538bbbe5cb6c3198b8b}\label{structWorkspaceAdaptor_a58ec3e37fe175538bbbe5cb6c3198b8b}} 
+const Point\+CloudT \& \mbox{\hyperlink{structWorkspaceAdaptor_a58ec3e37fe175538bbbe5cb6c3198b8b}{pts}}
+\begin{DoxyCompactList}\small\item\em Reference to the workspace points vector. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Nanoflann adaptor for \mbox{\hyperlink{structWorkspacePoint}{Workspace\+Point}} data structure. 
+
+This adaptor allows the nanoflann library to work with our custom \mbox{\hyperlink{structWorkspacePoint}{Workspace\+Point}} data structure. It provides the necessary interface functions for building and querying a k-\/d tree over workspace points.
+
+The adaptor maps workspace points to 3D coordinates (x, y, z) for spatial indexing, enabling fast nearest neighbor searches in the workspace. 
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{structWorkspaceAdaptor_a8b130c20e7bcb87430431e7bce0068f3}\label{structWorkspaceAdaptor_a8b130c20e7bcb87430431e7bce0068f3}} 
+\index{WorkspaceAdaptor@{WorkspaceAdaptor}!WorkspaceAdaptor@{WorkspaceAdaptor}}
+\index{WorkspaceAdaptor@{WorkspaceAdaptor}!WorkspaceAdaptor@{WorkspaceAdaptor}}
+\doxysubsubsection{\texorpdfstring{WorkspaceAdaptor()}{WorkspaceAdaptor()}}
+{\footnotesize\ttfamily Workspace\+Adaptor\+::\+Workspace\+Adaptor (\begin{DoxyParamCaption}\item[{const Point\+CloudT \&}]{points }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Constructor. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em points} & Reference to the workspace points vector \\
+\hline
+\end{DoxyParams}
+
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{structWorkspaceAdaptor_ae007642801e0dcfb3f1e49f0c6687faa}\label{structWorkspaceAdaptor_ae007642801e0dcfb3f1e49f0c6687faa}} 
+\index{WorkspaceAdaptor@{WorkspaceAdaptor}!kdtree\_get\_bbox@{kdtree\_get\_bbox}}
+\index{kdtree\_get\_bbox@{kdtree\_get\_bbox}!WorkspaceAdaptor@{WorkspaceAdaptor}}
+\doxysubsubsection{\texorpdfstring{kdtree\_get\_bbox()}{kdtree\_get\_bbox()}}
+{\footnotesize\ttfamily template$<$class BBOX $>$ \\
+bool Workspace\+Adaptor\+::kdtree\+\_\+get\+\_\+bbox (\begin{DoxyParamCaption}\item[{BBOX \&}]{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [noexcept]}}
+
+
+
+Optional bounding box routine for nanoflann. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em bbox} & Bounding box structure (unused) \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+false (bounding box not implemented)
+\end{DoxyReturn}
+This function is required by nanoflann but not used in our implementation. Returning false indicates that bounding box optimization is not available. \mbox{\Hypertarget{structWorkspaceAdaptor_a3a307e712157ac7dba3e5455e3b15ca8}\label{structWorkspaceAdaptor_a3a307e712157ac7dba3e5455e3b15ca8}} 
+\index{WorkspaceAdaptor@{WorkspaceAdaptor}!kdtree\_get\_point\_count@{kdtree\_get\_point\_count}}
+\index{kdtree\_get\_point\_count@{kdtree\_get\_point\_count}!WorkspaceAdaptor@{WorkspaceAdaptor}}
+\doxysubsubsection{\texorpdfstring{kdtree\_get\_point\_count()}{kdtree\_get\_point\_count()}}
+{\footnotesize\ttfamily std\+::size\+\_\+t Workspace\+Adaptor\+::kdtree\+\_\+get\+\_\+point\+\_\+count (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [noexcept]}}
+
+
+
+Get the total number of points in the workspace. 
+
+\begin{DoxyReturn}{Returns}
+Number of workspace points
+\end{DoxyReturn}
+This function is required by nanoflann to know the size of the point cloud. \mbox{\Hypertarget{structWorkspaceAdaptor_a099d369d4a8aa5a2d4e013318a307a8a}\label{structWorkspaceAdaptor_a099d369d4a8aa5a2d4e013318a307a8a}} 
+\index{WorkspaceAdaptor@{WorkspaceAdaptor}!kdtree\_get\_pt@{kdtree\_get\_pt}}
+\index{kdtree\_get\_pt@{kdtree\_get\_pt}!WorkspaceAdaptor@{WorkspaceAdaptor}}
+\doxysubsubsection{\texorpdfstring{kdtree\_get\_pt()}{kdtree\_get\_pt()}}
+{\footnotesize\ttfamily double Workspace\+Adaptor\+::kdtree\+\_\+get\+\_\+pt (\begin{DoxyParamCaption}\item[{const std\+::size\+\_\+t}]{i,  }\item[{const std\+::size\+\_\+t}]{d }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [noexcept]}}
+
+
+
+Get the d-\/th coordinate of point i. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em i} & Index of the point \\
+\hline
+{\em d} & Dimension index (0=x, 1=y, 2=z) \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Coordinate value at the specified dimension
+\end{DoxyReturn}
+This function maps workspace points to 3D coordinates for k-\/d tree indexing. Only position coordinates are used for spatial indexing; orientation and joint configuration are not considered in the spatial search. 
+
+The documentation for this struct was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+/home/shanto/\+Documents/arm-\/ws-\/v0.\+0.\+0/dds\+\_\+bridge/cpp\+\_\+plugins/include/\mbox{\hyperlink{ik__solver__w__rws_8hpp}{ik\+\_\+solver\+\_\+w\+\_\+rws.\+hpp}}\item 
+/home/shanto/\+Documents/arm-\/ws-\/v0.\+0.\+0/dds\+\_\+bridge/cpp\+\_\+plugins/src/ik\+\_\+solver\+\_\+w\+\_\+rws\+\_\+dev.\+cpp\end{DoxyCompactItemize}

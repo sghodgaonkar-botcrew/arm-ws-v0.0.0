@@ -1,0 +1,56 @@
+\hypertarget{reachable__workspace__generator_8cpp}{}\doxysection{/home/shanto/\+Documents/arm-\/ws-\/v0.0.0/dds\+\_\+bridge/cpp\+\_\+plugins/src/reachable\+\_\+workspace\+\_\+generator.cpp File Reference}
+\label{reachable__workspace__generator_8cpp}\index{/home/shanto/Documents/arm-\/ws-\/v0.0.0/dds\_bridge/cpp\_plugins/src/reachable\_workspace\_generator.cpp@{/home/shanto/Documents/arm-\/ws-\/v0.0.0/dds\_bridge/cpp\_plugins/src/reachable\_workspace\_generator.cpp}}
+
+
+Implementation of Reachable Workspace Generator for Robot IK Solver.  
+
+
+{\ttfamily \#include \char`\"{}reachable\+\_\+workspace\+\_\+generator.\+h\char`\"{}}\newline
+{\ttfamily \#include $<$chrono$>$}\newline
+{\ttfamily \#include $<$filesystem$>$}\newline
+{\ttfamily \#include $<$fstream$>$}\newline
+{\ttfamily \#include $<$iomanip$>$}\newline
+{\ttfamily \#include $<$iostream$>$}\newline
+{\ttfamily \#include $<$queue$>$}\newline
+{\ttfamily \#include $<$sstream$>$}\newline
+Include dependency graph for reachable\+\_\+workspace\+\_\+generator.\+cpp\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{reachable__workspace__generator_8cpp__incl}
+\end{center}
+\end{figure}
+
+
+\doxysubsection{Detailed Description}
+Implementation of Reachable Workspace Generator for Robot IK Solver. 
+
+This file implements the \mbox{\hyperlink{classReachableWorkspaceGenerator}{Reachable\+Workspace\+Generator}} class, providing comprehensive workspace sampling and generation capabilities for robot inverse kinematics solving. The implementation includes efficient random sampling, collision detection, duplicate handling, and multiple output format generation.
+
+{\bfseries{Key Implementation Features\+:}}
+\begin{DoxyItemize}
+\item Efficient hash-\/based duplicate detection
+\item Batch processing for improved performance
+\item Cross-\/platform timestamp generation
+\item Multiple output formats (PLY, binary, voxel grid)
+\item Comprehensive error handling and progress reporting
+\end{DoxyItemize}
+
+{\bfseries{Performance Optimizations\+:}}
+\begin{DoxyItemize}
+\item Pre-\/allocated vectors to avoid reallocation
+\item Hash set for O(1) duplicate detection
+\item Batch processing for better cache locality
+\item Binary I/O for efficient file operations
+\end{DoxyItemize}
+
+\begin{DoxyAuthor}{Author}
+Shantanu Ghodgaonkar 
+\end{DoxyAuthor}
+\begin{DoxyDate}{Date}
+2025-\/07-\/21 
+\end{DoxyDate}
+\begin{DoxyVersion}{Version}
+1.\+0 
+\end{DoxyVersion}

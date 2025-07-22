@@ -1,0 +1,88 @@
+\hypertarget{structVoxelGrid}{}\doxysection{Voxel\+Grid Struct Reference}
+\label{structVoxelGrid}\index{VoxelGrid@{VoxelGrid}}
+
+
+Structure to hold sparse voxel grid data for spatial indexing.  
+
+
+
+
+{\ttfamily \#include $<$workspace\+\_\+types.\+h$>$}
+
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{structVoxelGrid_a7c8c91595d2c009db8f67557bb87c2aa}{Voxel\+Grid}} ()
+\begin{DoxyCompactList}\small\item\em Default constructor. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{structVoxelGrid_ad96b5440e034d06e09f7cc44de5a5cbc}\label{structVoxelGrid_ad96b5440e034d06e09f7cc44de5a5cbc}} 
+Eigen\+::\+Vector3d \mbox{\hyperlink{structVoxelGrid_ad96b5440e034d06e09f7cc44de5a5cbc}{minB}}
+\begin{DoxyCompactList}\small\item\em Minimum bounds of the grid (3D point) \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structVoxelGrid_aea9e18000e1219d785e1001c9644982e}\label{structVoxelGrid_aea9e18000e1219d785e1001c9644982e}} 
+double \mbox{\hyperlink{structVoxelGrid_aea9e18000e1219d785e1001c9644982e}{r}}
+\begin{DoxyCompactList}\small\item\em Resolution (voxel size) in meters. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structVoxelGrid_a689a88b008e79a398aacf502dc6ac1aa}\label{structVoxelGrid_a689a88b008e79a398aacf502dc6ac1aa}} 
+Eigen\+::\+Vector3i \mbox{\hyperlink{structVoxelGrid_a689a88b008e79a398aacf502dc6ac1aa}{dims}}
+\begin{DoxyCompactList}\small\item\em Grid dimensions (number of cells in each dimension) \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structVoxelGrid_a3c5a59d68e4162473aa6698a3fc563e9}\label{structVoxelGrid_a3c5a59d68e4162473aa6698a3fc563e9}} 
+int \mbox{\hyperlink{structVoxelGrid_a3c5a59d68e4162473aa6698a3fc563e9}{max\+Distance}}
+\begin{DoxyCompactList}\small\item\em Maximum search distance for neighbor finding. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structVoxelGrid_a324c99d69cab8c4ec656ff5f31747827}\label{structVoxelGrid_a324c99d69cab8c4ec656ff5f31747827}} 
+size\+\_\+t \mbox{\hyperlink{structVoxelGrid_a324c99d69cab8c4ec656ff5f31747827}{num\+Cells}}
+\begin{DoxyCompactList}\small\item\em Number of occupied cells in the grid. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structVoxelGrid_a0bd697a6d507717ea7779f01868735e1}\label{structVoxelGrid_a0bd697a6d507717ea7779f01868735e1}} 
+std\+::map$<$ size\+\_\+t, int $>$ \mbox{\hyperlink{structVoxelGrid_a0bd697a6d507717ea7779f01868735e1}{sparse\+Nearest\+Idx}}
+\begin{DoxyCompactList}\small\item\em Map from cell index to nearest point index. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Structure to hold sparse voxel grid data for spatial indexing. 
+
+This structure implements a sparse voxel grid for efficient spatial indexing of workspace points. It provides O(1) spatial lookup for nearest neighbor search.
+
+{\bfseries{Grid Structure\+:}}
+\begin{DoxyItemize}
+\item Regular 3D grid with specified resolution
+\item Only stores occupied cells (sparse representation)
+\item Maps cell indices to nearest workspace point indices
+\end{DoxyItemize}
+
+{\bfseries{Spatial Indexing\+:}}
+\begin{DoxyItemize}
+\item Converts 3D positions to grid cell indices
+\item Enables fast neighbor search using \char`\"{}onion ring\char`\"{} expansion
+\item Reduces search complexity from O(n) to O(k) where k is number of neighbors
+\end{DoxyItemize}
+
+{\bfseries{Memory Efficiency\+:}}
+\begin{DoxyItemize}
+\item Only stores occupied cells to save memory
+\item Uses std\+::map for sparse storage
+\item Scales well with workspace size 
+\end{DoxyItemize}
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{structVoxelGrid_a7c8c91595d2c009db8f67557bb87c2aa}\label{structVoxelGrid_a7c8c91595d2c009db8f67557bb87c2aa}} 
+\index{VoxelGrid@{VoxelGrid}!VoxelGrid@{VoxelGrid}}
+\index{VoxelGrid@{VoxelGrid}!VoxelGrid@{VoxelGrid}}
+\doxysubsubsection{\texorpdfstring{VoxelGrid()}{VoxelGrid()}}
+{\footnotesize\ttfamily Voxel\+Grid\+::\+Voxel\+Grid (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Default constructor. 
+
+Initializes all members to safe default values\+:
+\begin{DoxyItemize}
+\item r = 0.\+0 (invalid resolution)
+\item max\+Distance = 0 (no search distance)
+\item num\+Cells = 0 (empty grid)
+\item Other members default to zero vectors 
+\end{DoxyItemize}
+
+The documentation for this struct was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+/home/shanto/\+Documents/arm-\/ws-\/v0.\+0.\+0/dds\+\_\+bridge/cpp\+\_\+plugins/include/\mbox{\hyperlink{workspace__types_8h}{workspace\+\_\+types.\+h}}\item 
+/home/shanto/\+Documents/arm-\/ws-\/v0.\+0.\+0/dds\+\_\+bridge/cpp\+\_\+plugins/src/ik\+\_\+solver\+\_\+w\+\_\+rws\+\_\+dev.\+cpp\end{DoxyCompactItemize}

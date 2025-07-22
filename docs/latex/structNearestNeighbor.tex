@@ -1,0 +1,114 @@
+\hypertarget{structNearestNeighbor}{}\doxysection{Nearest\+Neighbor Struct Reference}
+\label{structNearestNeighbor}\index{NearestNeighbor@{NearestNeighbor}}
+
+
+Structure to hold nearest neighbor search results.  
+
+
+
+
+{\ttfamily \#include $<$workspace\+\_\+types.\+h$>$}
+
+
+
+Collaboration diagram for Nearest\+Neighbor\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=179pt]{structNearestNeighbor__coll__graph}
+\end{center}
+\end{figure}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{structNearestNeighbor_aafc9bcfc27aabee080350194f8dad9b5}{Nearest\+Neighbor}} (std\+::size\+\_\+t idx, double dist, const \mbox{\hyperlink{structWorkspacePoint}{Workspace\+Point}} $\ast$pt)
+\begin{DoxyCompactList}\small\item\em Constructor. \end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{structNearestNeighbor_a80c7dbea389e08a49d1392753c92419d}{operator$<$}} (const \mbox{\hyperlink{structNearestNeighbor}{Nearest\+Neighbor}} \&other) const
+\begin{DoxyCompactList}\small\item\em Comparison operator for sorting (closest first) \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structNearestNeighbor_aafc9bcfc27aabee080350194f8dad9b5}\label{structNearestNeighbor_aafc9bcfc27aabee080350194f8dad9b5}} 
+{\bfseries Nearest\+Neighbor} (std\+::size\+\_\+t idx, double dist, const \mbox{\hyperlink{structWorkspacePoint}{Workspace\+Point}} $\ast$pt)
+\item 
+\mbox{\Hypertarget{structNearestNeighbor_a80c7dbea389e08a49d1392753c92419d}\label{structNearestNeighbor_a80c7dbea389e08a49d1392753c92419d}} 
+bool {\bfseries operator$<$} (const \mbox{\hyperlink{structNearestNeighbor}{Nearest\+Neighbor}} \&other) const
+\end{DoxyCompactItemize}
+\doxysubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{structNearestNeighbor_a14bca8e3fb3c27bbf3994801036dd4d9}\label{structNearestNeighbor_a14bca8e3fb3c27bbf3994801036dd4d9}} 
+std\+::size\+\_\+t \mbox{\hyperlink{structNearestNeighbor_a14bca8e3fb3c27bbf3994801036dd4d9}{index}}
+\begin{DoxyCompactList}\small\item\em Index of the neighbor in workspace points array. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structNearestNeighbor_aa183a9e36bcc2e198660d32213c5b485}\label{structNearestNeighbor_aa183a9e36bcc2e198660d32213c5b485}} 
+double \mbox{\hyperlink{structNearestNeighbor_aa183a9e36bcc2e198660d32213c5b485}{distance}}
+\begin{DoxyCompactList}\small\item\em Distance to the query point. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structNearestNeighbor_a95f472e0899a23d81b146eca7c78a8e6}\label{structNearestNeighbor_a95f472e0899a23d81b146eca7c78a8e6}} 
+const \mbox{\hyperlink{structWorkspacePoint}{Workspace\+Point}} $\ast$ \mbox{\hyperlink{structNearestNeighbor_a95f472e0899a23d81b146eca7c78a8e6}{point}}
+\begin{DoxyCompactList}\small\item\em Pointer to the workspace point. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Structure to hold nearest neighbor search results. 
+
+This structure represents the result of a nearest neighbor search, containing information about a nearby workspace point and its distance to the query point.
+
+{\bfseries{Usage\+:}}
+\begin{DoxyItemize}
+\item Return type for nearest neighbor search functions
+\item Used for IK warm-\/start selection
+\item Enables sorting and filtering of search results
+\end{DoxyItemize}
+
+{\bfseries{Distance Metric\+:}}
+\begin{DoxyItemize}
+\item Distance is typically Euclidean distance in 3D space
+\item Can be extended to include rotation distance
+\item Used for selecting best initial configuration for IK 
+\end{DoxyItemize}
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{structNearestNeighbor_aafc9bcfc27aabee080350194f8dad9b5}\label{structNearestNeighbor_aafc9bcfc27aabee080350194f8dad9b5}} 
+\index{NearestNeighbor@{NearestNeighbor}!NearestNeighbor@{NearestNeighbor}}
+\index{NearestNeighbor@{NearestNeighbor}!NearestNeighbor@{NearestNeighbor}}
+\doxysubsubsection{\texorpdfstring{NearestNeighbor()}{NearestNeighbor()}}
+{\footnotesize\ttfamily Nearest\+Neighbor\+::\+Nearest\+Neighbor (\begin{DoxyParamCaption}\item[{std\+::size\+\_\+t}]{idx,  }\item[{double}]{dist,  }\item[{const \mbox{\hyperlink{structWorkspacePoint}{Workspace\+Point}} $\ast$}]{pt }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Constructor. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em idx} & Index of the neighbor \\
+\hline
+{\em dist} & Distance to query point \\
+\hline
+{\em pt} & Pointer to workspace point \\
+\hline
+\end{DoxyParams}
+
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{structNearestNeighbor_a80c7dbea389e08a49d1392753c92419d}\label{structNearestNeighbor_a80c7dbea389e08a49d1392753c92419d}} 
+\index{NearestNeighbor@{NearestNeighbor}!operator$<$@{operator$<$}}
+\index{operator$<$@{operator$<$}!NearestNeighbor@{NearestNeighbor}}
+\doxysubsubsection{\texorpdfstring{operator$<$()}{operator<()}}
+{\footnotesize\ttfamily bool Nearest\+Neighbor\+::operator$<$ (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{structNearestNeighbor}{Nearest\+Neighbor}} \&}]{other }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Comparison operator for sorting (closest first) 
+
+
+\begin{DoxyParams}{Parameters}
+{\em other} & Another nearest neighbor result \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+true if this neighbor is closer than the other
+\end{DoxyReturn}
+This operator enables sorting of search results by distance, with closest neighbors appearing first. 
+
+The documentation for this struct was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+/home/shanto/\+Documents/arm-\/ws-\/v0.\+0.\+0/dds\+\_\+bridge/cpp\+\_\+plugins/include/\mbox{\hyperlink{workspace__types_8h}{workspace\+\_\+types.\+h}}\item 
+/home/shanto/\+Documents/arm-\/ws-\/v0.\+0.\+0/dds\+\_\+bridge/cpp\+\_\+plugins/src/ik\+\_\+solver\+\_\+w\+\_\+rws\+\_\+dev.\+cpp\end{DoxyCompactItemize}

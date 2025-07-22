@@ -1,0 +1,94 @@
+\hypertarget{structJointConfigEqual}{}\doxysection{Joint\+Config\+Equal Struct Reference}
+\label{structJointConfigEqual}\index{JointConfigEqual@{JointConfigEqual}}
+
+
+Equality function for Joint\+Config to use with unordered\+\_\+set.  
+
+
+
+
+{\ttfamily \#include $<$reachable\+\_\+workspace\+\_\+generator.\+h$>$}
+
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+bool \mbox{\hyperlink{structJointConfigEqual_a3b7df7feba591f9265212148d99dbfbb}{operator()}} (const \mbox{\hyperlink{workspace__types_8h_a050e523c0022a97c9b9646ced274bbda}{Joint\+Config}} \&lhs, const \mbox{\hyperlink{workspace__types_8h_a050e523c0022a97c9b9646ced274bbda}{Joint\+Config}} \&rhs) const
+\begin{DoxyCompactList}\small\item\em Compare two joint configurations for equality. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Equality function for Joint\+Config to use with unordered\+\_\+set. 
+
+This struct provides an equality comparison function for Joint\+Config vectors, enabling proper duplicate detection in unordered containers. Uses tolerance-\/based comparison to handle floating-\/point precision issues.
+
+{\bfseries{Comparison Strategy\+:}}
+\begin{DoxyItemize}
+\item Tolerance-\/based comparison (1e-\/3 radians)
+\item Handles floating-\/point precision errors
+\item Ensures robust duplicate detection
+\end{DoxyItemize}
+
+{\bfseries{Usage\+:}}
+\begin{DoxyItemize}
+\item Used in unordered\+\_\+set for duplicate detection
+\item Prevents infinite loops in workspace generation
+\item Ensures unique configuration sampling 
+\end{DoxyItemize}
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{structJointConfigEqual_a3b7df7feba591f9265212148d99dbfbb}\label{structJointConfigEqual_a3b7df7feba591f9265212148d99dbfbb}} 
+\index{JointConfigEqual@{JointConfigEqual}!operator()@{operator()}}
+\index{operator()@{operator()}!JointConfigEqual@{JointConfigEqual}}
+\doxysubsubsection{\texorpdfstring{operator()()}{operator()()}}
+{\footnotesize\ttfamily bool Joint\+Config\+Equal\+::operator() (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{workspace__types_8h_a050e523c0022a97c9b9646ced274bbda}{Joint\+Config}} \&}]{lhs,  }\item[{const \mbox{\hyperlink{workspace__types_8h_a050e523c0022a97c9b9646ced274bbda}{Joint\+Config}} \&}]{rhs }\end{DoxyParamCaption}) const}
+
+
+
+Compare two joint configurations for equality. 
+
+Equality function implementation for Joint\+Config.
+
+
+\begin{DoxyParams}{Parameters}
+{\em lhs} & Left-\/hand side joint configuration \\
+\hline
+{\em rhs} & Right-\/hand side joint configuration \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+true if configurations are equal within tolerance
+\end{DoxyReturn}
+{\bfseries{Comparison Logic\+:}}
+\begin{DoxyItemize}
+\item Compares each joint angle with tolerance
+\item Returns false on first difference exceeding tolerance
+\item Handles numerical precision issues gracefully
+\end{DoxyItemize}
+
+{\bfseries{Comparison Strategy\+:}}
+\begin{DoxyItemize}
+\item Uses tolerance-\/based comparison (1e-\/3 radians)
+\item Handles floating-\/point precision errors gracefully
+\item Returns false on first difference exceeding tolerance
+\item Ensures robust duplicate detection in hash sets
+\end{DoxyItemize}
+
+{\bfseries{Tolerance Selection\+:}}
+\begin{DoxyItemize}
+\item 1e-\/3 radians ≈ 0.\+057 degrees
+\item Balances precision and numerical stability
+\item Prevents false negatives due to floating-\/point errors
+\item Suitable for most robotic applications
+\end{DoxyItemize}
+
+{\bfseries{Performance\+:}}
+\begin{DoxyItemize}
+\item O(n) time complexity where n is number of joints
+\item Early exit on first difference
+\item Optimized for frequent comparisons 
+\end{DoxyItemize}
+
+The documentation for this struct was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+/home/shanto/\+Documents/arm-\/ws-\/v0.\+0.\+0/dds\+\_\+bridge/cpp\+\_\+plugins/include/\mbox{\hyperlink{reachable__workspace__generator_8h}{reachable\+\_\+workspace\+\_\+generator.\+h}}\item 
+/home/shanto/\+Documents/arm-\/ws-\/v0.\+0.\+0/dds\+\_\+bridge/cpp\+\_\+plugins/src/\mbox{\hyperlink{reachable__workspace__generator_8cpp}{reachable\+\_\+workspace\+\_\+generator.\+cpp}}\end{DoxyCompactItemize}

@@ -1,0 +1,92 @@
+\hypertarget{structJointConfigHash}{}\doxysection{Joint\+Config\+Hash Struct Reference}
+\label{structJointConfigHash}\index{JointConfigHash@{JointConfigHash}}
+
+
+Hash function for Joint\+Config to use with unordered\+\_\+set (O(1) lookup)  
+
+
+
+
+{\ttfamily \#include $<$reachable\+\_\+workspace\+\_\+generator.\+h$>$}
+
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+std\+::size\+\_\+t \mbox{\hyperlink{structJointConfigHash_a68062865204b2e6f3fa9afee8bd482fd}{operator()}} (const \mbox{\hyperlink{workspace__types_8h_a050e523c0022a97c9b9646ced274bbda}{Joint\+Config}} \&config) const
+\begin{DoxyCompactList}\small\item\em Compute hash value for a joint configuration. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Hash function for Joint\+Config to use with unordered\+\_\+set (O(1) lookup) 
+
+This struct provides a hash function for Joint\+Config vectors, enabling efficient O(1) lookup in unordered containers. The hash function combines individual joint values using a simple but effective hashing strategy.
+
+{\bfseries{Hash Strategy\+:}}
+\begin{DoxyItemize}
+\item Combines hash values of individual joint angles
+\item Uses bit manipulation for good distribution
+\item Provides fast computation for real-\/time applications
+\end{DoxyItemize}
+
+{\bfseries{Usage\+:}}
+\begin{DoxyItemize}
+\item Used in unordered\+\_\+set for duplicate detection
+\item Enables efficient configuration comparison
+\item Critical for performance in large workspace generation 
+\end{DoxyItemize}
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{structJointConfigHash_a68062865204b2e6f3fa9afee8bd482fd}\label{structJointConfigHash_a68062865204b2e6f3fa9afee8bd482fd}} 
+\index{JointConfigHash@{JointConfigHash}!operator()@{operator()}}
+\index{operator()@{operator()}!JointConfigHash@{JointConfigHash}}
+\doxysubsubsection{\texorpdfstring{operator()()}{operator()()}}
+{\footnotesize\ttfamily std\+::size\+\_\+t Joint\+Config\+Hash\+::operator() (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{workspace__types_8h_a050e523c0022a97c9b9646ced274bbda}{Joint\+Config}} \&}]{config }\end{DoxyParamCaption}) const}
+
+
+
+Compute hash value for a joint configuration. 
+
+Hash function implementation for Joint\+Config.
+
+
+\begin{DoxyParams}{Parameters}
+{\em config} & Joint configuration vector to hash \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Hash value for the configuration
+\end{DoxyReturn}
+{\bfseries{Hash Algorithm\+:}}
+\begin{DoxyItemize}
+\item Iterates through each joint angle
+\item Combines hash using XOR and bit shifting
+\item Uses golden ratio constant for better distribution
+\item Returns combined hash value
+\end{DoxyItemize}
+
+{\bfseries{Hash Algorithm\+:}}
+\begin{DoxyItemize}
+\item Iterates through each joint angle in the configuration
+\item Combines hash values using XOR and bit shifting operations
+\item Uses golden ratio constant (0x9e3779b9) for better distribution
+\item Provides fast computation suitable for real-\/time applications
+\end{DoxyItemize}
+
+{\bfseries{Hash Strategy\+:}}
+\begin{DoxyItemize}
+\item Simple but effective combination of individual joint hashes
+\item Uses bit manipulation for good distribution properties
+\item Balances speed and collision resistance
+\end{DoxyItemize}
+
+{\bfseries{Performance\+:}}
+\begin{DoxyItemize}
+\item O(n) time complexity where n is number of joints
+\item Constant space complexity
+\item Optimized for frequent lookups in hash sets 
+\end{DoxyItemize}
+
+The documentation for this struct was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+/home/shanto/\+Documents/arm-\/ws-\/v0.\+0.\+0/dds\+\_\+bridge/cpp\+\_\+plugins/include/\mbox{\hyperlink{reachable__workspace__generator_8h}{reachable\+\_\+workspace\+\_\+generator.\+h}}\item 
+/home/shanto/\+Documents/arm-\/ws-\/v0.\+0.\+0/dds\+\_\+bridge/cpp\+\_\+plugins/src/\mbox{\hyperlink{reachable__workspace__generator_8cpp}{reachable\+\_\+workspace\+\_\+generator.\+cpp}}\end{DoxyCompactItemize}

@@ -1,0 +1,88 @@
+\hypertarget{ik__solver__w__rws_8hpp}{}\doxysection{/home/shanto/\+Documents/arm-\/ws-\/v0.0.0/dds\+\_\+bridge/cpp\+\_\+plugins/include/ik\+\_\+solver\+\_\+w\+\_\+rws.hpp File Reference}
+\label{ik__solver__w__rws_8hpp}\index{/home/shanto/Documents/arm-\/ws-\/v0.0.0/dds\_bridge/cpp\_plugins/include/ik\_solver\_w\_rws.hpp@{/home/shanto/Documents/arm-\/ws-\/v0.0.0/dds\_bridge/cpp\_plugins/include/ik\_solver\_w\_rws.hpp}}
+
+
+Inverse Kinematics Solver with Reachable Workspace Support.  
+
+
+{\ttfamily \#include \char`\"{}robot\+\_\+model.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}workspace\+\_\+types.\+h\char`\"{}}\newline
+{\ttfamily \#include $<$Eigen/\+Dense$>$}\newline
+{\ttfamily \#include $<$algorithm$>$}\newline
+{\ttfamily \#include $<$cstddef$>$}\newline
+{\ttfamily \#include $<$cstdint$>$}\newline
+{\ttfamily \#include $<$filesystem$>$}\newline
+{\ttfamily \#include $<$fstream$>$}\newline
+{\ttfamily \#include $<$iostream$>$}\newline
+{\ttfamily \#include $<$limits$>$}\newline
+{\ttfamily \#include $<$nanoflann.\+hpp$>$}\newline
+{\ttfamily \#include $<$proxsuite/proxqp/dense/dense.\+hpp$>$}\newline
+{\ttfamily \#include $<$vector$>$}\newline
+Include dependency graph for ik\+\_\+solver\+\_\+w\+\_\+rws.\+hpp\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{ik__solver__w__rws_8hpp__incl}
+\end{center}
+\end{figure}
+This graph shows which files directly or indirectly include this file\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=243pt]{ik__solver__w__rws_8hpp__dep__incl}
+\end{center}
+\end{figure}
+\doxysubsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+struct \mbox{\hyperlink{structWorkspaceAdaptor}{Workspace\+Adaptor}}
+\begin{DoxyCompactList}\small\item\em Nanoflann adaptor for \mbox{\hyperlink{structWorkspacePoint}{Workspace\+Point}} data structure. \end{DoxyCompactList}\item 
+class \mbox{\hyperlink{classIKSolverWithRWS}{IKSolver\+With\+RWS}}
+\begin{DoxyCompactList}\small\item\em Inverse Kinematics Solver with Reachable Workspace Support. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Typedefs}
+\begin{DoxyCompactItemize}
+\item 
+using \mbox{\hyperlink{ik__solver__w__rws_8hpp_a6d07dd6db70399812e2d5ec2f5ae4332}{KDTree3D}} = nanoflann\+::\+KDTree\+Single\+Index\+Adaptor$<$ nanoflann\+::\+L2\+\_\+\+Simple\+\_\+\+Adaptor$<$ double, \mbox{\hyperlink{structWorkspaceAdaptor}{Workspace\+Adaptor}} $>$, \mbox{\hyperlink{structWorkspaceAdaptor}{Workspace\+Adaptor}}, 3 $>$
+\begin{DoxyCompactList}\small\item\em 3D k-\/d tree type for workspace point indexing \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Inverse Kinematics Solver with Reachable Workspace Support. 
+
+This header file defines the \mbox{\hyperlink{classIKSolverWithRWS}{IKSolver\+With\+RWS}} class, which provides efficient inverse kinematics solving capabilities using pre-\/computed reachable workspace data. The solver uses a two-\/stage approach\+:
+\begin{DoxyEnumerate}
+\item Fast nearest neighbor search to find good initial joint configurations
+\item Iterative optimization using quadratic programming to refine the solution
+\end{DoxyEnumerate}
+
+The workspace data is stored in binary files containing\+:
+\begin{DoxyItemize}
+\item K-\/d tree data\+: sampled workspace points with positions, orientations, and joint configs
+\item Voxel grid data\+: spatial indexing structure for fast neighbor search
+\end{DoxyItemize}
+
+\begin{DoxyAuthor}{Author}
+Shantanu Ghodgaonkar 
+\end{DoxyAuthor}
+\begin{DoxyDate}{Date}
+2025-\/07-\/21 
+\end{DoxyDate}
+\begin{DoxyVersion}{Version}
+1.\+0 
+\end{DoxyVersion}
+
+
+\doxysubsection{Typedef Documentation}
+\mbox{\Hypertarget{ik__solver__w__rws_8hpp_a6d07dd6db70399812e2d5ec2f5ae4332}\label{ik__solver__w__rws_8hpp_a6d07dd6db70399812e2d5ec2f5ae4332}} 
+\index{ik\_solver\_w\_rws.hpp@{ik\_solver\_w\_rws.hpp}!KDTree3D@{KDTree3D}}
+\index{KDTree3D@{KDTree3D}!ik\_solver\_w\_rws.hpp@{ik\_solver\_w\_rws.hpp}}
+\doxysubsubsection{\texorpdfstring{KDTree3D}{KDTree3D}}
+{\footnotesize\ttfamily using \mbox{\hyperlink{ik__solver__w__rws_8hpp_a6d07dd6db70399812e2d5ec2f5ae4332}{KDTree3D}} =  nanoflann\+::\+KDTree\+Single\+Index\+Adaptor$<$ nanoflann\+::\+L2\+\_\+\+Simple\+\_\+\+Adaptor$<$double, \mbox{\hyperlink{structWorkspaceAdaptor}{Workspace\+Adaptor}}$>$, \mbox{\hyperlink{structWorkspaceAdaptor}{Workspace\+Adaptor}}, 3 $>$}
+
+
+
+3D k-\/d tree type for workspace point indexing 
+
+This typedef creates a convenient alias for a 3-\/dimensional k-\/d tree that uses L2 (Euclidean) distance metric for nearest neighbor searches. The tree is built over workspace points using their position coordinates. 

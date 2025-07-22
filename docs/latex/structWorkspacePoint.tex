@@ -1,0 +1,83 @@
+\hypertarget{structWorkspacePoint}{}\doxysection{Workspace\+Point Struct Reference}
+\label{structWorkspacePoint}\index{WorkspacePoint@{WorkspacePoint}}
+
+
+Structure to hold workspace point data with position, rotation, and joint config.  
+
+
+
+
+{\ttfamily \#include $<$workspace\+\_\+types.\+h$>$}
+
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{structWorkspacePoint_a7996d0e1a94e3555ab76b3583d812510}{Workspace\+Point}} (const Eigen\+::\+Vector3d \&pos, const Eigen\+::\+Quaterniond \&rot, const \mbox{\hyperlink{workspace__types_8h_a050e523c0022a97c9b9646ced274bbda}{Joint\+Config}} \&config)
+\begin{DoxyCompactList}\small\item\em Constructor. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structWorkspacePoint_a7996d0e1a94e3555ab76b3583d812510}\label{structWorkspacePoint_a7996d0e1a94e3555ab76b3583d812510}} 
+{\bfseries Workspace\+Point} (const Eigen\+::\+Vector3d \&pos, const Eigen\+::\+Quaterniond \&rot, const \mbox{\hyperlink{workspace__types_8h_a050e523c0022a97c9b9646ced274bbda}{Joint\+Config}} \&config)
+\end{DoxyCompactItemize}
+\doxysubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{structWorkspacePoint_a50a7aeb0315cabe2c4753a675e148063}\label{structWorkspacePoint_a50a7aeb0315cabe2c4753a675e148063}} 
+Eigen\+::\+Vector3d \mbox{\hyperlink{structWorkspacePoint_a50a7aeb0315cabe2c4753a675e148063}{position}}
+\begin{DoxyCompactList}\small\item\em 3D position of end effector in meters \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structWorkspacePoint_ae285da55b7fec4c9acdc70468052b07c}\label{structWorkspacePoint_ae285da55b7fec4c9acdc70468052b07c}} 
+Eigen\+::\+Quaterniond \mbox{\hyperlink{structWorkspacePoint_ae285da55b7fec4c9acdc70468052b07c}{rotation}}
+\begin{DoxyCompactList}\small\item\em Quaternion representing end effector orientation. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structWorkspacePoint_a61711a078f068f9208bd8239c136f1a2}\label{structWorkspacePoint_a61711a078f068f9208bd8239c136f1a2}} 
+\mbox{\hyperlink{workspace__types_8h_a050e523c0022a97c9b9646ced274bbda}{Joint\+Config}} \mbox{\hyperlink{structWorkspacePoint_a61711a078f068f9208bd8239c136f1a2}{joint\+\_\+config}}
+\begin{DoxyCompactList}\small\item\em Joint configuration that achieves this pose. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Structure to hold workspace point data with position, rotation, and joint config. 
+
+This structure represents a single point in the robot\textquotesingle{}s reachable workspace. Each point contains\+:
+\begin{DoxyItemize}
+\item Position\+: 3D Cartesian coordinates of the end effector
+\item Rotation\+: Quaternion representing end effector orientation
+\item Joint configuration\+: Joint angles that achieve this pose
+\end{DoxyItemize}
+
+{\bfseries{Usage\+:}}
+\begin{DoxyItemize}
+\item Used to store pre-\/computed workspace samples
+\item Enables fast nearest neighbor search for IK warm-\/start
+\item Provides mapping from workspace poses to joint configurations
+\end{DoxyItemize}
+
+{\bfseries{Data Integrity\+:}}
+\begin{DoxyItemize}
+\item Quaternion should be normalized to unit length
+\item Joint angles should be in valid ranges
+\item Position should be within robot\textquotesingle{}s reachable workspace 
+\end{DoxyItemize}
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{structWorkspacePoint_a7996d0e1a94e3555ab76b3583d812510}\label{structWorkspacePoint_a7996d0e1a94e3555ab76b3583d812510}} 
+\index{WorkspacePoint@{WorkspacePoint}!WorkspacePoint@{WorkspacePoint}}
+\index{WorkspacePoint@{WorkspacePoint}!WorkspacePoint@{WorkspacePoint}}
+\doxysubsubsection{\texorpdfstring{WorkspacePoint()}{WorkspacePoint()}}
+{\footnotesize\ttfamily Workspace\+Point\+::\+Workspace\+Point (\begin{DoxyParamCaption}\item[{const Eigen\+::\+Vector3d \&}]{pos,  }\item[{const Eigen\+::\+Quaterniond \&}]{rot,  }\item[{const \mbox{\hyperlink{workspace__types_8h_a050e523c0022a97c9b9646ced274bbda}{Joint\+Config}} \&}]{config }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Constructor. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em pos} & 3D position vector \\
+\hline
+{\em rot} & Quaternion for rotation (will be normalized) \\
+\hline
+{\em config} & Joint configuration vector\\
+\hline
+\end{DoxyParams}
+The constructor automatically normalizes the quaternion to ensure numerical stability and proper rotation representation. 
+
+The documentation for this struct was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+/home/shanto/\+Documents/arm-\/ws-\/v0.\+0.\+0/dds\+\_\+bridge/cpp\+\_\+plugins/include/\mbox{\hyperlink{workspace__types_8h}{workspace\+\_\+types.\+h}}\item 
+/home/shanto/\+Documents/arm-\/ws-\/v0.\+0.\+0/dds\+\_\+bridge/cpp\+\_\+plugins/src/ik\+\_\+solver\+\_\+w\+\_\+rws\+\_\+dev.\+cpp\end{DoxyCompactItemize}
