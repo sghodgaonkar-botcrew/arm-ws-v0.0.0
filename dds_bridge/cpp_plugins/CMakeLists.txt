@@ -15,12 +15,17 @@ endif()
 # Include FetchContent for downloading dependencies
 include(FetchContent)
 
+# Disable test builds to prevent target name conflicts
+set(FETCHCONTENT_UPDATES_DISCONNECTED ON)
+set(BUILD_TESTING OFF)
+
 # Fetch Nanoflann for efficient k-d tree operations
 FetchContent_Declare(
     nanoflann
     GIT_REPOSITORY https://github.com/jlblancoc/nanoflann.git
     GIT_TAG master
 )
+set(NANOFLANN_BUILD_TESTS OFF)
 FetchContent_MakeAvailable(nanoflann)
 
 # Fetch Moteus from GitHub
@@ -32,6 +37,24 @@ FetchContent_Declare(
 
 # Make Moteus available
 FetchContent_MakeAvailable(moteus)
+
+# Fetch jsoncons for JSON handling
+FetchContent_Declare(
+    jsoncons
+    GIT_REPOSITORY https://github.com/danielaparker/jsoncons.git
+    GIT_TAG v0.171.0
+)
+set(JSONCONS_BUILD_TESTS OFF)
+FetchContent_MakeAvailable(jsoncons)
+
+# Fetch cppzmq for ZeroMQ communication
+FetchContent_Declare(
+    cppzmq
+    GIT_REPOSITORY https://github.com/zeromq/cppzmq.git
+    GIT_TAG v4.10.0
+)
+set(CPPZMQ_BUILD_TESTS OFF)
+FetchContent_MakeAvailable(cppzmq)
 
 # Find required packages
 find_package(PkgConfig REQUIRED)
@@ -53,16 +76,16 @@ find_package(Boost REQUIRED COMPONENTS random)
 # Find OpenMP for reachable_workspace
 find_package(OpenMP)
 
-# Create ik_solver_v2 executable
-add_executable(ik_solver_v2
-    src/ik_solver_v2.cpp
-    src/robot_model.cpp
-)
+# Find ZeroMQ (required for cppzmq)
+find_package(PkgConfig REQUIRED)
+pkg_check_modules(ZMQ REQUIRED libzmq)
 
-# Create profiled version of ik_solver_v2
-add_executable(ik_solver_v2_profiled
-    src/ik_solver_v2_profiled.cpp
-    src/robot_model.cpp
+# Create cps_link executable
+# Note: This requires CoppeliaSim remote API to be installed
+# The RemoteAPIClient.h header should be available in CoppeliaSim installation
+add_executable(cps_link
+    src/cps_link.cpp
+    /home/shanto/CoppeliaSim_Pro_V4_10_0_rev0_Ubuntu22_04/programming/zmqRemoteApi/clients/cpp/RemoteAPIClient.cpp
 )
 
 # Create ik_solver_w_rws_dev executable
@@ -87,18 +110,6 @@ add_executable(ik_sub
     ${CMAKE_CURRENT_BINARY_DIR}/generated/arm_msgs.cpp
 )
 
-# Create reachable_workspace executable
-add_executable(reachable_workspace
-    src/reachable_workspace.cpp
-    src/robot_model.cpp
-)
-
-# Create optimized reachable_workspace executable
-add_executable(reachable_workspace_optimized
-    src/reachable_workspace_optimized.cpp
-    src/robot_model.cpp
-)
-
 # Create reachable workspace generator library
 add_library(reachable_workspace_generator
     src/reachable_workspace_generator.cpp
@@ -111,18 +122,12 @@ add_executable(example_workspace_generator
 )
 
 # Set include directories
-target_include_directories(ik_solver_v2 PRIVATE
+target_include_directories(cps_link PRIVATE
     ${CMAKE_CURRENT_SOURCE_DIR}/include
-    ${EIGEN3_INCLUDE_DIRS}
-    /opt/openrobots/include # System Pinocchio
-    /home/shanto/proxsuite/include # ProxSuite headers
-)
-
-target_include_directories(ik_solver_v2_profiled PRIVATE
-    ${CMAKE_CURRENT_SOURCE_DIR}/include
-    ${EIGEN3_INCLUDE_DIRS}
-    /opt/openrobots/include # System Pinocchio
-    /home/shanto/proxsuite/include # ProxSuite headers
+    ${jsoncons_SOURCE_DIR}/include
+    ${cppzmq_SOURCE_DIR}
+    ${ZMQ_INCLUDE_DIRS}
+    /home/shanto/CoppeliaSim_Pro_V4_10_0_rev0_Ubuntu22_04/programming/zmqRemoteApi/clients/cpp # CoppeliaSim remote API headers
 )
 
 target_include_directories(ik_solver_w_rws_dev PRIVATE
@@ -151,18 +156,6 @@ target_include_directories(ik_sub PRIVATE
     ${nanoflann_SOURCE_DIR}/include # Nanoflann headers
 )
 
-target_include_directories(reachable_workspace PRIVATE
-    ${CMAKE_CURRENT_SOURCE_DIR}/include
-    ${EIGEN3_INCLUDE_DIRS}
-    /opt/openrobots/include # System Pinocchio
-)
-
-target_include_directories(reachable_workspace_optimized PRIVATE
-    ${CMAKE_CURRENT_SOURCE_DIR}/include
-    ${EIGEN3_INCLUDE_DIRS}
-    /opt/openrobots/include # System Pinocchio
-)
-
 target_include_directories(reachable_workspace_generator PRIVATE
     ${CMAKE_CURRENT_SOURCE_DIR}/include
     ${EIGEN3_INCLUDE_DIRS}
@@ -176,18 +169,10 @@ target_include_directories(example_workspace_generator PRIVATE
 )
 
 # Link libraries
-target_link_libraries(ik_solver_v2
-    pinocchio::pinocchio
-    pinocchio::pinocchio_parsers
-    ${EIGEN3_LIBRARIES}
-    proxsuite::proxsuite
-)
-
-target_link_libraries(ik_solver_v2_profiled
-    pinocchio::pinocchio
-    pinocchio::pinocchio_parsers
-    ${EIGEN3_LIBRARIES}
-    proxsuite::proxsuite
+target_link_libraries(cps_link
+    ${ZMQ_LIBRARIES}
+    cppzmq
+    ${Boost_LIBRARIES}
 )
 
 target_link_libraries(ik_solver_w_rws_dev
@@ -214,20 +199,6 @@ target_link_libraries(ik_sub
     moteus::cpp
 )
 
-target_link_libraries(reachable_workspace
-    pinocchio::pinocchio
-    pinocchio::pinocchio_parsers
-    ${EIGEN3_LIBRARIES}
-    ${Boost_LIBRARIES}
-)
-
-target_link_libraries(reachable_workspace_optimized
-    pinocchio::pinocchio
-    pinocchio::pinocchio_parsers
-    ${EIGEN3_LIBRARIES}
-    ${Boost_LIBRARIES}
-)
-
 target_link_libraries(reachable_workspace_generator
     pinocchio::pinocchio
     pinocchio::pinocchio_parsers
@@ -243,12 +214,6 @@ target_link_libraries(example_workspace_generator
     ${Boost_LIBRARIES}
 )
 
-# Add OpenMP support if available
-if(OpenMP_CXX_FOUND)
-    target_link_libraries(reachable_workspace OpenMP::OpenMP_CXX)
-    target_compile_options(reachable_workspace PRIVATE ${OpenMP_CXX_FLAGS})
-endif()
-
 # Print status
 message(STATUS "=== Build Configuration ===")
 message(STATUS "  Eigen3: ${EIGEN3_FOUND}")
@@ -258,4 +223,8 @@ message(STATUS "  CycloneDDS-CXX: ${CycloneDDS-CXX_FOUND}")
 message(STATUS "  Moteus: ${moteus_POPULATED}")
 message(STATUS "  Boost: ${Boost_FOUND}")
 message(STATUS "  OpenMP: ${OpenMP_CXX_FOUND}")
+message(STATUS "  jsoncons: ${jsoncons_POPULATED}")
+message(STATUS "  cppzmq: ${cppzmq_POPULATED}")
+message(STATUS "  ZeroMQ: ${ZMQ_FOUND}")
+message(STATUS "  CoppeliaSim Remote API: Installed at /home/shanto/CoppeliaSim_Pro_V4_10_0_rev0_Ubuntu22_04")
 message(STATUS "  C++ Standard: ${CMAKE_CXX_STANDARD}")
