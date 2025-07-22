@@ -1,7 +1,10 @@
 #include "ik_solver_w_rws.hpp"
 #include "reachable_workspace_generator.h"
 #include "robot_model.h"
+#include <algorithm> // For std::max_element and std::min_element
 #include <iostream>
+#include <numeric> // For std::accumulate
+#include <vector>
 
 int main(int argc, char *argv[]) {
     try {
@@ -10,6 +13,7 @@ int main(int argc, char *argv[]) {
             "/home/shanto/Documents/arm-ws-v0.0.0/urdf/ur10_v1.1.3/ur10.urdf",
             "connection_frame",
             "/home/shanto/Documents/arm-ws-v0.0.0/urdf/ur10_v1.1.3/ur10.srdf");
+
         // Take a system argument (y/n) as to whether or not generate a new
         // reachable workspace
         if (argc > 1) {
@@ -20,10 +24,11 @@ int main(int argc, char *argv[]) {
                 ReachableWorkspaceGenerator generator(
                     robot_model, // RobotModel reference
                     50000,       // num_points
-                    1000,        // batch_size
-                    0.05,        // ground_threshold
+                    5000,        // batch_size
+                    0.025,       // ground_threshold
                     1e-3,        // joint_tolerance
-                    10           // max_attempts_per_sample
+                    10,          // max_attempts_per_sample
+                    50           // max_distance
                 );
                 generator.generateAndSaveWorkspace("generated_workspaces");
                 std::cout << "Reachable workspace generated and saved to "
@@ -102,6 +107,14 @@ int main(int argc, char *argv[]) {
         }
         std::cout << "Quaternion normalization completed." << std::endl;
 
+        // Initialize tracking variables for success/failure statistics
+        int total_targets = target_poses.size();
+        int successful_targets = 0;
+        int failed_targets = 0;
+        std::vector<int> failed_target_indices;
+        std::vector<double> position_errors;
+        std::vector<double> rotation_errors;
+
         // Test each target pose
         for (size_t i = 0; i < target_poses.size(); ++i) {
             std::cout << "\n=== Testing Target " << (i + 1)
@@ -146,10 +159,19 @@ int main(int argc, char *argv[]) {
             std::cout << "Position error: " << position_error << " m"
                       << std::endl;
             std::cout << "Rotation error: " << rotation_error << std::endl;
+
+            // Store errors for statistics
+            position_errors.push_back(position_error);
+            rotation_errors.push_back(rotation_error);
+
             if (position_error > 1e-6 || rotation_error > 1e-6) {
                 std::cout << "WARNING: Target pose is unreachable: error "
                              "exceeds tolerance."
                           << std::endl;
+
+                // Track failed target
+                failed_targets++;
+                failed_target_indices.push_back(i + 1); // Store 1-based index
 
                 // Solve IK without warm start (using neutral configuration)
                 JointConfig solution_no_warmstart = ik_solver.solve_ik(
@@ -183,8 +205,69 @@ int main(int argc, char *argv[]) {
             } else {
                 std::cout << "SUCCESS: Target pose reached within tolerance."
                           << std::endl;
+                successful_targets++;
             }
         }
+
+        // Print comprehensive test summary
+        std::cout << "\n" << std::string(60, '=') << std::endl;
+        std::cout << "                    TEST SUMMARY" << std::endl;
+        std::cout << std::string(60, '=') << std::endl;
+
+        std::cout << "Total targets tested: " << total_targets << std::endl;
+        std::cout << "Successful targets: " << successful_targets << std::endl;
+        std::cout << "Failed targets: " << failed_targets << std::endl;
+        std::cout << "Success rate: "
+                  << (100.0 * successful_targets / total_targets) << "%"
+                  << std::endl;
+
+        if (failed_targets > 0) {
+            std::cout << "\nFailed targets:" << std::endl;
+            for (size_t i = 0; i < failed_target_indices.size(); ++i) {
+                int target_idx = failed_target_indices[i];
+                std::cout << "  Target " << target_idx << ":" << std::endl;
+                std::cout << "    Position error: "
+                          << position_errors[target_idx - 1] << " m"
+                          << std::endl;
+                std::cout << "    Rotation error: "
+                          << rotation_errors[target_idx - 1] << std::endl;
+                std::cout << "    Target pose: ["
+                          << target_poses[target_idx - 1].transpose() << "]"
+                          << std::endl;
+            }
+        } else {
+            std::cout << "\nAll targets succeeded! No failures to report."
+                      << std::endl;
+        }
+
+        // Print error statistics
+        if (!position_errors.empty()) {
+            double max_pos_error = *std::max_element(position_errors.begin(),
+                                                     position_errors.end());
+            double min_pos_error = *std::min_element(position_errors.begin(),
+                                                     position_errors.end());
+            double avg_pos_error = std::accumulate(position_errors.begin(),
+                                                   position_errors.end(), 0.0) /
+                                   position_errors.size();
+
+            double max_rot_error = *std::max_element(rotation_errors.begin(),
+                                                     rotation_errors.end());
+            double min_rot_error = *std::min_element(rotation_errors.begin(),
+                                                     rotation_errors.end());
+            double avg_rot_error = std::accumulate(rotation_errors.begin(),
+                                                   rotation_errors.end(), 0.0) /
+                                   rotation_errors.size();
+
+            std::cout << "\nError Statistics:" << std::endl;
+            std::cout << "Position errors (m): min=" << min_pos_error
+                      << ", avg=" << avg_pos_error << ", max=" << max_pos_error
+                      << std::endl;
+            std::cout << "Rotation errors: min=" << min_rot_error
+                      << ", avg=" << avg_rot_error << ", max=" << max_rot_error
+                      << std::endl;
+        }
+
+        std::cout << std::string(60, '=') << std::endl;
 
     } catch (const std::exception &e) {
         std::cerr << "Error: " << e.what() << std::endl;

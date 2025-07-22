@@ -137,14 +137,9 @@ int main(int argc, char **argv) {
                     LOG_INFO() << "IK solution found successfully using "
                                   "workspace solver!\n";
                 } else {
-                    // Fallback: Use solver_ik with NEUTRAL_JOINT_CONFIG as
-                    // initial guess
-                    LOG_INFO() << "Using fallback IK method (solver_ik with "
-                                  "NEUTRAL_JOINT_CONFIG).\n";
-                    solution = ik_solver_ptr->solve_ik(
-                        target_pose_xyzquat, &RobotModel::NEUTRAL_JOINT_CONFIG);
-                    LOG_INFO()
-                        << "Fallback IK solution computed using solver_ik.\n";
+                    throw std::runtime_error(
+                        "Workspace-based IK solver is not available. No "
+                        "fallback permitted.");
                 }
 
                 // Convert solution to joint angles array

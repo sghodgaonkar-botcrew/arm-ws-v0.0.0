@@ -182,16 +182,22 @@ IKSolverWithRWS::solve(const Eigen::Vector<double, 7> &target_pose_xyzquat) {
                 bestIdx = neighbor.index;
             }
         }
+        if (bestPoseErr > 1.5) {
+            std::cout << "Rotation error is too high, using current joint "
+                         "configuration as warm-start."
+                      << std::endl;
+            q_init = robot_model_.getCurrentJointConfig();
+        } else {
+            // Use the best neighbor's joint configuration as warm-start
+            q_init = workspace_points_[bestIdx].joint_config;
+            std::cout << "Selected initial configuration with rotation error: "
+                      << bestPoseErr << " radians" << std::endl;
+            std::cout << "Initial joint config: [" << q_init.transpose() << "]"
+                      << std::endl;
 
-        // Use the best neighbor's joint configuration as warm-start
-        q_init = workspace_points_[bestIdx].joint_config;
-        std::cout << "Selected initial configuration with rotation error: "
-                  << bestPoseErr << " radians" << std::endl;
-        std::cout << "Initial joint config: [" << q_init.transpose() << "]"
-                  << std::endl;
-
-        // Commented out code shows alternative selection strategies
-        // that were considered but not used in the final implementation
+            // Commented out code shows alternative selection strategies
+            // that were considered but not used in the final implementation
+        }
     } else {
         std::cout << "No neighbors found, using current joint configuration as "
                      "warm-start."
@@ -628,7 +634,8 @@ IKSolverWithRWS::loadKDTreeData(const std::string &filename) {
  * - numCells: number of occupied cells
  * - sparseNearestIdx: map from cell index to nearest point index
  *
- * The voxel grid provides O(1) spatial indexing for nearest neighbor search.
+ * The voxel grid provides O(1) spatial indexing for nearest neighbor
+ * search.
  *
  * **Error Handling:**
  * - Returns empty grid if file cannot be opened
@@ -695,7 +702,8 @@ VoxelGrid IKSolverWithRWS::loadVoxelGridData(const std::string &filename) {
  *    - Start with center cell
  *    - Expand to 6-connected neighbors
  *    - Continue until k neighbors found or search exhausted
- * 3. **Distance Calculation**: Compute Euclidean distances to all candidates
+ * 3. **Distance Calculation**: Compute Euclidean distances to all
+ * candidates
  * 4. **Selection**: Return k closest neighbors by distance
  *
  * **Performance Characteristics:**
@@ -862,7 +870,8 @@ std::vector<NearestNeighbor> IKSolverWithRWS::findKNearestNeighborsVoxel(
  *
  * **Algorithm Flow:**
  * 1. **Tree Construction**: Build k-d tree from workspace points
- * 2. **Nearest Neighbor Search**: Use nanoflann library for efficient search
+ * 2. **Nearest Neighbor Search**: Use nanoflann library for efficient
+ * search
  * 3. **Distance Conversion**: Convert squared distances to actual distances
  * 4. **Result Formatting**: Convert to NearestNeighbor format
  *
