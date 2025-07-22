@@ -1,0 +1,81 @@
+\hypertarget{reachable__workspace__generator_8h}{}\doxysection{/home/shanto/\+Documents/arm-\/ws-\/v0.0.0/dds\+\_\+bridge/cpp\+\_\+plugins/include/reachable\+\_\+workspace\+\_\+generator.h File Reference}
+\label{reachable__workspace__generator_8h}\index{/home/shanto/Documents/arm-\/ws-\/v0.0.0/dds\_bridge/cpp\_plugins/include/reachable\_workspace\_generator.h@{/home/shanto/Documents/arm-\/ws-\/v0.0.0/dds\_bridge/cpp\_plugins/include/reachable\_workspace\_generator.h}}
+
+
+Reachable Workspace Generator for Robot IK Solver.  
+
+
+{\ttfamily \#include \char`\"{}robot\+\_\+model.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}workspace\+\_\+types.\+h\char`\"{}}\newline
+{\ttfamily \#include $<$Eigen/\+Geometry$>$}\newline
+{\ttfamily \#include $<$random$>$}\newline
+{\ttfamily \#include $<$string$>$}\newline
+{\ttfamily \#include $<$unordered\+\_\+set$>$}\newline
+{\ttfamily \#include $<$vector$>$}\newline
+Include dependency graph for reachable\+\_\+workspace\+\_\+generator.\+h\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{reachable__workspace__generator_8h__incl}
+\end{center}
+\end{figure}
+This graph shows which files directly or indirectly include this file\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=247pt]{reachable__workspace__generator_8h__dep__incl}
+\end{center}
+\end{figure}
+\doxysubsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+struct \mbox{\hyperlink{structJointConfigHash}{Joint\+Config\+Hash}}
+\begin{DoxyCompactList}\small\item\em Hash function for Joint\+Config to use with unordered\+\_\+set (O(1) lookup) \end{DoxyCompactList}\item 
+struct \mbox{\hyperlink{structJointConfigEqual}{Joint\+Config\+Equal}}
+\begin{DoxyCompactList}\small\item\em Equality function for Joint\+Config to use with unordered\+\_\+set. \end{DoxyCompactList}\item 
+class \mbox{\hyperlink{classReachableWorkspaceGenerator}{Reachable\+Workspace\+Generator}}
+\begin{DoxyCompactList}\small\item\em Main workspace generator class for robot reachable workspace sampling. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Reachable Workspace Generator for Robot IK Solver. 
+
+This header file defines the \mbox{\hyperlink{classReachableWorkspaceGenerator}{Reachable\+Workspace\+Generator}} class, which is responsible for generating and sampling the reachable workspace of a robot arm. The generator creates a comprehensive dataset of valid joint configurations and their corresponding end-\/effector poses for use in IK solving.
+
+{\bfseries{Key Features\+:}}
+\begin{DoxyItemize}
+\item Random sampling of joint configurations within joint limits
+\item Collision detection and ground clearance validation
+\item Duplicate configuration detection and retry logic
+\item Batch processing for improved performance
+\item Multiple output formats (PLY, binary, voxel grid)
+\end{DoxyItemize}
+
+{\bfseries{Generation Process\+:}}
+\begin{DoxyEnumerate}
+\item Random joint configuration sampling
+\item Forward kinematics computation
+\item Collision and validity checking
+\item Duplicate detection and filtering
+\item Data storage in multiple formats
+\end{DoxyEnumerate}
+
+{\bfseries{Output Formats\+:}}
+\begin{DoxyItemize}
+\item Binary PLY files for visualization
+\item ASCII PLY files for human readability
+\item Binary k-\/d tree data for spatial indexing
+\item Sparse voxel grid for fast neighbor search
+\end{DoxyItemize}
+
+\begin{DoxyAuthor}{Author}
+Shantanu Ghodgaonkar 
+\end{DoxyAuthor}
+\begin{DoxyDate}{Date}
+2025-\/07-\/21 
+\end{DoxyDate}
+\begin{DoxyVersion}{Version}
+1.\+0 
+\end{DoxyVersion}

@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['cpp_20plugins_20documentation_53',['CPP Plugins Documentation',['../index.html',1,'']]]
+  ['c_2b_2b_20plugins_20for_20robot_20arm_20control_165',['C++ Plugins for Robot Arm Control',['../index.html',1,'']]]
 ];

@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['ikmodel_26',['IKModel',['../classIKModel.html',1,'']]]
+  ['iksolverwithrws_79',['IKSolverWithRWS',['../classIKSolverWithRWS.html',1,'']]]
 ];

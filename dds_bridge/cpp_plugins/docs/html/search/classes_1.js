@@ -1,4 +1,5 @@
 var searchData=
 [
-  ['motorcontroller_27',['MotorController',['../classMotorController.html',1,'']]]
+  ['jointconfigequal_80',['JointConfigEqual',['../structJointConfigEqual.html',1,'']]],
+  ['jointconfighash_81',['JointConfigHash',['../structJointConfigHash.html',1,'']]]
 ];

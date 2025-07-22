@@ -1,5 +1,4 @@
 var searchData=
 [
-  ['_7eikmodel_51',['~IKModel',['../classIKModel.html#a559813c73d212d9cebaa62f6916856f9',1,'IKModel']]],
-  ['_7emotorcontroller_52',['~MotorController',['../classMotorController.html#ae4a6055b64466936c3576fb52fda9307',1,'MotorController']]]
+  ['motorcontroller_125',['MotorController',['../classMotorController.html#a1c32db157ba4b6dba1f2d6bc8891f16d',1,'MotorController::MotorController()'],['../classMotorController.html#a3eec9a8e9b7621eb1fbb90724ce987fd',1,'MotorController::MotorController(const std::array&lt; double, MOTORS &gt; &amp;max_torque)']]]
 ];

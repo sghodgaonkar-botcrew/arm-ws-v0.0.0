@@ -1,0 +1,8 @@
+<map id="/home/shanto/Documents/arm&#45;ws&#45;v0.0.0/dds_bridge/cpp_plugins/include/workspace_types.h" name="/home/shanto/Documents/arm&#45;ws&#45;v0.0.0/dds_bridge/cpp_plugins/include/workspace_types.h">
+<area shape="rect" id="node1" title="Workspace data types and structures for IK solver." alt="" coords="128,5,356,76"/>
+<area shape="rect" id="node2" href="$ik__solver__w__rws_8hpp.html" title="Inverse Kinematics Solver with Reachable Workspace Support." alt="" coords="5,243,223,313"/>
+<area shape="rect" id="node4" href="$reachable__workspace__generator_8h.html" title="Reachable Workspace Generator for Robot IK Solver." alt="" coords="259,243,481,313"/>
+<area shape="rect" id="node6" href="$robot__model_8h_source.html" title=" " alt="" coords="145,124,339,195"/>
+<area shape="rect" id="node3" href="$ik__solver__w__rws_8cpp.html" title="Implementation of Inverse Kinematics Solver with Reachable Workspace Support." alt="" coords="17,361,211,432"/>
+<area shape="rect" id="node5" href="$reachable__workspace__generator_8cpp.html" title="Implementation of Reachable Workspace Generator for Robot IK Solver." alt="" coords="273,361,467,432"/>
+</map>
