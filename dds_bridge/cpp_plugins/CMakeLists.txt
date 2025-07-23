@@ -1,6 +1,9 @@
 cmake_minimum_required(VERSION 3.16)
 project(ik_solver_v2)
 
+# Set CMake policies to handle warnings and conflicts
+cmake_policy(SET CMP0077 NEW)
+
 # Set C++ standard
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
@@ -18,6 +21,9 @@ include(FetchContent)
 # Disable test builds to prevent target name conflicts
 set(FETCHCONTENT_UPDATES_DISCONNECTED ON)
 set(BUILD_TESTING OFF)
+set(NANOFLANN_BUILD_TESTS OFF)
+set(JSONCONS_BUILD_TESTS OFF)
+set(CPPZMQ_BUILD_TESTS OFF)
 
 # Fetch Nanoflann for efficient k-d tree operations
 FetchContent_Declare(
@@ -25,7 +31,6 @@ FetchContent_Declare(
     GIT_REPOSITORY https://github.com/jlblancoc/nanoflann.git
     GIT_TAG master
 )
-set(NANOFLANN_BUILD_TESTS OFF)
 FetchContent_MakeAvailable(nanoflann)
 
 # Fetch Moteus from GitHub
@@ -44,7 +49,6 @@ FetchContent_Declare(
     GIT_REPOSITORY https://github.com/danielaparker/jsoncons.git
     GIT_TAG v0.171.0
 )
-set(JSONCONS_BUILD_TESTS OFF)
 FetchContent_MakeAvailable(jsoncons)
 
 # Fetch cppzmq for ZeroMQ communication
@@ -53,7 +57,6 @@ FetchContent_Declare(
     GIT_REPOSITORY https://github.com/zeromq/cppzmq.git
     GIT_TAG v4.10.0
 )
-set(CPPZMQ_BUILD_TESTS OFF)
 FetchContent_MakeAvailable(cppzmq)
 
 # Find required packages
@@ -70,8 +73,8 @@ find_package(proxsuite REQUIRED)
 # Find CycloneDDS-CXX for DDS communication
 find_package(CycloneDDS-CXX CONFIG REQUIRED)
 
-# Find Boost for reachable_workspace
-find_package(Boost REQUIRED COMPONENTS random)
+# Find Boost for reachable_workspace and OMPL
+find_package(Boost REQUIRED COMPONENTS random filesystem)
 
 # Find OpenMP for reachable_workspace
 find_package(OpenMP)
@@ -80,11 +83,25 @@ find_package(OpenMP)
 find_package(PkgConfig REQUIRED)
 pkg_check_modules(ZMQ REQUIRED libzmq)
 
-# Create cps_link executable
+# Find OMPL (Open Motion Planning Library)
+# Add OMPL CMake config path
+list(APPEND CMAKE_PREFIX_PATH "/usr/local/share/ompl/cmake")
+find_package(ompl CONFIG REQUIRED)
+if(ompl_FOUND)
+    message(STATUS "OMPL found via CMake config")
+else()
+    message(FATAL_ERROR "OMPL not found. Please install libompl-dev")
+endif()
+
+# Create test_cps_link executable
 # Note: This requires CoppeliaSim remote API to be installed
 # The RemoteAPIClient.h header should be available in CoppeliaSim installation
-add_executable(cps_link
+add_executable(test_cps_link
+    src/test_cps_link.cpp
     src/cps_link.cpp
+    src/planner_v0.cpp
+    src/robot_model.cpp
+    src/ik_solver_w_rws.cpp
     /home/shanto/CoppeliaSim_Pro_V4_10_0_rev0_Ubuntu22_04/programming/zmqRemoteApi/clients/cpp/RemoteAPIClient.cpp
 )
 
@@ -121,13 +138,25 @@ add_executable(example_workspace_generator
     src/example_workspace_generator.cpp
 )
 
+# Create test_planner executable
+add_executable(test_planner
+    src/test_planner.cpp
+    src/planner_v0.cpp
+    src/robot_model.cpp
+    src/ik_solver_w_rws.cpp
+)
+
 # Set include directories
-target_include_directories(cps_link PRIVATE
+target_include_directories(test_cps_link PRIVATE
     ${CMAKE_CURRENT_SOURCE_DIR}/include
     ${jsoncons_SOURCE_DIR}/include
     ${cppzmq_SOURCE_DIR}
     ${ZMQ_INCLUDE_DIRS}
     /home/shanto/CoppeliaSim_Pro_V4_10_0_rev0_Ubuntu22_04/programming/zmqRemoteApi/clients/cpp # CoppeliaSim remote API headers
+    /usr/local/include/ompl-1.7 # OMPL headers
+    /usr/include/eigen3 # Eigen3 headers
+    /opt/openrobots/include # System Pinocchio
+    ${nanoflann_SOURCE_DIR}/include # Nanoflann headers
 )
 
 target_include_directories(ik_solver_w_rws_dev PRIVATE
@@ -168,11 +197,23 @@ target_include_directories(example_workspace_generator PRIVATE
     /opt/openrobots/include # System Pinocchio
 )
 
+target_include_directories(test_planner PRIVATE
+    ${CMAKE_CURRENT_SOURCE_DIR}/include
+    /usr/local/include/ompl-1.7
+    /usr/include/eigen3
+    /opt/openrobots/include # System Pinocchio
+    ${nanoflann_SOURCE_DIR}/include # Nanoflann headers
+)
+
 # Link libraries
-target_link_libraries(cps_link
+target_link_libraries(test_cps_link
     ${ZMQ_LIBRARIES}
     cppzmq
     ${Boost_LIBRARIES}
+    ompl::ompl
+    pinocchio::pinocchio
+    pinocchio::pinocchio_parsers
+    ${EIGEN3_LIBRARIES}
 )
 
 target_link_libraries(ik_solver_w_rws_dev
@@ -214,6 +255,13 @@ target_link_libraries(example_workspace_generator
     ${Boost_LIBRARIES}
 )
 
+target_link_libraries(test_planner
+    ompl::ompl
+    pinocchio::pinocchio
+    pinocchio::pinocchio_parsers
+    ${EIGEN3_LIBRARIES}
+)
+
 # Print status
 message(STATUS "=== Build Configuration ===")
 message(STATUS "  Eigen3: ${EIGEN3_FOUND}")
@@ -226,5 +274,6 @@ message(STATUS "  OpenMP: ${OpenMP_CXX_FOUND}")
 message(STATUS "  jsoncons: ${jsoncons_POPULATED}")
 message(STATUS "  cppzmq: ${cppzmq_POPULATED}")
 message(STATUS "  ZeroMQ: ${ZMQ_FOUND}")
+message(STATUS "  OMPL: ${OMPL_FOUND}")
 message(STATUS "  CoppeliaSim Remote API: Installed at /home/shanto/CoppeliaSim_Pro_V4_10_0_rev0_Ubuntu22_04")
 message(STATUS "  C++ Standard: ${CMAKE_CXX_STANDARD}")
